@@ -23,7 +23,7 @@ public class BicepCurl extends Activity implements Serializable {
         this.weight = weight;
     }
 
-    public BicepCurl(BenchPress other) {
+    public BicepCurl(BicepCurl other) {
         super(other);
         this.reps = other.getReps();
         this.sets = other.getSets();
