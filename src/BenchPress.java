@@ -3,27 +3,31 @@ import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.Objects;
 
-public class Crunches extends Activity implements Serializable {
+public class BenchPress extends Activity implements Serializable {
 
     private int reps;
     private int sets;
+    private double weight;
 
-    public Crunches() {
+    public BenchPress() {
         super();
         this.reps = 0;
         this.sets = 0;
+        this.weight = 0;
     }
 
-    public Crunches(int reps, int sets) {
+    public BenchPress(int reps, int sets, int weight) {
         super();
         this.reps = reps;
         this.sets = sets;
+        this.weight = weight;
     }
 
-    public Crunches(Crunches other) {
+    public BenchPress(BenchPress other) {
         super(other);
         this.reps = other.getReps();
         this.sets = other.getSets();
+        this.weight = other.getSets();
     }
 
     public int getReps() {
@@ -42,6 +46,14 @@ public class Crunches extends Activity implements Serializable {
         this.sets = sets;
     }
 
+    public double getWeight() {
+        return weight;
+    }
+
+    public void setWeight(double weight) {
+        this.weight = weight;
+    }
+
     @Override
     public double calories() {
         long age =  ChronoUnit.YEARS.between(getUser().getDateOfBirth(),LocalDate.now());
@@ -50,16 +62,17 @@ public class Crunches extends Activity implements Serializable {
     }
 
     @Override
-    public Crunches clone() {
-        return new Crunches(this);
+    public BenchPress clone() {
+        return new BenchPress(this);
     }
 
     @Override
     public String toString() {
-        return "Crunches{" +
+        return "Bench Press{" +
                 super.toString()+
                 ", sets=" + sets +
                 ", reps=" + reps +
+                ", weight=" + weight +
                 ", calories=" + calories() +
                 '}';
     }
@@ -69,9 +82,10 @@ public class Crunches extends Activity implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
-        Crunches crunches = (Crunches) o;
-        return this.sets == crunches.getSets()
-                && this.reps == crunches.getReps();
+        BenchPress bench = (BenchPress) o;
+        return this.sets == bench.getSets()
+                && this.reps == bench.getReps()
+                && Double.compare(this.weight, bench.getWeight()) == 0;
     }
 }
 
