@@ -31,7 +31,7 @@ public class Professional extends User implements Serializable{
      * @param workoutPlansList Lista de planos de treino para cada utilizador
      * @throws IllegalArgumentException Controlo de erros... Se os parametros números forem negativos e/ou strings forem nulas
      */
-    public Professional(String name,String username, String userType, LocalDate dateOfBirth, double height, double weight, double calories, String address, String email, String password, int avgHR, ArrayList<Activity> activitiesList, ArrayList<WorkoutPlan> workoutPlansList) {
+    public Professional(String name,String username, String userType, LocalDate dateOfBirth, int height, double weight, double calories, String address, String email, String password, int avgHR, ArrayList<Activity> activitiesList, ArrayList<WorkoutPlan> workoutPlansList) {
         super(name, username, userType, dateOfBirth, height, weight, calories, address, email, password, avgHR, activitiesList, workoutPlansList);
     }
     /**

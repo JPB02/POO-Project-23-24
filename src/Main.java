@@ -16,6 +16,9 @@ public class Main {
                 case 1:
                     menu.registerMenu();
                     break;
+                case 2:
+                    menu.Login();
+                    break;
                 case 3:
                     active = false;
                     break;

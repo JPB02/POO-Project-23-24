@@ -161,6 +161,18 @@ public class Fitness implements Serializable {
         return false;
     }
 
+    public boolean loginUser(String username, String password) {
+        if(userMap.containsKey(username)) {
+            User user = userMap.get(username);
+            String realPassword = user.getPassword();
+
+            if(password.equals(realPassword)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public void basicActivities(){
         LocalDate date = LocalDate.now();
 

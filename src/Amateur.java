@@ -33,7 +33,7 @@ public class Amateur extends User implements Serializable{
      * @param workoutPlansList Lista de planos de treino para cada utilizador
      * @throws IllegalArgumentException Controlo de erros... Se os parametros números forem negativos e/ou strings forem nulas
      */
-    public Amateur(String name,String username, String userType, LocalDate dateOfBirth, double height, double weight, double calories, String address, String email, String password, int avgHR, ArrayList<Activity> activitiesList, ArrayList<WorkoutPlan> workoutPlansList) {
+    public Amateur(String name,String username, String userType, LocalDate dateOfBirth, int height, double weight, double calories, String address, String email, String password, int avgHR, ArrayList<Activity> activitiesList, ArrayList<WorkoutPlan> workoutPlansList) {
         super(name, username, userType, dateOfBirth, height, weight, calories, address, email, password, avgHR, activitiesList, workoutPlansList);
         if (height < 0 || weight < 0 || calories < 0 || avgHR < 0) {
             throw new IllegalArgumentException("Height, weight, calories, and average HR must not be negative.");

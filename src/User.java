@@ -18,7 +18,7 @@ public abstract class User implements Serializable {
     private String                  username; // DONE
     private String                  userType; // DONE
     private LocalDate               dateOfBirth; // DONE
-    private double                  height; // DONE
+    private int                  height; // DONE
     private double                  weight; // DONE
     private double                  calories;
     private String                  address; //DONE
@@ -45,7 +45,7 @@ public abstract class User implements Serializable {
 
     }
 
-    public User(String name, String username, String userType, LocalDate dateOfBirth ,double height, double weight, double calories, String address, String email, String password, int avgHR, ArrayList<Activity> activitiesList, ArrayList<WorkoutPlan> workoutPlansList) {
+    public User(String name, String username, String userType, LocalDate dateOfBirth ,int height, double weight, double calories, String address, String email, String password, int avgHR, ArrayList<Activity> activitiesList, ArrayList<WorkoutPlan> workoutPlansList) {
         this.name = name;
         this.username = username;
         this.userType = userType;
@@ -138,7 +138,7 @@ public abstract class User implements Serializable {
         this.height = height;
     }
 
-    public double getHeight() {
+    public int getHeight() {
         return height;
     }
 

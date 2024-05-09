@@ -9,11 +9,12 @@ public class Menu implements Serializable {
     private Scanner sc;
     public Menu() {
         this.sc = new Scanner(System.in);
+
     }
 
     // usado para dar print ao menu incial
     public void startMenu() {
-        System.out.println("##############-Welcome-##############");
+        System.out.println("##############-UMINHO FIT-##############");
         System.out.println("\n1. Register");
         System.out.println("\n2. Login");
         System.out.println("\n3. Exit");
@@ -48,8 +49,8 @@ public class Menu implements Serializable {
         return (height > 0 && height <= 250);
     }
 
-    public boolean validWeight(int weight) {
-        return (weight > 0 && weight <= 300);
+    public boolean validWeight(double weight) {
+        return (weight > 0.0 && weight <= 300.0);
     }
 
     public void registerMenu() {
@@ -112,14 +113,21 @@ public class Menu implements Serializable {
             }
         }
 
-        int weight = 0;
+        double weight = 0.0;
         boolean isValidWeight = false;
-        while(!isValidWeight) {
+        while (!isValidWeight) {
             System.out.println("Input your weight(kg): ");
-            weight = sc.nextInt();
-
-            if(validWeight(weight)) {
-                isValidWeight = true;
+            if (sc.hasNextDouble()) {
+                weight = sc.nextDouble();
+                sc.nextLine(); // Consume newline
+                if (validWeight(weight)) {
+                    isValidWeight = true;
+                } else {
+                    System.out.println("Invalid weight. Please input a valid weight.");
+                }
+            } else {
+                System.out.println("Invalid input. Please input a valid number for weight.");
+                sc.next(); // Consume invalid input
             }
         }
 
@@ -185,6 +193,33 @@ public class Menu implements Serializable {
 
         fit.save();
 
+    }
+
+    public String Login() {
+        Fitness fit = new Fitness();
+        fit = fit.load();
+
+        boolean loggedIn = false;
+        String username = null;
+        while(!loggedIn) {
+
+            System.out.println("##############-LOGIN-##############");
+            System.out.println("\nUsername: ");
+            username = sc.nextLine();
+            System.out.println("Password: ");
+            String password = sc.nextLine();
+
+            if(fit.loginUser(username, password)) {
+                System.out.println("Logged in!");
+                loggedIn = true;
+            }
+
+            else {
+                System.out.println("Invalid username or password!");
+            }
+        }
+
+        return username;
     }
 
     // debugging
