@@ -57,7 +57,7 @@ public class Menu implements Serializable {
         String type = new String();
         boolean isValidUserType = false;
         while(!isValidUserType) {
-            System.out.println("Input the type of user: ");
+            System.out.println("Input the type of user(Amateur, Occasional, Professional): ");
             type = sc.nextLine();
 
             if(validUserType(type)) {
@@ -93,7 +93,7 @@ public class Menu implements Serializable {
         LocalDate dateOfBirth = null;
         boolean isValidDateOfBirth = false;
         while(!isValidDateOfBirth) {
-            System.out.println("Input the date of birth (year-month-day): ");
+            System.out.println("Input the date of birth (YYYY-MM-DD): ");
             dateOfBirth = LocalDate.parse(sc.nextLine());
 
             if(validDateOfBirth(dateOfBirth)) {
@@ -115,7 +115,7 @@ public class Menu implements Serializable {
         int weight = 0;
         boolean isValidWeight = false;
         while(!isValidWeight) {
-            System.out.println("Input your weight: ");
+            System.out.println("Input your weight(kg): ");
             weight = sc.nextInt();
 
             if(validWeight(weight)) {
