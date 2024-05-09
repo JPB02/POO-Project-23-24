@@ -9,8 +9,8 @@ public class Occasional extends User implements Serializable{
         super();
     }
 
-    public Occasional(String name, String userType, LocalDate dateOfBirth, double height, double weight, String address, String email, String password, int avgHR, ArrayList<Activity> activitiesList) {
-        super(name, userType, dateOfBirth, height, weight, address, email, password, avgHR, activitiesList);
+    public Occasional(String name, String username, String userType, LocalDate dateOfBirth, double height, double weight, double calories, String address, String email, String password, int avgHR, ArrayList<Activity> activitiesList, ArrayList<WorkoutPlan> workoutPlansList) {
+        super(name, username, userType, dateOfBirth, height, weight, calories, address, email, password, avgHR, activitiesList, workoutPlansList);
     }
 
     public Occasional(User other){

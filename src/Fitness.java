@@ -7,7 +7,7 @@ import java.util.stream.Collectors;
 
 public class Fitness implements Serializable {
     private Map<String, User> userMap;
-    private Map<String, Activity> activityMap; // Lista as atividades disponiveis
+    private Map<String, Activity> activityMap;
     private LocalDate currDate;
 
     public Fitness() {
@@ -36,7 +36,7 @@ public class Fitness implements Serializable {
     public String toString() {
         final StringBuffer sb = new StringBuffer();
         sb.append("Users: ").append(userMap.toString()).append('\n');
-        sb.append("Atividades: ").append(activityMap.toString()).append("\n");
+        sb.append("Activities: ").append(activityMap.toString()).append("\n");
         return sb.toString();
     }
 
@@ -73,7 +73,7 @@ public class Fitness implements Serializable {
 
     public void save() {
         try {
-            FileOutputStream fileOut = new FileOutputStream("../Backup.ser");
+            FileOutputStream fileOut = new FileOutputStream("../file.ser");
             ObjectOutputStream out = new ObjectOutputStream(fileOut);
             out.writeObject(this);
             out.close();
@@ -88,7 +88,7 @@ public class Fitness implements Serializable {
     public Fitness load() {
         Fitness fit = new Fitness();
         try {
-            FileInputStream fileIn = new FileInputStream("../Backup.ser");
+            FileInputStream fileIn = new FileInputStream("../file.ser");
             ObjectInputStream in = new ObjectInputStream(fileIn);
             fit = (Fitness) in.readObject();
             in.close();

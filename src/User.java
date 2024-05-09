@@ -27,9 +27,6 @@ public abstract class User implements Serializable {
     private int                     avgHR;
     private ArrayList<Activity>     activitiesList;
     private ArrayList<WorkoutPlan>  workoutPlansList;
-    private ArrayList<WorkoutPlan>  futureWorkoutPlans;
-    private ArrayList<Activity>     futureActivities;
-
 
     public User() {
         this.name = "";
@@ -45,11 +42,10 @@ public abstract class User implements Serializable {
         this.avgHR = 0;
         this.activitiesList = new ArrayList<>();
         this.workoutPlansList = new ArrayList<>();
-        this.futureActivities = new ArrayList<>();
-        this.futureWorkoutPlans = new ArrayList<>();
+
     }
 
-    public User(String name, String username, String userType, LocalDate dateOfBirth ,double height, double weight, double calories, String address, String email, String password, int avgHR, ArrayList<Activity> activitiesList, ArrayList<WorkoutPlan> workoutPlansList, ArrayList<WorkoutPlan> futureWorkoutPlans, ArrayList<Activity> futureActivities) {
+    public User(String name, String username, String userType, LocalDate dateOfBirth ,double height, double weight, double calories, String address, String email, String password, int avgHR, ArrayList<Activity> activitiesList, ArrayList<WorkoutPlan> workoutPlansList) {
         this.name = name;
         this.username = username;
         this.userType = userType;
@@ -63,8 +59,6 @@ public abstract class User implements Serializable {
         this.avgHR = avgHR;
         this.activitiesList = new ArrayList<>(activitiesList);
         this.workoutPlansList = new ArrayList<>(workoutPlansList);
-        this.futureActivities = new ArrayList<>(futureActivities);
-        this.futureWorkoutPlans = new ArrayList<>(futureWorkoutPlans);
     }
 
     public User(User other) {
@@ -81,8 +75,6 @@ public abstract class User implements Serializable {
         this.avgHR = other.getAvgHR();
         this.activitiesList = other.getActivitiesList();
         this.workoutPlansList = other.getWorkoutPlansList();
-        this.futureWorkoutPlans = other.getFutureWorkoutPlans();
-        this.futureActivities = other.getFutureActivities();
     }
 
     // getters & setters
@@ -110,57 +102,12 @@ public abstract class User implements Serializable {
         this.workoutPlansList = workoutPlan;
     }
 
-    public ArrayList<WorkoutPlan> getFutureWorkoutPlans(){
-        return new ArrayList<WorkoutPlan>(this.futureWorkoutPlans);
-    }
-
-    public ArrayList<Activity> getFutureActivities(){
-        return new ArrayList<Activity>(this.futureActivities);
-    }
-
     public void addActivityToUser(Activity activity){
         this.activitiesList.add(activity);
     }
 
     public void addWorkoutPlanToUser(WorkoutPlan workoutPlan){
         this.workoutPlansList.add(workoutPlan);
-    }
-
-    public void addFutureActivity(Activity activity){
-        if(this.futureActivities == null) {
-            this.futureActivities = new ArrayList<>();
-        }
-        this.futureActivities.add(activity);
-    }
-
-    public void addFuturePlan(WorkoutPlan workoutPlan){
-        if(this.futureWorkoutPlans == null){
-            this.futureWorkoutPlans = new ArrayList<>();
-        }
-        this.futureWorkoutPlans.add(workoutPlan);
-    }
-
-    public void activityManager(LocalDate date){
-        Iterator<Activity> it= this.futureActivities.iterator();
-        while(it.hasNext()){
-            Activity activity = it.next();
-            if(date.isAfter(activity.getDate())) {
-                it.remove();
-                this.activitiesList.add(activity);
-                setCalories(activity.calories(this));
-            }
-        }
-    }
-    public void workoutPlanManager(LocalDate date){
-        Iterator<WorkoutPlan> it= this.futureWorkoutPlans.iterator();
-        while(it.hasNext()){
-            WorkoutPlan workoutPlan = it.next();
-            if(date.isAfter(workoutPlan.getDate())) {
-                it.remove();
-                this.workoutPlansList.add(workoutPlan);
-                setCalories(workoutPlan.caloriesBurned(this));
-            }
-        }
     }
 
     public void setName(String name) {

@@ -9,8 +9,8 @@ public class Amateur extends User implements Serializable{
         super();
     }
 
-    public Amateur(String name, String userType, LocalDate dateOfBirth, double height, double weight, String address, String email, String password, int avgHR, ArrayList<Activity> activitiesList) {
-        super(name, userType, dateOfBirth, height, weight, address, email, password, avgHR, activitiesList);
+    public Amateur(String name,String username, String userType, LocalDate dateOfBirth, double height, double weight, double calories, String address, String email, String password, int avgHR, ArrayList<Activity> activitiesList, ArrayList<WorkoutPlan> workoutPlansList) {
+        super(name, username, userType, dateOfBirth, height, weight, calories, address, email, password, avgHR, activitiesList, workoutPlansList);
     }
 
     public Amateur(User other){
