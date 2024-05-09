@@ -18,7 +18,8 @@ public abstract class Activity implements Serializable {
         2i) final elapsed time
      */
 
-    private static int lastAssignedActivityID = 0; // Keep track of the last assigned activity ID
+    // Variavel usada para incrementar o ID
+    private static int lastAssignedActivityID = 0;
 
 
     private String activityID;
@@ -26,11 +27,18 @@ public abstract class Activity implements Serializable {
     private LocalDate date;
     private int duration;
 
+    /**
+     * Gera um ID único de atividade que é incrementado a partir do último
+     * @return ID (String)
+     */
     private String generateNextActivityID() {
         lastAssignedActivityID++; // Increment the last assigned activity ID
         return String.valueOf(lastAssignedActivityID);
     }
 
+    /**
+     * Construtor por omissão que instancia uma atividade com valores default
+     */
     public Activity() {
         this.activityID = generateNextActivityID();
         this.activityType = "";
@@ -38,6 +46,12 @@ public abstract class Activity implements Serializable {
         this.duration = 0;
     }
 
+    /**
+     * Construtor Parametrizado
+     * @param activityType Tipo da atividade
+     * @param date Data da atividade
+     * @param duration Duração em minutos de uma atividade
+     */
     public Activity(String activityID, String activityType, LocalDate date, int duration) {
         this.activityID = activityID;
         this.activityType = activityType;
@@ -45,26 +59,42 @@ public abstract class Activity implements Serializable {
         this.duration = duration;
     }
 
+    /**
+     * Construtor cópia
+     * @param other recebe uma atividade
+     */
     public Activity(Activity other) {
+        if (other == null) {
+            throw new NullPointerException("Activity cannot be null");
+        }
         this.activityID = other.getActivityID();
         this.activityType = other.getActivityType();
         this.date = other.getDate();
         this.duration = other.getDuration();
     }
 
+
+    // ----------------------------Getter and setter methods----------------------------------------------------------
     public String getActivityID() {
         return activityID;
     }
 
     public void setActivityID(String activityID) {
+        if (activityID == null) {
+            throw new NullPointerException("Activity ID cannot be null");
+        }
         this.activityID = activityID;
     }
+
 
     public String getActivityType() {
         return activityType;
     }
 
     public void setActivityType(String activityType) {
+        if (activityType == null || activityType.trim().isEmpty()) {
+            throw new IllegalArgumentException("Activity type cannot be null or empty");
+        }
         this.activityType = activityType;
     }
 
@@ -73,6 +103,9 @@ public abstract class Activity implements Serializable {
     }
 
     public void setDate(LocalDate date) {
+        if (date == null) {
+            throw new NullPointerException("Date cannot be null");
+        }
         this.date = date;
     }
 
@@ -81,17 +114,21 @@ public abstract class Activity implements Serializable {
     }
 
     public void setDuration(int duration) {
+        if (duration < 0) {
+            throw new IllegalArgumentException("Duration cannot be negative");
+        }
         this.duration = duration;
     }
-
+// ----------------------------END OF ------Getter and setter methods----------------------------------------------------------
 
     @Override
     public String toString() {
-        return "Activity: \n" +
-                "\nActivity ID='" + activityID +
-                "\nActivity Type='" + activityType +
-                "\nDate=" + date +
-                "\nDuration" + duration;
+        return "Atividade{" +
+                "activity ID='" + activityID + '\'' +
+                ", activity type='" + activityType + '\'' +
+                ", date=" + date +
+                ", duration" + duration +
+                '}';
     }
 
     @Override
@@ -105,7 +142,9 @@ public abstract class Activity implements Serializable {
                 && this.date.equals(activity.getDate());
     }
 
+    //Métodos que são implementados nas subclasses
     public abstract double calories(User user);
     public  abstract  Activity clone( );
 
 }
+
