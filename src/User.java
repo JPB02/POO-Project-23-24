@@ -14,17 +14,17 @@ public abstract class User implements Serializable {
     */
 
     // variables
-    private String                  name;
-    private String                  username;
-    private String                  userType;
-    private LocalDate               dateOfBirth;
-    private double                  height;
-    private double                  weight;
+    private String                  name; // DONE
+    private String                  username; // DONE
+    private String                  userType; // DONE
+    private LocalDate               dateOfBirth; // DONE
+    private double                  height; // DONE
+    private double                  weight; // DONE
     private double                  calories;
-    private String                  address;
-    private String                  email;
-    private String                  password;
-    private int                     avgHR;
+    private String                  address; //DONE
+    private String                  email; // DONE
+    private String                  password; // DONE
+    private int                     avgHR; // DONE
     private ArrayList<Activity>     activitiesList;
     private ArrayList<WorkoutPlan>  workoutPlansList;
 

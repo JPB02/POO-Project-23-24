@@ -135,4 +135,44 @@ public class Fitness implements Serializable {
         return fit;
     }
 
+    // adiciona atividade apenas se ainda não existir uma atividade com o mesmo nome ID
+    public boolean addActivity (Activity activity) {
+        if (!this.activityMap.containsValue(activity)) {
+            this.activityMap.put(activity.getActivityID(), activity.clone());
+            return true;
+        }
+        return false;
+    }
+
+    public boolean existsUsername(String username) {
+        if(userMap.containsKey(username)) {
+            return true;
+        }
+        return false;
+    }
+
+    public boolean addUser(User user) {
+        if(!existsUsername(user.getUsername())) {
+            userMap.put(user.getUsername(), user);
+            return true;
+        }
+        return false;
+    }
+
+    public void basicActivities(){
+        LocalDate date = LocalDate.now();
+
+        Activity baseSquat = new Squat("Squat", "Body-weight", date, 0, 0, 0);
+        addActivity(baseSquat);
+
+        Activity baseRunning = new Running("Running", "Distance", date, 0, 0.0); // em km
+        addActivity(baseRunning);
+
+        Activity baseMountainBike = new MountainBike("MountainBike", "Distance&Altitude", date, 0, 0.0, 0.0);
+        addActivity(baseMountainBike);
+
+        Activity baseBenchPress = new BenchPress("BenchPress", "Weight-lifting", date, 0, 0,0, 0.0);
+        addActivity(baseBenchPress);
+
+    }
 }
