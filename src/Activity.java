@@ -22,45 +22,34 @@ public abstract class Activity implements Serializable {
 
 
     private String activityID;
-    private String description;
+    private String activityType;
     private LocalDate date;
     private int duration;
-    private User user;
-    private double calories;
 
     private String generateNextActivityID() {
         lastAssignedActivityID++; // Increment the last assigned activity ID
         return String.valueOf(lastAssignedActivityID);
     }
 
-    public void addToUserActivities(User user) {
-        Map<String, Activity> activities = user.getActivities();
-        activities.put(this.getActivityID(), this);
-        user.setActivities(activities);
-    }
-
     public Activity() {
         this.activityID = generateNextActivityID();
-        this.description = "";
+        this.activityType = "";
         this.date = LocalDate.EPOCH;
         this.duration = 0;
-        this.user = new User();
     }
 
-    public Activity(String activityID, String description, LocalDate date, int duration) {
+    public Activity(String activityID, String activityType, LocalDate date, int duration) {
         this.activityID = activityID;
-        this.description = description;
+        this.activityType = activityType;
         this.date = date;
         this.duration = duration;
     }
 
     public Activity(Activity other) {
         this.activityID = other.getActivityID();
-        this.description = other.getDescription();
+        this.activityType = other.getActivityType();
         this.date = other.getDate();
         this.duration = other.getDuration();
-        this.user = other.getUser();
-        this.calories = other.calories;
     }
 
     public String getActivityID() {
@@ -71,12 +60,12 @@ public abstract class Activity implements Serializable {
         this.activityID = activityID;
     }
 
-    public String getDescription() {
-        return description;
+    public String getActivityType() {
+        return activityType;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setActivityType(String activityType) {
+        this.activityType = activityType;
     }
 
     public LocalDate getDate() {
@@ -95,19 +84,12 @@ public abstract class Activity implements Serializable {
         this.duration = duration;
     }
 
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
 
     @Override
     public String toString() {
         return "Atividade{" +
                 "activity ID='" + activityID + '\'' +
-                ", description='" + description + '\'' +
+                ", activity type='" + activityType + '\'' +
                 ", date=" + date +
                 ", duration" + duration +
                 '}';
@@ -120,11 +102,11 @@ public abstract class Activity implements Serializable {
         Activity activity = (Activity) o;
         return this.duration == activity.getDuration()
                 && this.activityID.equals(activity.getActivityID())
-                && this.description.equals(activity.getDescription())
+                && this.activityType.equals(activity.getActivityType())
                 && this.date.equals(activity.getDate());
     }
 
-    public abstract double calories();
+    public abstract double calories(User user);
     public  abstract  Activity clone( );
 
 }

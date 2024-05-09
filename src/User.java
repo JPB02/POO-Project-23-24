@@ -1,11 +1,9 @@
 import java.io.Serializable;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.time.LocalDate;
 import java.util.stream.Collectors;
 
-public class User implements Serializable {
+public abstract class User implements Serializable {
     /*
     i) three types of user: professional, amateur, occasional
         each type of user must have different formulas associated for calories burned arithmetics
@@ -16,81 +14,153 @@ public class User implements Serializable {
     */
 
     // variables
-    private String      name;
-    private UserType    userType;
-    private Gender      gender;
-    private LocalDate   dateOfBirth;
-    private double      height;
-    private double      weight;
-    private String      address;
-    private String      email;
-    private String      password;
-    private double      avgHR;
-    private Map<String, Activity> activities;
+    private String                  name;
+    private String                  username;
+    private String                  userType;
+    private LocalDate               dateOfBirth;
+    private double                  height;
+    private double                  weight;
+    private double                  calories;
+    private String                  address;
+    private String                  email;
+    private String                  password;
+    private int                     avgHR;
+    private ArrayList<Activity>     activitiesList;
+    private ArrayList<WorkoutPlan>  workoutPlansList;
+    private ArrayList<WorkoutPlan>  futureWorkoutPlans;
+    private ArrayList<Activity>     futureActivities;
+
 
     public User() {
         this.name = "";
-        this.userType = null;
-        this.gender = null;
+        this.username = "";
+        this.userType = "";
         this.dateOfBirth = LocalDate.EPOCH;
         this.height = 0;
         this.weight = 0;
+        this.calories = 0;
         this.address = "";
         this.email = "";
         this.password = "";
         this.avgHR = 0;
-        this.activities = new HashMap<>();
+        this.activitiesList = new ArrayList<>();
+        this.workoutPlansList = new ArrayList<>();
+        this.futureActivities = new ArrayList<>();
+        this.futureWorkoutPlans = new ArrayList<>();
     }
 
-    public User(String name, UserType userType, Gender gender, LocalDate dateOfBirth ,double height, double weight, String address, String email, String password, double avgHR, Map<String, Activity> activities) {
+    public User(String name, String username, String userType, LocalDate dateOfBirth ,double height, double weight, double calories, String address, String email, String password, int avgHR, ArrayList<Activity> activitiesList, ArrayList<WorkoutPlan> workoutPlansList, ArrayList<WorkoutPlan> futureWorkoutPlans, ArrayList<Activity> futureActivities) {
         this.name = name;
+        this.username = username;
         this.userType = userType;
-        this.gender = gender;
         this.dateOfBirth = dateOfBirth;
         this.height = height;
         this.weight = weight;
+        this.calories = calories;
         this.address = address;
         this.email = email;
         this.password = password;
         this.avgHR = avgHR;
-        this.activities = activities.entrySet().stream().collect(Collectors.toMap(k->k.getKey(), v-> v.getValue().clone()));
-    }
-
-    public User(String name, UserType userType, Gender gender, LocalDate dateOfBirth ,double height, double weight, String address, String email, String password, double avgHR) {
-        this.name = name;
-        this.userType = userType;
-        this.gender = gender;
-        this.dateOfBirth = dateOfBirth;
-        this.height = height;
-        this.weight = weight;
-        this.address = address;
-        this.email = email;
-        this.password = password;
-        this.avgHR = avgHR;
-        this.activities = new HashMap<>();
+        this.activitiesList = new ArrayList<>(activitiesList);
+        this.workoutPlansList = new ArrayList<>(workoutPlansList);
+        this.futureActivities = new ArrayList<>(futureActivities);
+        this.futureWorkoutPlans = new ArrayList<>(futureWorkoutPlans);
     }
 
     public User(User other) {
         this.name = other.getName();
+        this.username = other.getUsername();
         this.userType = other.getUserType();
-        this.gender = other.getGender();
         this.dateOfBirth = other.getDateOfBirth();
         this.height = other.getHeight();
         this.weight = other.getWeight();
+        this.calories = other.getCalories();
         this.address = other.getAddress();
         this.email = other.getEmail();
         this.password = other.getPassword();
         this.avgHR = other.getAvgHR();
-        this.activities = other.getActivities();
+        this.activitiesList = other.getActivitiesList();
+        this.workoutPlansList = other.getWorkoutPlansList();
+        this.futureWorkoutPlans = other.getFutureWorkoutPlans();
+        this.futureActivities = other.getFutureActivities();
     }
 
     // getters & setters
-    public Map<String, Activity> getActivities() {
-        return activities.entrySet().stream().collect(Collectors.toMap(k->k.getKey(), v-> v.getValue().clone()));
+    public ArrayList<Activity> getActivitiesList() {
+        return this.activitiesList;
     }
 
-    public void setActivities(Map<String, Activity> activities) {
-        this.activities =  activities.entrySet().stream().collect(Collectors.toMap(k->k.getKey(), v-> v.getValue().clone()));
+    public void setListaAtividades(ArrayList<Activity> activitiesList) {
+        this.activitiesList = activitiesList;
+    }
+
+    public String getUsername() {
+        return this.username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public ArrayList<WorkoutPlan> getWorkoutPlansList(){
+        return new ArrayList<WorkoutPlan>(this.workoutPlansList);
+    }
+
+    public void setWorkoutPlansList(ArrayList<WorkoutPlan> workoutPlan){
+        this.workoutPlansList = workoutPlan;
+    }
+
+    public ArrayList<WorkoutPlan> getFutureWorkoutPlans(){
+        return new ArrayList<WorkoutPlan>(this.futureWorkoutPlans);
+    }
+
+    public ArrayList<Activity> getFutureActivities(){
+        return new ArrayList<Activity>(this.futureActivities);
+    }
+
+    public void addActivityToUser(Activity activity){
+        this.activitiesList.add(activity);
+    }
+
+    public void addWorkoutPlanToUser(WorkoutPlan workoutPlan){
+        this.workoutPlansList.add(workoutPlan);
+    }
+
+    public void addFutureActivity(Activity activity){
+        if(this.futureActivities == null) {
+            this.futureActivities = new ArrayList<>();
+        }
+        this.futureActivities.add(activity);
+    }
+
+    public void addFuturePlan(WorkoutPlan workoutPlan){
+        if(this.futureWorkoutPlans == null){
+            this.futureWorkoutPlans = new ArrayList<>();
+        }
+        this.futureWorkoutPlans.add(workoutPlan);
+    }
+
+    public void activityManager(LocalDate date){
+        Iterator<Activity> it= this.futureActivities.iterator();
+        while(it.hasNext()){
+            Activity activity = it.next();
+            if(date.isAfter(activity.getDate())) {
+                it.remove();
+                this.activitiesList.add(activity);
+                setCalories(activity.calories(this));
+            }
+        }
+    }
+    public void workoutPlanManager(LocalDate date){
+        Iterator<WorkoutPlan> it= this.futureWorkoutPlans.iterator();
+        while(it.hasNext()){
+            WorkoutPlan workoutPlan = it.next();
+            if(date.isAfter(workoutPlan.getDate())) {
+                it.remove();
+                this.workoutPlansList.add(workoutPlan);
+                setCalories(workoutPlan.caloriesBurned(this));
+            }
+        }
     }
 
     public void setName(String name) {
@@ -101,20 +171,12 @@ public class User implements Serializable {
         return name;
     }
 
-    public void setUserType(UserType userType){
+    public void setUserType(String userType){
         this.userType = userType;
     }
 
-    public UserType getUserType(){
+    public String getUserType(){
         return userType;
-    }
-
-    public void setGender(Gender gender) {
-        this.gender = gender;
-    }
-
-    public Gender getGender() {
-        return gender;
     }
 
     public LocalDate getDateOfBirth() {
@@ -133,8 +195,18 @@ public class User implements Serializable {
         return height;
     }
 
-    public void setWeight(int weight) {
-        this.weight = weight;
+    private boolean validWeight(double weight) {
+        return weight >= 10 && weight <= 200;
+    }
+
+
+    public boolean setWeight(double weight){
+        if((validWeight(weight))) {
+            this.weight = weight;
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public double getWeight() {
@@ -165,12 +237,28 @@ public class User implements Serializable {
         return password;
     }
 
-    public void setAvgHR(double avgHR) {
+    public void setAvgHR(int avgHR) {
         this.avgHR = avgHR;
     }
 
-    public double getAvgHR() {
+    public int getAvgHR() {
         return avgHR;
+    }
+
+    public double getCalories() {
+        return this.calories;
+    }
+
+    public void setCalories(double calories) {
+        this.calories += calories;
+    }
+
+    public void addPlanToUser(WorkoutPlan workoutPlan){
+        this.workoutPlansList.add(workoutPlan);
+    }
+
+    public void addActivityUser(Activity activity){
+        this.activitiesList.add(activity);
     }
 
     // equals
@@ -180,37 +268,32 @@ public class User implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User that = (User) o;
-        return      Objects.equals(getName(), that.name)
-                &&  Objects.equals(getUserType(), that.userType)
-                &&  Objects.equals(getGender(), that.gender)
-                &&  Objects.equals(getDateOfBirth(), that.dateOfBirth)
-                &&  Objects.equals(getHeight(), that.height)
-                &&  Objects.equals(getWeight(), that.weight)
-                &&  Objects.equals(getAddress(), that.address)
-                &&  Objects.equals(getEmail(), that.email)
-                &&  Objects.equals(getPassword(), that.password)
-                &&  Objects.equals(getAvgHR(), that.avgHR)
-                && this.activities.equals(that.getActivities());
+        return      this.name.equals(that.getName())
+                &&  this.userType.equals(that.getUserType())
+                &&  this.dateOfBirth.equals(that.getDateOfBirth())
+                &&  this.height == that.getHeight()
+                &&  this.weight == that.getWeight()
+                &&  this.address.equals(that.getAddress())
+                &&  this.email.equals(that.getEmail())
+                &&  this.password.equals(that.getPassword())
+                &&  this.avgHR == that.getAvgHR()
+                && this.activitiesList.equals(that.getActivitiesList());
     }
 
     @Override
     public String toString() {
-        return  "User{" +
-                "name='" + name + '\'' +
-                ", email='" + email + '\'' +
-                ", password='" + password + '\'' +
-                ", user type='" + userType + '\'' +
-                ", gender='" + gender + '\'' +
-                ", date of birth='" + dateOfBirth + '\'' +
-                ", height=" + height +
-                ", weight=" + weight +
-                ", address=" + address +
-                ", avgHR=" + avgHR +
-                '}';
+        return  "Account Information:\n" +
+                "\nName: " + name +
+                "\nEmail: " + email +
+                "\nType: " + userType +
+                "\nDate of Birth: " + dateOfBirth +
+                "\nHeight: " + height +
+                "\nWeight: " + weight +
+                "\nAddress: " + address +
+                "\nAverage Heart Rate: " + avgHR;
     }
 
-    public User clone(){
-        return new User(this);
-    }
+    public abstract User clone();
+    public abstract double caloriesFactor();
 
 }

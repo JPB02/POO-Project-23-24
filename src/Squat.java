@@ -7,27 +7,23 @@ public class Squat extends Activity implements Serializable {
 
     private int reps;
     private int sets;
-    private double weight;
 
     public Squat() {
         super();
         this.reps = 0;
         this.sets = 0;
-        this.weight = 0;
     }
 
-    public Squat(int reps, int sets, int weight) {
-        super();
+    public Squat(String activityID, String type, LocalDate date, int duration,int reps, int sets) {
+        super(activityID, type, date, duration);
         this.reps = reps;
         this.sets = sets;
-        this.weight = weight;
     }
 
     public Squat(Squat other) {
         super(other);
         this.reps = other.getReps();
         this.sets = other.getSets();
-        this.weight = other.getSets();
     }
 
     public int getReps() {
@@ -46,35 +42,24 @@ public class Squat extends Activity implements Serializable {
         this.sets = sets;
     }
 
-    public double getWeight() {
-        return weight;
-    }
-
-    public void setWeight(double weight) {
-        this.weight = weight;
-    }
-
     @Override
-    public double calories() {
-        long age =  ChronoUnit.YEARS.between(getUser().getDateOfBirth(),LocalDate.now());
-        double calories = ((reps/10)*sets*age)/2; // FAZER FÒRMULA
+    public double calories(User user) {
+        long age =  ChronoUnit.YEARS.between(user.getDateOfBirth(),LocalDate.now());
+        double calories = user.caloriesFactor()*1; // FAZER FÒRMULA
         return calories;
     }
 
     @Override
-    public Squat clone() {
+    public Activity clone() {
         return new Squat(this);
     }
 
     @Override
     public String toString() {
-        return "Squat{" +
+        return "Squat: \n" +
                 super.toString()+
-                ", sets=" + sets +
-                ", reps=" + reps +
-                ", weight=" + weight +
-                ", calories=" + calories() +
-                '}';
+                "\nSets: " + sets +
+                "\nReps: " + reps;
     }
 
     @Override
@@ -84,8 +69,7 @@ public class Squat extends Activity implements Serializable {
         if (!super.equals(o)) return false;
         Squat squat = (Squat) o;
         return this.sets == squat.getSets()
-                && this.reps == squat.getReps()
-                && Double.compare(this.weight, squat.getWeight()) == 0;
+                && this.reps == squat.getReps();
     }
 }
 

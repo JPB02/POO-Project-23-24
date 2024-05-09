@@ -16,8 +16,8 @@ public class BenchPress extends Activity implements Serializable {
         this.weight = 0;
     }
 
-    public BenchPress(int reps, int sets, int weight) {
-        super();
+    public BenchPress(String activityID, String type, LocalDate date, int duration, int reps, int sets, double weight) {
+        super(activityID, type, date, duration);
         this.reps = reps;
         this.sets = sets;
         this.weight = weight;
@@ -55,14 +55,14 @@ public class BenchPress extends Activity implements Serializable {
     }
 
     @Override
-    public double calories() {
-        long age =  ChronoUnit.YEARS.between(getUser().getDateOfBirth(),LocalDate.now());
-        double calories = ((reps/10)*sets*age)/2; // FAZER FÒRMULA
+    public double calories(User user) {
+        long age =  ChronoUnit.YEARS.between(user.getDateOfBirth(),LocalDate.now());
+        double calories = user.caloriesFactor()*1; // FAZER FÒRMULA
         return calories;
     }
 
     @Override
-    public BenchPress clone() {
+    public Activity clone() {
         return new BenchPress(this);
     }
 
@@ -73,7 +73,6 @@ public class BenchPress extends Activity implements Serializable {
                 ", sets=" + sets +
                 ", reps=" + reps +
                 ", weight=" + weight +
-                ", calories=" + calories() +
                 '}';
     }
 

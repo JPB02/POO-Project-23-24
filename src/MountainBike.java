@@ -15,8 +15,8 @@ public class MountainBike extends Activity implements Serializable{
         this.altitude = 0;
     }
 
-    public MountainBike(double distance, double altitude){
-        super();
+    public MountainBike(String activityID, String type, LocalDate date, int duration, double distance, double altitude){
+        super(activityID, type, date, duration);
         this.distance = distance;
         this.altitude = altitude;
     }
@@ -44,24 +44,14 @@ public class MountainBike extends Activity implements Serializable{
     }
 
     @Override
-    public double calories() {
-        UserType userType = getUser().getUserType();
-        if(userType == UserType.Professional) {
-            long age = ChronoUnit.YEARS.between(getUser().getDateOfBirth(),LocalDate.now());
-            double calories = (distance * altitude * age) / 150 * 0; // FAZER FÒR
-            return calories;
-        }
-
-        else {
-            long age = ChronoUnit.YEARS.between(getUser().getDateOfBirth(), LocalDate.now());
-            double calories = (distance * altitude * age) / 150; // FAZER FÒRMULA
-            return calories;
-        }
-
+    public double calories(User user) {
+        long age =  ChronoUnit.YEARS.between(user.getDateOfBirth(),LocalDate.now());
+        double calories = user.caloriesFactor()*1; // FAZER FÒRMULA
+        return calories;
     }
 
     @Override
-    public MountainBike clone() {
+    public Activity clone() {
         return new MountainBike(this);
     }
 
@@ -71,7 +61,6 @@ public class MountainBike extends Activity implements Serializable{
                 super.toString()+
                 "distance=" + distance +
                 ", altitude=" + altitude +
-                ", calories=" + calories() +
                 '}';
     }
 
@@ -80,9 +69,9 @@ public class MountainBike extends Activity implements Serializable{
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
-        MountainBike mountaibiking = (MountainBike) o;
-        return Double.compare(mountaibiking.getDistance(), getDistance()) == 0
-                && Double.compare(mountaibiking.getAltitude(), getAltitude()) == 0;
+        MountainBike mountainBike = (MountainBike) o;
+        return Double.compare(mountainBike.getDistance(), getDistance()) == 0
+                && Double.compare(mountainBike.getAltitude(), getAltitude()) == 0;
     }
 
 
