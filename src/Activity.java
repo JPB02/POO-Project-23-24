@@ -87,12 +87,11 @@ public abstract class Activity implements Serializable {
 
     @Override
     public String toString() {
-        return "Atividade{" +
-                "activity ID='" + activityID + '\'' +
-                ", activity type='" + activityType + '\'' +
-                ", date=" + date +
-                ", duration" + duration +
-                '}';
+        return "Activity: \n" +
+                "\nActivity ID='" + activityID +
+                "\nActivity Type='" + activityType +
+                "\nDate=" + date +
+                "\nDuration" + duration;
     }
 
     @Override

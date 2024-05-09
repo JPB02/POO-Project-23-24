@@ -2,21 +2,36 @@ import java.time.LocalDate;
 
 public class Main {
     public static void main(String[] args) {
+        FitnessAppManager appManager = new FitnessAppManager();
 
-        // Create a user
+        // Creating a user
         Amateur user = new Amateur();
-        user.setName("John");                                                       // name
-        user.setUserType("Professional");                                           // userType
-        user.setDateOfBirth(LocalDate.of(1990, 5, 15));      // dateOfBirth
-        user.setHeight(180);                                                        // height
-        user.setWeight(75);                                                         // weight
-        user.setAddress("123 Street, City, Country");                               // address
-        user.setEmail("john@example.com");                                          // email
-        user.setPassword("password123");                                            // password
-        user.setAvgHR(70);                                                          // avgHR
+        user.setName("John");
+        user.setUsername("john");
+        user.setUserType("Amateur");
+        user.setDateOfBirth(LocalDate.EPOCH);
+        user.setHeight(175);
+        user.setWeight(67);
+        user.setCalories(1070);
+        user.setAddress("rua do caralho");
+        user.setEmail("john@gmail.com");
+        user.setPassword("password");
+        user.setAvgHR(70);
 
-        // Display the user information
-        System.out.println(user);
+        appManager.registerUser(user);
 
+        // Creating an activity
+        Running runningActivity = new Running("1", "Running", LocalDate.now(), 30, 5.0);
+
+        // Adding the activity to the user
+        appManager.addActivity(user, runningActivity);
+
+        // Displaying the user's activities
+        System.out.println("User: \n" + user.toString());;
+
+        System.out.println("User's activities:");
+        for (Activity activity : user.getActivitiesList()) {
+            System.out.println(activity);
+        }
     }
 }
