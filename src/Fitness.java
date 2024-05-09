@@ -104,7 +104,7 @@ public class Fitness implements Serializable {
      */
     public void save() {
         try {
-            FileOutputStream fileOut = new FileOutputStream("../file.ser");
+            FileOutputStream fileOut = new FileOutputStream("data.ser");
             ObjectOutputStream out = new ObjectOutputStream(fileOut);
             out.writeObject(this);
             out.close();
@@ -123,11 +123,13 @@ public class Fitness implements Serializable {
     public Fitness load() {
         Fitness fit = new Fitness();
         try {
-            FileInputStream fileIn = new FileInputStream("../file.ser");
+            FileInputStream fileIn = new FileInputStream("data.ser");
             ObjectInputStream in = new ObjectInputStream(fileIn);
             fit = (Fitness) in.readObject();
             in.close();
             fileIn.close();
+            System.out.println("File loaded successfully.");
+            System.out.println("Found userMap with size: " + fit.getUserMap().size());
         } catch (ClassNotFoundException | IOException e) {
             System.out.println("Loading error");
             e.printStackTrace();

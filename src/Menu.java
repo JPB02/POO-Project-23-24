@@ -1,9 +1,10 @@
 import java.io.File;
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Map;
 import java.util.Scanner;
 
-public class Menu {
+public class Menu implements Serializable {
 
     private Scanner sc;
     public Menu() {
@@ -125,7 +126,7 @@ public class Menu {
         System.out.println("Input your address: ");
         String address = sc.next();
 
-        sc.next();
+        sc.nextLine();
         String email = "";
         boolean isValidEmail = false;
         while(!isValidEmail) {
@@ -149,6 +150,7 @@ public class Menu {
         }
 
         // já temos todos os dados para criar o utilizador novo
+        assert newUser != null;
         newUser.setName(name);
         newUser.setUsername(username);
         newUser.setUserType(type);
@@ -161,7 +163,7 @@ public class Menu {
         newUser.setAvgHR(avgHR);
 
 
-        File file = new File("../data.ser");
+        File file = new File("data.ser");
         Fitness fit = new Fitness();
 
 
@@ -188,12 +190,13 @@ public class Menu {
     // debugging
     public void printAllUsers() {
         Fitness fit = new Fitness();
-        fit.load();
+        fit = fit.load();
         Map<String, User> userMap = fit.getUserMap();
-        for(Map.Entry<String, User> entry: userMap.entrySet()) {
-            User user = entry.getValue();
-            System.out.println(user);
+        for(User user: userMap.values()) {
+            System.out.println(user.toString());
         }
     }
+
+
 
 }
