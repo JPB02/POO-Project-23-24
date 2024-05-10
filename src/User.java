@@ -229,7 +229,8 @@ public abstract class User implements Serializable {
 
     @Override
     public String toString() {
-        return  "Account Information:\n" +
+        return  "\nAccount Information:" +
+                "\n--------------------" +
                 "\nName: " + name +
                 "\nEmail: " + email +
                 "\nType: " + userType +

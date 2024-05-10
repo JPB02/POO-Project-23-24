@@ -1,6 +1,7 @@
 import java.io.File;
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 import java.util.Map;
 import java.util.Scanner;
 
@@ -80,6 +81,8 @@ public class Menu implements Serializable {
             case "Professional":
                 newUser = new Professional();
                 break;
+            default:
+                System.out.println("Invalid user type!");
         }
 
         System.out.println("Input your name: ");
@@ -93,41 +96,50 @@ public class Menu implements Serializable {
 
         LocalDate dateOfBirth = null;
         boolean isValidDateOfBirth = false;
-        while(!isValidDateOfBirth) {
+        while (!isValidDateOfBirth) {
             System.out.println("Input the date of birth (YYYY-MM-DD): ");
-            dateOfBirth = LocalDate.parse(sc.nextLine());
+            String dateInput = sc.nextLine();
 
-            if(validDateOfBirth(dateOfBirth)) {
-                isValidDateOfBirth = true;
+            try {
+                dateOfBirth = LocalDate.parse(dateInput);
+                if (validDateOfBirth(dateOfBirth)) {
+                    isValidDateOfBirth = true;
+                }
+            } catch (DateTimeParseException e) {
+                System.out.println("Invalid date format. Please enter the date in the format YYYY-MM-DD.");
             }
         }
 
         int height = 0;
         boolean isValidHeight = false;
-        while(!isValidHeight) {
+        while (!isValidHeight) {
             System.out.println("Input your height(in cm): ");
-            height = sc.nextInt();
+            String heightInput = sc.nextLine(); // Read input as string
 
-            if(validHeight(height)) {
-                isValidHeight = true;
+            try {
+                height = Integer.parseInt(heightInput); // Parse input to integer
+                if (validHeight(height)) {
+                    isValidHeight = true;
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid input. Please enter a valid integer for height.");
             }
         }
+
 
         double weight = 0.0;
         boolean isValidWeight = false;
         while (!isValidWeight) {
             System.out.println("Input your weight(kg): ");
-            if (sc.hasNextDouble()) {
-                weight = sc.nextDouble();
-                sc.nextLine(); // Consume newline
+            String weightInput = sc.nextLine(); // Read input as string
+
+            try {
+                weight = Double.parseDouble(weightInput); // Parse input to double
                 if (validWeight(weight)) {
                     isValidWeight = true;
-                } else {
-                    System.out.println("Invalid weight. Please input a valid weight.");
                 }
-            } else {
-                System.out.println("Invalid input. Please input a valid number for weight.");
-                sc.next(); // Consume invalid input
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid input. Please enter a valid number for weight.");
             }
         }
 
@@ -220,6 +232,32 @@ public class Menu implements Serializable {
         }
 
         return username;
+    }
+
+    public void loggedInMenu(String username) {
+        System.out.println("##############-Bem-vindo " + username + "-##############");
+        Fitness fit = new Fitness();
+        fit = fit.load();
+        User loggedInUser = fit.getUserMap().get(username);
+
+        int option = 0;
+        while(option!=2) {
+            System.out.println("\n1.Details");
+            System.out.println("\n2.Logout");
+            option = sc.nextInt();
+
+            switch (option) {
+                case 1:
+                    System.out.println(loggedInUser.toString());
+
+                case 2:
+                    break;
+
+                default:
+                    System.out.println("Invalid option!");
+            }
+        }
+
     }
 
     // debugging

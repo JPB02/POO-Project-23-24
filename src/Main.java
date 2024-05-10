@@ -17,7 +17,10 @@ public class Main {
                     menu.registerMenu();
                     break;
                 case 2:
-                    menu.Login();
+                    String username = menu.Login();
+                    if(username != null) {
+                        menu.loggedInMenu(username);
+                    }
                     break;
                 case 3:
                     active = false;
@@ -25,6 +28,8 @@ public class Main {
                 case 4:
                     menu.printAllUsers();
                     break;
+                default:
+                    System.out.println("Invalid option!");
             }
         }
     }
