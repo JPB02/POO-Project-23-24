@@ -250,9 +250,10 @@ public class Menu implements Serializable {
             switch (option) {
                 case 1:
                     System.out.println(loggedInUser.toString());
-
+                    break;
                 case 2:
                     activitiesMenu(username);
+                    break;
                 case 3:
                     break;
                 default:
@@ -264,6 +265,8 @@ public class Menu implements Serializable {
 
     public void activitiesMenu(String username) {
         User loggedInUser = User.loadUser(username);
+        Fitness fit = new Fitness();
+        fit = fit.load();
 
         System.out.println("\n1.Add activity");
         System.out.println("\n2.Delete activity");
@@ -308,6 +311,8 @@ public class Menu implements Serializable {
                                 assert loggedInUser != null;
                                 loggedInUser.addActivityToUser(run);
                                 loggedInUser.saveUser();
+                                fit.addActivity(run);
+                                fit.save();
                                 break;
 
                             default:
@@ -338,6 +343,8 @@ public class Menu implements Serializable {
                                 assert loggedInUser != null;
                                 loggedInUser.addActivityToUser(mountainBike);
                                 loggedInUser.saveUser();
+                                fit.addActivity(mountainBike);
+                                fit.save();
                                 break;
 
                             default:
