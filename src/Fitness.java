@@ -215,4 +215,32 @@ public class Fitness implements Serializable {
 
     }
 
+    public void addCustomActivities(String activityName, String activityType) {
+        LocalDate date = LocalDate.now();
+
+        if(activityType.equals("Distance")) {
+            Activity newActivity = new Distance(activityName, activityType, LocalDate.now(), 0, 0.0, false);
+            addActivity(newActivity);
+        }
+
+        else if(activityType.equals("Weight-lifting")) {
+            Activity newActivity = new Weightlifting(activityName, activityType, LocalDate.now(), 0, false, 0, 0, 0.0);
+            addActivity(newActivity);
+
+        }
+
+        else if (activityType.equals("Body-weight")) {
+            Activity newActivity = new Bodyweight(activityName, activityType, LocalDate.now(), 0, 0, 0, false);
+            addActivity(newActivity);
+        }
+        else if (activityType.equals("Distance&Altitude")) {
+            Activity newActivity = new DistanceAltitude(activityName, activityType, LocalDate.now(), 0, 0.0, 0.0, false);
+            addActivity(newActivity);
+        }
+
+        else {
+            System.out.println("Invalid activity type");
+        }
+    }
+
 }

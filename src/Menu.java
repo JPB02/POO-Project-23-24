@@ -412,14 +412,65 @@ public class Menu implements Serializable {
 
                 case 4:
                     // add custom activities
+                    System.out.println("Input activity type: ");
+                    System.out.println("\n1.Distance");
+                    System.out.println("\n2.Distance&Altitude");
+                    System.out.println("\n3.Weight-lifting");
+                    System.out.println("\n4.Body-weight");
+                    int customActivityTypeChoice = sc.nextInt();
+
+                    sc.nextLine(); // remove \n
+
+                    if(customActivityTypeChoice == 1) {
+                        String customActivityType = "Distance";
+
+                        System.out.println("Input activity name: ");
+                        String customActivityName = sc.nextLine();
+
+                        fit.addCustomActivities(customActivityName, customActivityType);
+                        fit.save();
+                    }
+                    else if (customActivityTypeChoice == 2) {
+                        String customActivityType = "Distance&Altitude";
+
+                        System.out.println("Input activity name: ");
+                        String customActivityName = sc.nextLine();
+
+                        fit.addCustomActivities(customActivityName, customActivityType);
+                        fit.save();
+                    }
+
+                    else if (customActivityTypeChoice == 3) {
+                        String customActivityType = "Weight-lifting";
+
+                        System.out.println("Input activity name: ");
+                        String customActivityName = sc.nextLine();
+
+                        fit.addCustomActivities(customActivityName, customActivityType);
+                        fit.save();
+                    }
+
+                    else if (customActivityTypeChoice == 4) {
+                        String customActivityType = "Body-weight";
+
+                        System.out.println("Input activity name: ");
+                        String customActivityName = sc.nextLine();
+
+                        fit.addCustomActivities(customActivityName, customActivityType);
+                        fit.save();
+                    }
+
+                    else {
+                        System.out.println("Invalid activity option!");
+                    }
+
+                    break;
 
                 default:
                     System.out.println("Invalid option!");
                     break;
             }
         }
-
-
 
 
     // debugging
@@ -436,7 +487,7 @@ public class Menu implements Serializable {
     }
 
     // debugging
-    public void printAllActivites() {
+    public void printAllActivities() {
         Fitness fit = new Fitness();
         fit = fit.load();
         Map<String, Activity> activityMap = fit.getActivityMap();
