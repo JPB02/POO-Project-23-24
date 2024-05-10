@@ -21,6 +21,7 @@ public class Menu implements Serializable {
         System.out.println("\n2. Login");
         System.out.println("\n3. Exit");
         System.out.println("\n4. Show All Users(debugging)");
+        System.out.println("\n5. Show All Activities(debugging)");
     }
 
     // usamos regex para ver se o email é válido
@@ -264,9 +265,9 @@ public class Menu implements Serializable {
     }
 
     public void activitiesMenu(String username) {
-        User loggedInUser = User.loadUser(username);
         Fitness fit = new Fitness();
         fit = fit.load();
+        User loggedInUser = User.loadUser(username);
 
         System.out.println("\n1.Add activity");
         System.out.println("\n2.Delete activity");
@@ -304,10 +305,9 @@ public class Menu implements Serializable {
 
                                 int steps = 1000 * (int)(distance);
                                 double pace = duration/distance;
+                                boolean isHard = fit.isHardRunning(pace);
 
-
-
-                            Activity run = new Running(id, "Distance", LocalDate.now(), duration, distance, pace, steps);
+                                Activity run = new Running(id, "Distance", LocalDate.now(), duration, distance, pace, steps, isHard);
                                 assert loggedInUser != null;
                                 loggedInUser.addActivityToUser(run);
                                 loggedInUser.saveUser();
@@ -338,8 +338,9 @@ public class Menu implements Serializable {
                                 double altitude = sc.nextDouble();
 
                                 double pace = duration/distance;
+                                boolean isHard = fit.isHardMountainBike(pace);
 
-                                Activity mountainBike = new MountainBike(id, "Distance&Altitude", LocalDate.now(), duration, distance, altitude, pace);
+                                Activity mountainBike = new MountainBike(id, "Distance&Altitude", LocalDate.now(), duration, distance, altitude, pace, isHard);
                                 assert loggedInUser != null;
                                 loggedInUser.addActivityToUser(mountainBike);
                                 loggedInUser.saveUser();
@@ -376,6 +377,17 @@ public class Menu implements Serializable {
         Map<String, User> userMap = fit.getUserMap();
         for(User user: userMap.values()) {
             System.out.println(user.toString());
+        }
+    }
+
+    // debugging
+    public void printAllActivites() {
+        Fitness fit = new Fitness();
+        fit = fit.load();
+        Map<String, Activity> activityMap = fit.getActivityMap();
+
+        for(Activity activity: activityMap.values()) {
+            System.out.println(activity.toString());
         }
     }
 

@@ -28,8 +28,8 @@ public class MountainBike extends DistanceAltitude implements Serializable{
      * @param distance Distancia percorrida
      * @param altitude Altitude ganha na atividade
      */
-    public MountainBike(String activityID, String type, LocalDate date, int duration, double distance, double altitude, double pace){
-        super(activityID, type, date, duration, distance, altitude);
+    public MountainBike(String activityID, String type, LocalDate date, int duration, double distance, double altitude, double pace, boolean isHard){
+        super(activityID, type, date, duration, distance, altitude, isHard);
         if (distance < 0 || altitude < 0) {
             throw new IllegalArgumentException("Distance and altitude must be non-negative.");
         }
@@ -56,12 +56,25 @@ public class MountainBike extends DistanceAltitude implements Serializable{
         this.pace = pace;
     }
 
+    public int calculateMETMountainBike() {
+        int MET = 8;
+        if(pace >= 6) {
+            return MET;
+        } else if (pace < 6 && pace >= 3) {
+            MET = 10;
+        }
+        else if(pace < 3) {
+            MET = 12;
+        }
+        return MET;
+    }
+
     // ----------------------------END OF ------Getter and setter methods----------------------------------------------------------
 
     @Override
     public double calories(User user) {
         long age =  ChronoUnit.YEARS.between(user.getDateOfBirth(),LocalDate.now());
-        double calories = user.caloriesFactor()*1; // FAZER FÒRMULA
+        double calories = calculateMETMountainBike() * getDuration() * user.getWeight()*user.caloriesFactor()*1;
         return calories;
     }
 

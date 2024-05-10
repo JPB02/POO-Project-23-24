@@ -30,8 +30,8 @@ public class Squat extends Activity implements Serializable {
      * @param reps Number of repetitions per set.
      * @param sets Number of sets.
      */
-    public Squat(String activityID, String type, LocalDate date, int duration,int reps, int sets) {
-        super(activityID, type, date, duration);
+    public Squat(String activityID, String type, LocalDate date, int duration,int reps, int sets, boolean isHard) {
+        super(activityID, type, date, duration, isHard);
         if (reps < 0 || sets < 0) {
             throw new IllegalArgumentException("Reps and sets must be non-negative.");
         }

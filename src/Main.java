@@ -28,6 +28,9 @@ public class Main {
                 case 4:
                     menu.printAllUsers();
                     break;
+                case 5:
+                    menu.printAllActivites();
+                    break;
                 default:
                     System.out.println("Invalid option!");
             }

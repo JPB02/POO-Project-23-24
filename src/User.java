@@ -264,7 +264,8 @@ public abstract class User implements Serializable {
                 "\nWeight: " + weight +
                 "\nAddress: " + address +
                 "\nAverage Heart Rate: " + avgHR +
-                "\nActivities List: " + activitiesList;
+                "\nActivities List: " + activitiesList +
+                "\nTotal Calories Burned: " + calories;
     }
 
     public abstract User clone();

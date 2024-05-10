@@ -183,6 +183,20 @@ public class Fitness implements Serializable {
         }
         return false;
     }
+
+    public boolean isHardRunning(double pace){
+        if(pace < 5) {
+            return true;
+        }
+        return false;
+    }
+
+    public boolean isHardMountainBike(double pace){
+        if(pace < 3) {
+            return true;
+        }
+        return false;
+    }
     /*
     public void basicActivities(){
         LocalDate date = LocalDate.now();

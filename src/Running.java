@@ -26,8 +26,8 @@ public class Running extends Distance implements Serializable{
 
      * @param distance Distancia percorrida
      */
-    public Running(String activityID, String type, LocalDate date, int duration, double distance, double pace, int steps){
-        super(activityID, type, date, duration, distance);
+    public Running(String activityID, String type, LocalDate date, int duration, double distance, double pace, int steps, boolean isHard){
+        super(activityID, type, date, duration, distance, isHard);
         this.pace = pace;
         this.steps = steps;
     }
@@ -68,12 +68,25 @@ public class Running extends Distance implements Serializable{
         return duration/distance;
     }
 
+    public int calculateMETRunning() {
+        int MET = 8;
+        if(pace >= 6) {
+            return MET;
+        } else if (pace < 6 && pace >= 5) {
+            MET = 10;
+        }
+        else if(pace < 5) {
+            MET = 12;
+        }
+        return MET;
+    }
+
     // ----------------------------END OF ------Getter and setter methods----------------------------------------------------------
 
     @Override
     public double calories(User user) {
         long age =  ChronoUnit.YEARS.between(user.getDateOfBirth(),LocalDate.now());
-        double calories = user.caloriesFactor()*1; // FAZER FÒRMULA
+        double calories = calculateMETRunning() * getDuration() * user.getWeight()*user.caloriesFactor()*1;
         return calories;
     }
 

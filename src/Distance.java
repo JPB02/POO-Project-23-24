@@ -23,8 +23,8 @@ public class Distance extends Activity implements Serializable {
      * @param duration Duracao da atividade
      * @param distance Distancia percorrida
      */
-    public Distance(String activityID, String type, LocalDate date, int duration, double distance){
-        super(activityID, type, date, duration);
+    public Distance(String activityID, String type, LocalDate date, int duration, double distance, boolean isHard){
+        super(activityID, type, date, duration, isHard);
         this.distance = distance;
     }
 

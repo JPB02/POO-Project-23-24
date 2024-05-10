@@ -31,8 +31,8 @@ public class DistanceAltitude extends Activity implements Serializable{
      * @param distance Distancia percorrida
      * @param altitude Altitude ganha na atividade
      */
-    public DistanceAltitude(String activityID, String type, LocalDate date, int duration, double distance, double altitude){
-        super(activityID, type, date, duration);
+    public DistanceAltitude(String activityID, String type, LocalDate date, int duration, double distance, double altitude, boolean isHard){
+        super(activityID, type, date, duration, isHard);
         if (distance < 0 || altitude < 0) {
             throw new IllegalArgumentException("Distance and altitude must be non-negative.");
         }
@@ -78,7 +78,6 @@ public class DistanceAltitude extends Activity implements Serializable{
 
     // ----------------------------END OF ------Getter and setter methods----------------------------------------------------------
 
-    @Override
     public double calories(User user) {
         long age =  ChronoUnit.YEARS.between(user.getDateOfBirth(),LocalDate.now());
         double calories = user.caloriesFactor()*1; // FAZER FÒRMULA

@@ -33,8 +33,8 @@ public class BenchPress extends Activity implements Serializable {
      * @param weight Peso em kg.
      * @throws IllegalArgumentException se os valores forem negativos
      */
-    public BenchPress(String activityID, String type, LocalDate date, int duration, int reps, int sets, double weight) {
-        super(activityID, type, date, duration);
+    public BenchPress(String activityID, String type, LocalDate date, int duration, int reps, int sets, double weight, boolean isHard) {
+        super(activityID, type, date, duration, isHard);
         if (reps < 0 || sets < 0 || weight < 0) {
             throw new IllegalArgumentException("Reps, sets, and weight must not be negative.");
         }

@@ -79,7 +79,7 @@ public class WorkoutPlan implements Serializable {
 
         return calories;
     }
-
+/*
     public WorkoutPlan allocateRandomActivity(Fitness fit,User user, String type, int numberActivities, LocalDate date) {
         Random rnd = new Random();
         if(user == null) {
@@ -145,7 +145,7 @@ public class WorkoutPlan implements Serializable {
         int reps = rnd.nextInt(8) + 1;
         int sets = rnd.nextInt(3) + 1;
 
-        return new BenchPress(activityID, type, date, duration, reps, sets, weight);
+        return new BenchPress(activityID, type, date, duration, reps, sets, weight, isHard);
     }
 
     public Squat allocateRandomSquat(ArrayList<Activity> activities, Random rnd, LocalDate date) {
@@ -177,7 +177,7 @@ public class WorkoutPlan implements Serializable {
         double pace = 1000*distance;
         return new MountainBike(activityID, type, date, duration, distance, altitude, pace);
     }
-
+*/
     public String toString() {
         return new String(
                 "Activities in plan: "+ this.activities.toString() + "\n"

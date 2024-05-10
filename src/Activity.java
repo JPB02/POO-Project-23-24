@@ -28,6 +28,7 @@ public abstract class Activity implements Serializable {
     private String activityType;
     private LocalDate date;
     private int duration;
+    private boolean isHard;
 
     /**
      * Gera um ID único de atividade que é incrementado a partir do último
@@ -46,6 +47,7 @@ public abstract class Activity implements Serializable {
         this.activityType = "";
         this.date = LocalDate.EPOCH;
         this.duration = 0;
+        this.isHard = false;
     }
 
     /**
@@ -54,11 +56,12 @@ public abstract class Activity implements Serializable {
      * @param date Data da atividade
      * @param duration Duração em minutos de uma atividade
      */
-    public Activity(String activityID, String activityType, LocalDate date, int duration) {
+    public Activity(String activityID, String activityType, LocalDate date, int duration, boolean isHard) {
         this.activityID = activityID;
         this.activityType = activityType;
         this.date = date;
         this.duration = duration;
+        this.isHard = isHard;
     }
 
     /**
@@ -73,10 +76,20 @@ public abstract class Activity implements Serializable {
         this.activityType = other.getActivityType();
         this.date = other.getDate();
         this.duration = other.getDuration();
+        this.isHard = other.getIsHard();
     }
 
 
     // ----------------------------Getter and setter methods----------------------------------------------------------
+
+    public boolean getIsHard() {
+        return isHard;
+    }
+
+    public void setIsHard(boolean isHard) {
+        this.isHard = isHard;
+    }
+
     public String getActivityID() {
         return activityID;
     }
@@ -126,12 +139,12 @@ public abstract class Activity implements Serializable {
 
     @Override
     public String toString() {
-        return "Atividade{" +
-                "activity ID='" + activityID + '\'' +
-                ", activity type='" + activityType + '\'' +
-                ", date=" + date +
-                ", duration" + duration +
-                '}';
+        return "Activity" +
+                "\nActivity ID='" + activityID +
+                "\nActivity Type: " + activityType +
+                "\nDate: " + date +
+                "\nDuration: " + duration +
+                "\nIs Hard: " + isHard;
     }
 
     @Override
@@ -142,7 +155,8 @@ public abstract class Activity implements Serializable {
         return this.duration == activity.getDuration()
                 && this.activityID.equals(activity.getActivityID())
                 && this.activityType.equals(activity.getActivityType())
-                && this.date.equals(activity.getDate());
+                && this.date.equals(activity.getDate())
+                && this.isHard == activity.getIsHard();
     }
 
     //Métodos que são implementados nas subclasses
