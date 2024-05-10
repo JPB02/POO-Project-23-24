@@ -79,7 +79,7 @@ public abstract class User implements Serializable {
 
     // getters & setters
     public ArrayList<Activity> getActivitiesList() {
-        return this.activitiesList;
+        return new ArrayList<>(this.activitiesList);
     }
 
     public void setListaAtividades(ArrayList<Activity> activitiesList) {
@@ -106,7 +106,7 @@ public abstract class User implements Serializable {
         this.activitiesList.add(activity);
     }
 
-    public void removeActivityByID(User user, String activityID, ArrayList<Activity> activityMap) {
+    public void removeActivityByID(User user, String activityID) {
         for (Activity activity : this.activitiesList) {
             if (activity.getActivityID().equals(activityID)) {
                 double calories = activity.calories(user);

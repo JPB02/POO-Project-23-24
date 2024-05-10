@@ -393,7 +393,7 @@ public class Menu implements Serializable {
                         System.out.println("Input activity ID: ");
                         String activityToRemove = sc.nextLine();
 
-                        loggedInUser.removeActivityByID(loggedInUser, activityToRemove, loggedUserActivityMap);
+                        loggedInUser.removeActivityByID(loggedInUser, activityToRemove);
                         loggedInUser.saveUser();
                     }
                     else {
