@@ -21,7 +21,6 @@ public abstract class Activity implements Serializable {
     // Variavel usada para incrementar o ID
     private static int lastAssignedActivityID = 0;
 
-
     private String activityID;
     private String activityType;
     private LocalDate date;
