@@ -1,5 +1,8 @@
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.IOException;
 import java.util.Map;
 
 public abstract class Activity implements Serializable {
@@ -118,6 +121,7 @@ public abstract class Activity implements Serializable {
         }
         this.duration = duration;
     }
+
 // ----------------------------END OF ------Getter and setter methods----------------------------------------------------------
 
     @Override

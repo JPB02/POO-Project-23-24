@@ -2,6 +2,7 @@ import java.io.File;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.Scanner;
 
@@ -203,6 +204,7 @@ public class Menu implements Serializable {
             newUser.setUsername(newUsername);
         }
 
+        newUser.saveUser();
         fit.save();
 
     }
@@ -236,14 +238,13 @@ public class Menu implements Serializable {
 
     public void loggedInMenu(String username) {
         System.out.println("##############-Bem-vindo " + username + "-##############");
-        Fitness fit = new Fitness();
-        fit = fit.load();
-        User loggedInUser = fit.getUserMap().get(username);
+        User loggedInUser = User.loadUser(username);  // Load the user along with its activities
 
         int option = 0;
-        while(option!=2) {
+        while(option!=3) {
             System.out.println("\n1.Details");
-            System.out.println("\n2.Logout");
+            System.out.println("\n2.Activities");
+            System.out.println("\n3.Logout");
             option = sc.nextInt();
 
             switch (option) {
@@ -251,14 +252,79 @@ public class Menu implements Serializable {
                     System.out.println(loggedInUser.toString());
 
                 case 2:
+                    activitiesMenu(username);
+                case 3:
                     break;
-
                 default:
                     System.out.println("Invalid option!");
             }
         }
 
     }
+
+    public void activitiesMenu(String username) {
+        User loggedInUser = User.loadUser(username);
+
+        System.out.println("\n1.Add activity");
+        System.out.println("\n2.Delete activity");
+        System.out.println("\n3.Show activities");
+        int option = sc.nextInt();
+
+        switch (option) {
+            case 1:
+                int typeOption = 0;
+
+                System.out.println("Input activity type:");
+                System.out.println("\n1.Distance");
+                System.out.println("\n2.Distance & Altitude");
+                System.out.println("\n3.Weight-lifting");
+                System.out.println("\n4.Body-weight");
+                typeOption = sc.nextInt();
+
+                switch (typeOption) {
+                    case 1:
+                        System.out.println("Select Distance Activity:");
+                        System.out.println("\n1.Running");
+                        int activityOption = sc.nextInt();
+
+                        switch (activityOption) {
+                            case 1:
+                                sc.nextLine();
+                                System.out.println("Input activity description ID: ");
+                                String id = sc.nextLine();
+
+                                System.out.println("Input activity duration: ");
+                                int duration = sc.nextInt();
+
+                                System.out.println("Input distance(in km): ");
+                                double distance = sc.nextDouble();
+
+                                Activity run = new Running(id, "Distance", LocalDate.now(), duration, distance);
+                                assert loggedInUser != null;
+                                loggedInUser.addActivityToUser(run);
+                                loggedInUser.saveUser();
+                                break;
+
+                            default:
+                                System.out.println("Invalid activity option!");
+                        }
+                }
+
+                case 2:
+
+                case 3:
+                    assert loggedInUser != null;
+                    ArrayList<Activity> activities = loggedInUser.getActivitiesList();
+                    System.out.println("Activities List: ");
+                    System.out.println(activities.toString());
+                    break;
+
+                default:
+                    System.out.println("Invalid option!");
+
+        }
+    }
+
 
     // debugging
     public void printAllUsers() {

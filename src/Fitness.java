@@ -15,6 +15,7 @@ public class Fitness implements Serializable {
     private Map<String, Activity> activityMap;
     private LocalDate currDate;
 
+
     /**
      * Construtor por omissao
      * Inicializa os maps e atualiza a data para a data atual.
@@ -30,9 +31,9 @@ public class Fitness implements Serializable {
      *
      * @param userMap Um map dos ID's dos objetos utilizadores
      * @param activityMap Um map dos ID's dos objetos atividades
-     * @param date Data atual
+     * @param currDate Data atual
      */
-    public Fitness(Map<String, User> userMap, Map<String, Activity> activityMap, ArrayList<WorkoutPlan> workoutPlans, LocalDate date) {
+    public Fitness(Map<String, User> userMap, Map<String, Activity> activityMap, ArrayList<WorkoutPlan> workoutPlans, LocalDate currDate) {
         this.userMap = userMap;
         this.activityMap = activityMap;
         this.currDate = currDate;
@@ -130,6 +131,16 @@ public class Fitness implements Serializable {
             fileIn.close();
             System.out.println("File loaded successfully.");
             System.out.println("Found userMap with size: " + fit.getUserMap().size());
+
+            for (User user : fit.getUserMap().values()) {
+                user.setListaAtividades(new ArrayList<>()); // Reset activitiesList
+                for (Activity activity : fit.getActivityMap().values()) {
+                    if (user.getActivitiesList().contains(activity)) {
+                        user.addActivityToUser(activity.clone()); // Add activity to user
+                    }
+                }
+            }
+
         } catch (ClassNotFoundException | IOException e) {
             System.out.println("Loading error");
             e.printStackTrace();

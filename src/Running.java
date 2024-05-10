@@ -15,7 +15,7 @@ public class Running extends Activity implements Serializable{
      */
     public Running(){
         super();
-        this.distance = 0;
+        this.distance = 0.0;
     }
 
     /**

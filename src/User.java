@@ -1,4 +1,4 @@
-import java.io.Serializable;
+import java.io.*;
 import java.util.*;
 import java.time.LocalDate;
 import java.util.stream.Collectors;
@@ -18,7 +18,7 @@ public abstract class User implements Serializable {
     private String                  username; // DONE
     private String                  userType; // DONE
     private LocalDate               dateOfBirth; // DONE
-    private int                  height; // DONE
+    private int                     height; // DONE
     private double                  weight; // DONE
     private double                  calories;
     private String                  address; //DONE
@@ -200,12 +200,37 @@ public abstract class User implements Serializable {
         this.calories += calories;
     }
 
-    public void addPlanToUser(WorkoutPlan workoutPlan){
-        this.workoutPlansList.add(workoutPlan);
+
+    public void saveUser() {
+        try {
+            FileOutputStream fileOut = new FileOutputStream(username + ".ser");
+            ObjectOutputStream out = new ObjectOutputStream(fileOut);
+            out.writeObject(this);  // Serialize user
+            out.writeObject(activitiesList);  // Serialize activities list
+            out.close();
+            fileOut.close();
+        } catch (IOException i) {
+            System.out.println("Saving user error");
+            i.printStackTrace();
+        }
     }
 
-    public void addActivityUser(Activity activity){
-        this.activitiesList.add(activity);
+    // Deserialization method to load user along with its activities
+    public static User loadUser(String username) {
+        try {
+            FileInputStream fileIn = new FileInputStream(username + ".ser");
+            ObjectInputStream in = new ObjectInputStream(fileIn);
+            User user = (User) in.readObject();  // Deserialize user
+            ArrayList<Activity> activities = (ArrayList<Activity>) in.readObject();  // Deserialize activities list
+            user.setListaAtividades(activities);  // Set activities list to loaded activities
+            in.close();
+            fileIn.close();
+            return user;
+        } catch (ClassNotFoundException | IOException e) {
+            System.out.println("Loading user error");
+            e.printStackTrace();
+            return null;
+        }
     }
 
     // equals
@@ -238,7 +263,8 @@ public abstract class User implements Serializable {
                 "\nHeight: " + height +
                 "\nWeight: " + weight +
                 "\nAddress: " + address +
-                "\nAverage Heart Rate: " + avgHR;
+                "\nAverage Heart Rate: " + avgHR +
+                "\nActivities List: " + activitiesList;
     }
 
     public abstract User clone();
