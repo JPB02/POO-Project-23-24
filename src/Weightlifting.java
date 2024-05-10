@@ -6,16 +6,19 @@ import java.util.Objects;
  * Representa a atividade de BenchPress com detalhes sobre o numero de sets
  *reps e peso levantado.
  */
-public class BenchPress extends Weightlifting implements Serializable {
+public class Weightlifting extends Activity implements Serializable {
 
-    private String inclination;
-
+    private int reps;
+    private int sets;
+    private double weight;
     /**
      * Construtor por omissao
      */
-    public BenchPress() {
+    public Weightlifting() {
         super();
-        this.inclination = "";
+        this.reps = 0;
+        this.sets = 0;
+        this.weight = 0;
     }
 
     /**
@@ -30,9 +33,11 @@ public class BenchPress extends Weightlifting implements Serializable {
      * @param weight Peso em kg.
      * @throws IllegalArgumentException se os valores forem negativos
      */
-    public BenchPress(String activityID, String type, LocalDate date, int duration, boolean isHard,  int reps, int sets, double weight, String inclination) {
-        super(activityID, type, date, duration, isHard , reps, sets, weight);
-        this.inclination = inclination;
+    public Weightlifting(String activityID, String type, LocalDate date, int duration,boolean isHard, int reps, int sets, double weight) {
+        super(activityID, type, date, duration, isHard);
+        this.reps = reps;
+        this.sets = sets;
+        this.weight = weight;
     }
 
     /**
@@ -41,17 +46,38 @@ public class BenchPress extends Weightlifting implements Serializable {
      * @param other Recebe um objeto da classe para copiar
      * @throws NullPointerException se o objeto for vazio
      */
-    public BenchPress(BenchPress other) {
+    public Weightlifting(Weightlifting other) {
         super(other);
-        this.inclination = other.getInclination();
+        if (other == null) {
+            throw new NullPointerException("Other BenchPress object cannot be null");
+        }
+        this.reps = other.getReps();
+        this.sets = other.getSets();
+        this.weight = other.getSets();
     }
     // ----------------------------Getter and setter methods----------------------------------------------------------
-    public String getInclination() {
-        return this.inclination;
+    public int getReps() {
+        return this.reps;
     }
 
-    public void setInclination(String inclination) {
-        this.inclination = inclination;
+    public void setReps(int reps) {
+        this.reps = reps;
+    }
+
+    public int getSets() {
+        return this.sets;
+    }
+
+    public void setSets(int sets) {
+        this.sets = sets;
+    }
+
+    public double getWeight() {
+        return this.weight;
+    }
+
+    public void setWeight(double weight) {
+        this.weight = weight;
     }
     // ----------------------------END OF ------Getter and setter methods----------------------------------------------------------
 
@@ -65,14 +91,16 @@ public class BenchPress extends Weightlifting implements Serializable {
 
     @Override
     public Activity clone() {
-        return new BenchPress(this);
+        return new Weightlifting(this);
     }
 
     @Override
     public String toString() {
-        return "Bench Press: " +
+        return "Weightlifting" +
                 super.toString()+
-                "\nInclination: " + this.inclination;
+                "\nSets: " + this.sets +
+                "\nReps: " + this.reps +
+                "\nWeight: " + this.weight;
     }
 
     @Override
@@ -80,8 +108,10 @@ public class BenchPress extends Weightlifting implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
-        BenchPress bench = (BenchPress) o;
-        return this.inclination.equals(bench.getInclination());
+        Weightlifting weightlifting = (Weightlifting) o;
+        return this.sets == weightlifting.getSets()
+                && this.reps == weightlifting.getReps()
+                && Double.compare(this.weight, weightlifting.getWeight()) == 0;
     }
 }
 

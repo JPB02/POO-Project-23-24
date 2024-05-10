@@ -57,6 +57,18 @@ public class Menu implements Serializable {
     }
 
     public void registerMenu() {
+        File file = new File("data.ser");
+        Fitness fit = new Fitness();
+
+
+        if (file.exists()) {
+            Fitness fileinfo = new Fitness();
+            fileinfo = fileinfo.load();
+            fit = new Fitness(fileinfo);
+        } else {
+            fit = new Fitness();
+            fit.addBasicActivities(); // inicializa o mapa de atividades
+        }
 
         String type = new String();
         boolean isValidUserType = false;
@@ -199,19 +211,6 @@ public class Menu implements Serializable {
         newUser.setAvgHR(avgHR);
 
 
-        File file = new File("data.ser");
-        Fitness fit = new Fitness();
-
-
-        if (file.exists()) {
-            Fitness fileinfo = new Fitness();
-            fileinfo = fileinfo.load();
-            fit = new Fitness(fileinfo);
-        } else {
-            fit = new Fitness();
-            //fit.basicActivities(); // inicializa o mapa de atividades
-        }
-
         while(!fit.addUser(newUser)){
             System.out.println("\nThat username is already taken!");
             System.out.println("\nPlease input a new username:");
@@ -278,115 +277,130 @@ public class Menu implements Serializable {
 
     }
 
-    public void activitiesMenu(String username) {
-        Fitness fit = new Fitness();
-        fit = fit.load();
-        User loggedInUser = User.loadUser(username);
+        public void activitiesMenu(String username) {
+            Fitness fit = new Fitness();
+            fit = fit.load();
+            User loggedInUser = User.loadUser(username);
 
-        System.out.println("\n1.Add activity");
-        System.out.println("\n2.Delete activity");
-        System.out.println("\n3.Show activities");
-        int option = sc.nextInt();
+            System.out.println("\n1.Add activity");
+            System.out.println("\n2.Delete activity");
+            System.out.println("\n3.Show activities");
+            System.out.println("\n4.Add Custom Activities");
+            int option = sc.nextInt();
 
-        switch (option) {
-            case 1:
-                int typeOption = 0;
+            switch (option) {
+                case 1:
+                    int typeOption = 0;
 
-                System.out.println("Input activity type:");
-                System.out.println("\n1.Distance");
-                System.out.println("\n2.Distance & Altitude");
-                System.out.println("\n3.Weight-lifting");
-                System.out.println("\n4.Body-weight");
-                typeOption = sc.nextInt();
+                    System.out.println("Input activity type:");
+                    System.out.println("\n1.Distance");
+                    System.out.println("\n2.Distance & Altitude");
+                    System.out.println("\n3.Weight-lifting");
+                    System.out.println("\n4.Body-weight");
+                    typeOption = sc.nextInt();
 
-                switch (typeOption) {
-                    case 1:
-                        System.out.println("Select Distance Activity:");
-                        System.out.println("\n1.Running");
-                        int activityOption = sc.nextInt();
+                    switch (typeOption) {
+                        case 1:
+                            System.out.println("Select Distance Activity:");
+                            System.out.println("\n1.Running");
+                            int activityOptionDistance = sc.nextInt();
 
-                        switch (activityOption) {
-                            case 1:
-                                sc.nextLine();
-                                System.out.println("Input activity description ID: ");
-                                String id = sc.nextLine();
+                            switch (activityOptionDistance) {
+                                case 1:
+                                    sc.nextLine();
+                                    System.out.println("Input activity description ID: ");
+                                    String id = sc.nextLine();
 
-                                System.out.println("Input activity duration: ");
-                                int duration = sc.nextInt();
+                                    System.out.println("Input activity duration: ");
+                                    int duration = sc.nextInt();
 
-                                System.out.println("Input distance(in km): ");
-                                double distance = sc.nextDouble();
+                                    System.out.println("Input distance(in km): ");
+                                    double distance = sc.nextDouble();
 
-                                int steps = 1000 * (int)(distance);
-                                double pace = duration/distance;
-                                boolean isHard = fit.isHardRunning(pace);
+                                    int steps = 1000 * (int) (distance);
+                                    double pace = duration / distance;
+                                    boolean isHard = fit.isHardRunning(pace);
 
-                                Activity run = new Running(id, "Distance", LocalDate.now(), duration, distance, pace, steps, isHard);
-                                assert loggedInUser != null;
-                                double calories = run.calories(loggedInUser);
-                                loggedInUser.setCalories(calories);
-                                loggedInUser.addActivityToUser(run);
-                                loggedInUser.saveUser();
-                                fit.addActivity(run);
-                                fit.save();
-                                break;
+                                    Activity run = new Running(id, "Distance", LocalDate.now(), duration, distance, pace, steps, isHard);
+                                    assert loggedInUser != null;
+                                    double calories = run.calories(loggedInUser);
+                                    loggedInUser.setCalories(calories);
+                                    loggedInUser.addActivityToUser(run);
+                                    loggedInUser.saveUser();
+                                    /*
+                                    fit.addActivity(run);
+                                    fit.save();
+                                     */
+                                    break;
 
-                            default:
-                                System.out.println("Invalid activity option!");
-                                break;
-                        }
+                                default:
+                                    System.out.println("Invalid activity option!");
+                                    break;
+                            }
+                            break; // End of case 1: Distance
 
-                    case 2:
-                        System.out.println("\n1.Mountain Bike");
-                        activityOption = sc.nextInt();
-                        switch (activityOption) {
-                            case 1:
-                                sc.nextLine();
-                                System.out.println("Input activity description ID: ");
-                                String id = sc.nextLine();
+                        case 2:
+                            System.out.println("\n1.Mountain Bike");
+                            int activityOptionDistanceAltitude = sc.nextInt();
+                            switch (activityOptionDistanceAltitude) {
+                                case 1:
+                                    sc.nextLine();
+                                    System.out.println("Input activity description ID: ");
+                                    String id = sc.nextLine();
 
-                                System.out.println("Input activity duration: ");
-                                int duration = sc.nextInt();
+                                    System.out.println("Input activity duration: ");
+                                    int duration = sc.nextInt();
 
-                                System.out.println("Input distance(in km): ");
-                                double distance = sc.nextDouble();
+                                    System.out.println("Input distance(in km): ");
+                                    double distance = sc.nextDouble();
 
-                                System.out.println("Input altitude(in metres): ");
-                                double altitude = sc.nextDouble();
+                                    System.out.println("Input altitude(in metres): ");
+                                    double altitude = sc.nextDouble();
 
-                                double pace = duration/distance;
-                                boolean isHard = fit.isHardMountainBike(pace);
+                                    double pace = duration / distance;
+                                    boolean isHard = fit.isHardMountainBike(pace);
 
-                                Activity mountainBike = new MountainBike(id, "Distance&Altitude", LocalDate.now(), duration, distance, altitude, pace, isHard);
-                                assert loggedInUser != null;
-                                loggedInUser.addActivityToUser(mountainBike);
-                                loggedInUser.saveUser();
-                                fit.addActivity(mountainBike);
-                                fit.save();
-                                break;
+                                    Activity mountainBike = new MountainBike(id, "Distance&Altitude", LocalDate.now(), duration, distance, altitude, pace, isHard);
+                                    assert loggedInUser != null;
+                                    loggedInUser.addActivityToUser(mountainBike);
+                                    loggedInUser.saveUser();
+                                    /*
+                                    fit.addActivity(mountainBike);
+                                    fit.save();
+                                     */
+                                    break;
 
-                            default:
-                                System.out.println("Invalid activity option!");
-                                break;
-                        }
-                    default:
-                        System.out.println("Invalid activity type!");
+                                default:
+                                    System.out.println("Invalid activity option!");
+                                    break;
+                            }
+                            break; // End of case 2: Distance & Altitude
+                    }
+                    break; // End of case 1: Add activity
 
-                }
-           case 2:// delete activity
+                case 2:
+                    // Code for delete activity
+                    break; // End of case 2: Delete activity
 
-           case 3:
-                assert loggedInUser != null;
-                ArrayList<Activity> activities = loggedInUser.getActivitiesList();
-                System.out.println("Activities List: ");
-                System.out.println(activities.toString());
-                break;
+                case 3:
+                    assert loggedInUser != null;
+                    Map<String, Activity> allActivitiesMap = fit.getActivityMap();
+                    System.out.println("Activities List: ");
+                    for (String name : allActivitiesMap.keySet()) {
+                        System.out.println(name);
+                    }
+                    break; // End of case 3: Show activities
 
-           default:
-               System.out.println("Invalid option!");
+                case 4:
+                    // add custom activities
 
+                default:
+                    System.out.println("Invalid option!");
+                    break;
+            }
         }
-    }
+
+
 
 
     // debugging
@@ -409,7 +423,7 @@ public class Menu implements Serializable {
         Map<String, Activity> activityMap = fit.getActivityMap();
 
         for(Activity activity: activityMap.values()) {
-            System.out.println(activity.toString());
+            System.out.println(activity.getActivityID());
         }
     }
 

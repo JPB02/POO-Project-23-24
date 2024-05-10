@@ -197,23 +197,22 @@ public class Fitness implements Serializable {
         }
         return false;
     }
-    /*
-    public void basicActivities(){
+
+    public void addBasicActivities(){
         LocalDate date = LocalDate.now();
 
-        Activity baseSquat = new Squat("Squat", "Body-weight", date, 0, 0, 0);
+        Activity baseSquat = new Squat("Squat", "Bodyweight", date, 0, 0, 0, false, 0);
         addActivity(baseSquat);
 
-        Activity baseRunning = new Running("Running", "Distance", date, 0, 0.0); // em km
+        Activity baseRunning = new Running("Running", "Distance", date, 0, 0.0, 0.0, 0, false); // em km
         addActivity(baseRunning);
 
-        Activity baseMountainBike = new MountainBike("MountainBike", "Distance&Altitude", date, 0, 0.0, 0.0);
+        Activity baseMountainBike = new MountainBike("MountainBike", "Distance&Altitude", date, 0, 0.0, 0.0, 0.0, false);
         addActivity(baseMountainBike);
 
-        Activity baseBenchPress = new BenchPress("BenchPress", "Weight-lifting", date, 0, 0,0, 0.0);
+        Activity baseBenchPress = new BenchPress("BenchPress", "Weight-lifting", date, 0,false, 0,0, 0.0, "");
         addActivity(baseBenchPress);
 
     }
-    */
 
 }
