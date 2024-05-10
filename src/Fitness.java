@@ -183,7 +183,7 @@ public class Fitness implements Serializable {
         }
         return false;
     }
-
+    /*
     public void basicActivities(){
         LocalDate date = LocalDate.now();
 
@@ -200,4 +200,6 @@ public class Fitness implements Serializable {
         addActivity(baseBenchPress);
 
     }
+    */
+
 }

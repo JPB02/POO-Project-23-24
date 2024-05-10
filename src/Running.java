@@ -7,29 +7,29 @@ import java.time.temporal.ChronoUnit;
 /**
  * Representa a atividade running e os seus parametros
  */
-public class Running extends Activity implements Serializable{
-    private double distance;
+public class Running extends Distance implements Serializable{
+    private double pace; // minutes por km
+    private int steps;
 
     /**
      * Construtor por omissao
      */
     public Running(){
         super();
-        this.distance = 0.0;
+        this.pace = 0.0;
+        this.steps = 0;
     }
 
     /**
      * Construtor parametrizado
      *
-     * @param activityID Identificador único da atividade
-     * @param type Tipo da atividade
-     * @param date Data em que a atividade foi realizada
-     * @param duration Duracao da atividade
+
      * @param distance Distancia percorrida
      */
-    public Running(String activityID, String type, LocalDate date, int duration, double distance){
-        super(activityID, type, date, duration);
-        this.distance = distance;
+    public Running(String activityID, String type, LocalDate date, int duration, double distance, double pace, int steps){
+        super(activityID, type, date, duration, distance);
+        this.pace = pace;
+        this.steps = steps;
     }
 
     /**
@@ -39,17 +39,35 @@ public class Running extends Activity implements Serializable{
      */
     public Running(Running other){
         super(other);
-        this.distance = other.getDistance();
+        this.pace = other.getPace();
+        this.steps = other.getSteps();
     }
     // ----------------------------Getter and setter methods----------------------------------------------------------
 
-    public double getDistance(){
-        return distance;
+    public double getPace(){
+        return pace;
     }
 
-    public void setDistance(double distance){
-        this.distance = distance;
+    public void setPace(double pace){
+        this.pace = pace;
     }
+
+    public int getSteps() {
+        return steps;
+    }
+
+    public void setSteps(int steps){
+        this.steps = steps;
+    }
+
+    public int calculateSteps(double distance){
+        return 1000 * (int)(distance);
+    }
+
+    public double calculatePace(double distance, int duration){
+        return duration/distance;
+    }
+
     // ----------------------------END OF ------Getter and setter methods----------------------------------------------------------
 
     @Override
@@ -68,7 +86,8 @@ public class Running extends Activity implements Serializable{
     public String toString() {
         return "Running: \n" +
                 super.toString()+
-                "\nDistance: " + distance;
+                "\nPace: " + pace+
+                "\nSteps: " + steps;
     }
 
     @Override

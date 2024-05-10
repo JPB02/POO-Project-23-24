@@ -126,8 +126,10 @@ public class WorkoutPlan implements Serializable {
         String type = "Distance";
         int duration = rnd.nextInt(120); // in minutes
         double distance = 1 + (rnd.nextDouble() * 41); // max == marathon(42km), min == 1km
+        double pace = 1 + (rnd.nextDouble() * 4);
+        int steps = 1000 * (int)(distance);
 
-        return new Running(activityID, type, date, duration, distance);
+        return new Running(activityID, type, date, duration, distance,pace,steps);
     }
 
     public BenchPress allocateRandomBenchPress(ArrayList<Activity> activities, Random rnd, LocalDate date) {

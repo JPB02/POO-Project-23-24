@@ -194,7 +194,7 @@ public class Menu implements Serializable {
             fit = new Fitness(fileinfo);
         } else {
             fit = new Fitness();
-            fit.basicActivities(); // inicializa o mapa de atividades
+            //fit.basicActivities(); // inicializa o mapa de atividades
         }
 
         while(!fit.addUser(newUser)){
@@ -299,7 +299,12 @@ public class Menu implements Serializable {
                                 System.out.println("Input distance(in km): ");
                                 double distance = sc.nextDouble();
 
-                                Activity run = new Running(id, "Distance", LocalDate.now(), duration, distance);
+                                int steps = 1000 * (int)(distance);
+                                double pace = duration/distance;
+
+
+
+                            Activity run = new Running(id, "Distance", LocalDate.now(), duration, distance, pace, steps);
                                 assert loggedInUser != null;
                                 loggedInUser.addActivityToUser(run);
                                 loggedInUser.saveUser();
