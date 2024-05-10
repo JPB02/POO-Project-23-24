@@ -362,6 +362,8 @@ public class Menu implements Serializable {
 
                                     Activity mountainBike = new MountainBike(id, "Distance&Altitude", LocalDate.now(), duration, distance, altitude, pace, isHard);
                                     assert loggedInUser != null;
+                                    double calories = mountainBike.calories(loggedInUser);
+                                    loggedInUser.setCalories(calories);
                                     loggedInUser.addActivityToUser(mountainBike);
                                     loggedInUser.saveUser();
                                     /*
@@ -379,7 +381,24 @@ public class Menu implements Serializable {
                     break; // End of case 1: Add activity
 
                 case 2:
+                    sc.nextLine();
                     // Code for delete activity
+                    System.out.println("Which activity do you want to remove?");
+                    if (loggedInUser != null && loggedInUser.getActivitiesList() != null) {
+                        ArrayList<Activity> loggedUserActivityMap = loggedInUser.getActivitiesList();
+                        for (Activity activity : loggedUserActivityMap) {
+                            System.out.println(activity.toString());
+                        }
+
+                        System.out.println("Input activity ID: ");
+                        String activityToRemove = sc.nextLine();
+
+                        loggedInUser.removeActivityByID(loggedInUser, activityToRemove, loggedUserActivityMap);
+                        loggedInUser.saveUser();
+                    }
+                    else {
+                        System.out.println("No such user exists, or user doesn't have any executed activities...");
+                    }
                     break; // End of case 2: Delete activity
 
                 case 3:

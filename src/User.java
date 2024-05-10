@@ -106,6 +106,17 @@ public abstract class User implements Serializable {
         this.activitiesList.add(activity);
     }
 
+    public void removeActivityByID(User user, String activityID, ArrayList<Activity> activityMap) {
+        for (Activity activity : this.activitiesList) {
+            if (activity.getActivityID().equals(activityID)) {
+                double calories = activity.calories(user);
+                user.removeCalories(calories);
+                this.activitiesList.remove(activity);
+                break;
+            }
+        }
+    }
+
     public void addWorkoutPlanToUser(WorkoutPlan workoutPlan){
         this.workoutPlansList.add(workoutPlan);
     }
@@ -198,6 +209,10 @@ public abstract class User implements Serializable {
 
     public void setCalories(double calories) {
         this.calories += calories;
+    }
+
+    public void removeCalories(double calories) {
+        this.calories -= calories;
     }
 
 
