@@ -198,10 +198,35 @@ public class Fitness implements Serializable {
         return false;
     }
 
+    public boolean isHardDistance(int duration, double distance) {
+        if(duration >= 60) { // mais de 60 minutos
+            return true;
+        }
+
+        else if(distance >= 10) { // mais de 10km
+            return true;
+        }
+        return false;
+    }
+
+    public boolean isHardDistanceAltitude(int duration, double distance, double altitude) {
+        if(duration >= 60) { // mais de 60 minutos
+            return true;
+        }
+
+        else if(distance >= 10) { // mais de 10km
+            return true;
+        }
+        else if (altitude >= 700) {
+            return true;
+        }
+        return false;
+    }
+
     public void addBasicActivities(){
         LocalDate date = LocalDate.now();
 
-        Activity baseSquat = new Squat("Squat", "Bodyweight", date, 0, 0, 0, false, 0);
+        Activity baseSquat = new Squat("Squat", "Body-weight", date, 0, 0, 0, false, 0);
         addActivity(baseSquat);
 
         Activity baseRunning = new Running("Running", "Distance", date, 0, 0.0, 0.0, 0, false); // em km
@@ -241,6 +266,62 @@ public class Fitness implements Serializable {
         else {
             System.out.println("Invalid activity type");
         }
+    }
+
+    public String newDistanceActivityFromList(int index) {
+        int i = 1;
+        for (Activity a : this.activityMap.values()) {
+            if(a.getActivityID().equals("Distance") || a.getActivityID().equals("Running") || a.getActivityType().equals("Distance")) {
+                if(i == index) {
+                    return a.getActivityID();
+                }
+                i++;
+            }
+
+        }
+        return null;
+    }
+
+    public String newDistanceAltitudeActivityFromList(int index) {
+        int i = 1;
+        for (Activity a : this.activityMap.values()) {
+            if(a.getActivityID().equals("Distance&Altitude") || a.getActivityID().equals("MountainBike") || a.getActivityType().equals("Distance&Altitude")) {
+                if(i == index) {
+                    return a.getActivityID();
+                }
+                i++;
+            }
+
+        }
+        return null;
+    }
+
+    public String newBodyweightFromList(int index) {
+        int i = 1;
+        for (Activity a : this.activityMap.values()) {
+            if(a.getActivityType().equals("Body-weight") || a.getActivityType().equals("Squat")) {
+                if(i == index) {
+                    return a.getActivityID();
+                }
+                i++;
+            }
+
+        }
+        return null;
+    }
+
+    public String newWeightliftingActivityFromList(int index) {
+        int i = 1;
+        for (Activity a : this.activityMap.values()) {
+            if(a.getActivityType().equals("Weight-lifting") || a.getActivityType().equals("BenchPress")) {
+                if(i == index) {
+                    return a.getActivityID();
+                }
+                i++;
+            }
+
+        }
+        return null;
     }
 
 }

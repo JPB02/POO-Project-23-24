@@ -263,6 +263,7 @@ public class Menu implements Serializable {
 
             switch (option) {
                 case 1:
+                    assert loggedInUser != null;
                     System.out.println(loggedInUser.toString());
                     break;
                 case 2:
@@ -290,93 +291,119 @@ public class Menu implements Serializable {
 
             switch (option) {
                 case 1:
-                    int typeOption = 0;
-
+                    int typeOption;
+                    Map<String, Activity> availableActivities = fit.getActivityMap();
                     System.out.println("Input activity type:");
                     System.out.println("\n1.Distance");
-                    System.out.println("\n2.Distance & Altitude");
+                    System.out.println("\n2.Distance&Altitude");
                     System.out.println("\n3.Weight-lifting");
                     System.out.println("\n4.Body-weight");
                     typeOption = sc.nextInt();
 
                     switch (typeOption) {
                         case 1:
+                            int interfaceIndex = 1;
                             System.out.println("Select Distance Activity:");
-                            System.out.println("\n1.Running");
+                            for (Activity activity: availableActivities.values()) {
+                                if(activity.getActivityType().equals("Distance")) {
+                                    System.out.println("\n"+interfaceIndex+"."+activity.getActivityID());
+                                    interfaceIndex++;
+                                }
+                            }
+
                             int activityOptionDistance = sc.nextInt();
 
-                            switch (activityOptionDistance) {
-                                case 1:
-                                    sc.nextLine();
-                                    System.out.println("Input activity description ID: ");
-                                    String id = sc.nextLine();
+                            sc.nextLine();
+                            System.out.println("Input activity description ID: ");
+                            String id = sc.nextLine();
 
-                                    System.out.println("Input activity duration: ");
-                                    int duration = sc.nextInt();
+                            System.out.println("Input activity duration: ");
+                            int duration = sc.nextInt();
 
-                                    System.out.println("Input distance(in km): ");
-                                    double distance = sc.nextDouble();
+                            System.out.println("Input distance(in km): ");
+                            double distance = sc.nextDouble();
 
-                                    int steps = 1000 * (int) (distance);
-                                    double pace = duration / distance;
-                                    boolean isHard = fit.isHardRunning(pace);
+                            String choiceDistance = fit.newDistanceActivityFromList(activityOptionDistance);
 
-                                    Activity run = new Running(id, "Distance", LocalDate.now(), duration, distance, pace, steps, isHard);
-                                    assert loggedInUser != null;
-                                    double calories = run.calories(loggedInUser);
-                                    loggedInUser.setCalories(calories);
-                                    loggedInUser.addActivityToUser(run);
-                                    loggedInUser.saveUser();
-                                    /*
-                                    fit.addActivity(run);
-                                    fit.save();
-                                     */
-                                    break;
+                            if (choiceDistance.equals("Running")) {
+                                int steps = 1000 * (int) (distance);
+                                double pace = duration / distance;
+                                boolean isHard = fit.isHardRunning(pace);
 
-                                default:
-                                    System.out.println("Invalid activity option!");
-                                    break;
+                                Activity newRunning = new Running(id, "Distance", LocalDate.now(), duration, distance, pace, steps, isHard);
+                                double caloriesRun = newRunning.calories(loggedInUser);
+                                loggedInUser.setCalories(caloriesRun);
+                                loggedInUser.addActivityToUser(newRunning);
+                                loggedInUser.saveUser();
+                                break;
                             }
-                            break; // End of case 1: Distance
+
+                            else {
+                                boolean isHard = fit.isHardDistance(duration, distance);
+
+                                Activity newDistance = new Distance(id, choiceDistance, LocalDate.now(), duration, distance, isHard);
+                                assert loggedInUser != null;
+                                double caloriesDist = newDistance.calories(loggedInUser);
+                                loggedInUser.setCalories(caloriesDist);
+                                loggedInUser.addActivityToUser(newDistance);
+                                loggedInUser.saveUser();
+                                break;
+                            }
 
                         case 2:
-                            System.out.println("\n1.Mountain Bike");
-                            int activityOptionDistanceAltitude = sc.nextInt();
-                            switch (activityOptionDistanceAltitude) {
-                                case 1:
-                                    sc.nextLine();
-                                    System.out.println("Input activity description ID: ");
-                                    String id = sc.nextLine();
-
-                                    System.out.println("Input activity duration: ");
-                                    int duration = sc.nextInt();
-
-                                    System.out.println("Input distance(in km): ");
-                                    double distance = sc.nextDouble();
-
-                                    System.out.println("Input altitude(in metres): ");
-                                    double altitude = sc.nextDouble();
-
-                                    double pace = duration / distance;
-                                    boolean isHard = fit.isHardMountainBike(pace);
-
-                                    Activity mountainBike = new MountainBike(id, "Distance&Altitude", LocalDate.now(), duration, distance, altitude, pace, isHard);
-                                    assert loggedInUser != null;
-                                    double calories = mountainBike.calories(loggedInUser);
-                                    loggedInUser.setCalories(calories);
-                                    loggedInUser.addActivityToUser(mountainBike);
-                                    loggedInUser.saveUser();
-                                    /*
-                                    fit.addActivity(mountainBike);
-                                    fit.save();
-                                     */
-                                    break;
-
-                                default:
-                                    System.out.println("Invalid activity option!");
-                                    break;
+                            int interfaceIndex2 = 1;
+                            System.out.println("Select Distance&Altitude Activity:");
+                            availableActivities = fit.getActivityMap();
+                            for (Activity activity: availableActivities.values()) {
+                                if(activity.getActivityType().equals("Distance&Altitude")) {
+                                    System.out.println("\n"+interfaceIndex2+"."+activity.getActivityID());
+                                    interfaceIndex2++;
+                                }
                             }
-                            break; // End of case 2: Distance & Altitude
+
+                            int activityOptionDistanceAltitude = sc.nextInt();
+
+                            sc.nextLine();
+                            System.out.println("Input activity description ID: ");
+                            String id2 = sc.nextLine();
+
+                            System.out.println("Input activity duration: ");
+                            int duration2 = sc.nextInt();
+
+                            System.out.println("Input distance(in km): ");
+                            double distance2 = sc.nextDouble();
+
+                            System.out.println("Input altitude(in metres): ");
+                            double altitude = sc.nextDouble();
+
+                            double pace2 = duration2 / distance2;
+
+                            String choiceDistanceAltitude = fit.newDistanceAltitudeActivityFromList(activityOptionDistanceAltitude);
+
+                            if (choiceDistanceAltitude.equals("MountainBike")) {
+                                boolean isHard = fit.isHardMountainBike(pace2);
+
+                                Activity newMountainBike = new MountainBike(id2, "Distance&Altitude", LocalDate.now(), duration2, distance2, altitude, pace2, isHard);
+                                assert loggedInUser != null;
+                                double caloriesMountainBike = newMountainBike.calories(loggedInUser);
+                                loggedInUser.setCalories(caloriesMountainBike);
+                                loggedInUser.addActivityToUser(newMountainBike);
+                                loggedInUser.saveUser();
+                                break;
+                            }
+
+                            else {
+                                boolean isHard = fit.isHardDistanceAltitude(duration2, distance2, altitude);
+
+                                Activity newDistanceAltitude = new DistanceAltitude(choiceDistanceAltitude, "Distance&Altitude", LocalDate.now(), duration2, distance2, pace2, isHard);
+                                assert loggedInUser != null;
+                                double caloriesDistAlt = newDistanceAltitude.calories(loggedInUser);
+                                loggedInUser.setCalories(caloriesDistAlt);
+                                loggedInUser.addActivityToUser(newDistanceAltitude);
+                                loggedInUser.saveUser();
+                                break;
+                            }
+
                     }
                     break; // End of case 1: Add activity
 

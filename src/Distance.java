@@ -46,13 +46,27 @@ public class Distance extends Activity implements Serializable {
     public void setDistance(double distance){
         this.distance = distance;
     }
+
+    public int calculateMETDistance() {
+        int MET = 8;
+        if(this.distance >= 0 && this.distance<=2 ) {
+            return MET;
+        } else if (this.distance >2 && this.distance<=5) {
+            MET = 10;
+        }
+        else if(this.distance>5) {
+            MET = 12;
+        }
+        return MET;
+    }
+
     // ----------------------------END OF ------Getter and setter methods----------------------------------------------------------
 
     @Override
     public double calories(User user) {
         long age =  ChronoUnit.YEARS.between(user.getDateOfBirth(),LocalDate.now());
-        double calories = user.caloriesFactor()*1; // FAZER FÒRMULA
-        return calories;
+        double calories = calculateMETDistance() * getDuration() * user.getWeight()*user.caloriesFactor()*1;
+        return calories/70;
     }
 
     @Override

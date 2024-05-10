@@ -75,13 +75,25 @@ public class DistanceAltitude extends Activity implements Serializable{
         this.altitude = altitude;
     }
 
+    public int calculateMETDistanceAltitude() {
+        int MET = 8;
+        if((this.altitude >=0 && this.altitude<=100) || (this.distance >= 0 && this.distance<=2 )) {
+            return MET;
+        } else if ((this.altitude >100 && this.altitude<=500) || (this.distance >2 && this.distance<=5)) {
+            MET = 10;
+        }
+        else if(this.altitude>500 || this.distance>5) {
+            MET = 12;
+        }
+        return MET;
+    }
 
     // ----------------------------END OF ------Getter and setter methods----------------------------------------------------------
 
     public double calories(User user) {
         long age =  ChronoUnit.YEARS.between(user.getDateOfBirth(),LocalDate.now());
-        double calories = user.caloriesFactor()*1; // FAZER FÒRMULA
-        return calories;
+        double calories = calculateMETDistanceAltitude() * getDuration() * user.getWeight()*user.caloriesFactor()*1;
+        return calories/70;
     }
 
     @Override

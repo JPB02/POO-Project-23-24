@@ -58,12 +58,12 @@ public class MountainBike extends DistanceAltitude implements Serializable{
 
     public int calculateMETMountainBike() {
         int MET = 8;
-        if(pace >= 6) {
+        if(this.pace >= 6) {
             return MET;
-        } else if (pace < 6 && pace >= 3) {
+        } else if (this.pace < 6 && this.pace >= 3) {
             MET = 10;
         }
-        else if(pace < 3) {
+        else if(this.pace < 3) {
             MET = 12;
         }
         return MET;
