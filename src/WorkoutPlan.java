@@ -174,7 +174,8 @@ public class WorkoutPlan implements Serializable {
         int duration = rnd.nextInt(100) + 20;   // max 120min , min 20min
         double distance = 5 + (rnd.nextDouble() * 37); // max == marathon(42km), min == 5km
         double altitude = 50 + (rnd.nextDouble() * 500); // max == 550metres, min == 50metres
-        return new MountainBike(activityID, type, date, duration, distance, altitude);
+        double pace = 1000*distance;
+        return new MountainBike(activityID, type, date, duration, distance, altitude, pace);
     }
 
     public String toString() {

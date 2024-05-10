@@ -96,9 +96,8 @@ public class Running extends Distance implements Serializable{
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
         Running running = (Running) o;
-        return Double.compare(running.getDistance(), getDistance()) == 0;
+        return Double.compare(running.getPace(), getPace()) == 0
+                && running.getSteps() == getSteps();
     }
-
-
 }
 

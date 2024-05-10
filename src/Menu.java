@@ -313,6 +313,37 @@ public class Menu implements Serializable {
                             default:
                                 System.out.println("Invalid activity option!");
                         }
+
+                    case 2:
+                        System.out.println("\n1.Mountain Bike");
+                        activityOption = sc.nextInt();
+                        switch (activityOption) {
+                            case 1:
+                                sc.nextLine();
+                                System.out.println("Input activity description ID: ");
+                                String id = sc.nextLine();
+
+                                System.out.println("Input activity duration: ");
+                                int duration = sc.nextInt();
+
+                                System.out.println("Input distance(in km): ");
+                                double distance = sc.nextDouble();
+
+                                System.out.println("Input altitude(in metres): ");
+                                double altitude = sc.nextDouble();
+
+                                double pace = duration/distance;
+
+                                Activity mountainBike = new MountainBike(id, "Distance&Altitude", LocalDate.now(), duration, distance, altitude, pace);
+                                assert loggedInUser != null;
+                                loggedInUser.addActivityToUser(mountainBike);
+                                loggedInUser.saveUser();
+                                break;
+
+                            default:
+                                System.out.println("Invalid activity option!");
+                        }
+
                 }
 
                 case 2:

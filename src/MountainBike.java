@@ -15,7 +15,7 @@ public class MountainBike extends DistanceAltitude implements Serializable{
      */
     public MountainBike(){
         super();
-
+        this.pace = 0.0;
     }
 
     /**
@@ -28,12 +28,12 @@ public class MountainBike extends DistanceAltitude implements Serializable{
      * @param distance Distancia percorrida
      * @param altitude Altitude ganha na atividade
      */
-    public MountainBike(String activityID, String type, LocalDate date, int duration, double distance, double altitude){
+    public MountainBike(String activityID, String type, LocalDate date, int duration, double distance, double altitude, double pace){
         super(activityID, type, date, duration, distance, altitude);
         if (distance < 0 || altitude < 0) {
             throw new IllegalArgumentException("Distance and altitude must be non-negative.");
         }
-
+        this.pace = pace;
     }
 
     /**
@@ -43,34 +43,18 @@ public class MountainBike extends DistanceAltitude implements Serializable{
      */
     public MountainBike(MountainBike other){
         super(other);
-        this.distance = other.getDistance();
-        this.altitude = other.getAltitude();
+        this.pace = other.getPace();
     }
 
     // ----------------------------Getter and setter methods----------------------------------------------------------
 
-    public double getDistance(){
-        if (distance < 0) {
-            throw new IllegalArgumentException("Distance cannot be negative.");
-        }
-        return distance;
+    public double getPace() {
+        return pace;
     }
 
-    public void setDistance(double distance){
-        this.distance = distance;
+    public void setPace(double pace) {
+        this.pace = pace;
     }
-
-    public double getAltitude(){
-        if (altitude < 0) {
-            throw new IllegalArgumentException("Altitude cannot be negative.");
-        }
-        return altitude;
-    }
-
-    public void setAltitude(double altitude){
-        this.altitude = altitude;
-    }
-
 
     // ----------------------------END OF ------Getter and setter methods----------------------------------------------------------
 
@@ -88,11 +72,9 @@ public class MountainBike extends DistanceAltitude implements Serializable{
 
     @Override
     public String toString() {
-        return "MountainBike{" +
+        return "MountainBike" +
                 super.toString()+
-                "distance=" + distance +
-                ", altitude=" + altitude +
-                '}';
+                "\nPace: " + pace;
     }
 
     @Override
@@ -101,10 +83,8 @@ public class MountainBike extends DistanceAltitude implements Serializable{
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
         MountainBike mountainBike = (MountainBike) o;
-        return Double.compare(mountainBike.getDistance(), getDistance()) == 0
-                && Double.compare(mountainBike.getAltitude(), getAltitude()) == 0;
+        return Double.compare(mountainBike.getPace(), getPace()) == 0;
     }
-
 
 }
 
