@@ -7,15 +7,18 @@ import java.util.Objects;
 /**
  * Representa a atividade mountain bike e os seus parametros
  */
-public class MountainBike extends DistanceAltitude implements Serializable{
-        private double pace;
+public class DistanceAltitude extends Activity implements Serializable{
+    private double distance;
+    private double altitude;
+
 
     /**
      * Construtor por omissao
      */
-    public MountainBike(){
+    public DistanceAltitude(){
         super();
-
+        this.distance = 0;
+        this.altitude = 0;
     }
 
     /**
@@ -28,12 +31,13 @@ public class MountainBike extends DistanceAltitude implements Serializable{
      * @param distance Distancia percorrida
      * @param altitude Altitude ganha na atividade
      */
-    public MountainBike(String activityID, String type, LocalDate date, int duration, double distance, double altitude){
-        super(activityID, type, date, duration, distance, altitude);
+    public DistanceAltitude(String activityID, String type, LocalDate date, int duration, double distance, double altitude){
+        super(activityID, type, date, duration);
         if (distance < 0 || altitude < 0) {
             throw new IllegalArgumentException("Distance and altitude must be non-negative.");
         }
-
+        this.distance = distance;
+        this.altitude = altitude;
     }
 
     /**
@@ -41,7 +45,7 @@ public class MountainBike extends DistanceAltitude implements Serializable{
      *
      * @param other Recebe uma objeto da classe
      */
-    public MountainBike(MountainBike other){
+    public DistanceAltitude(DistanceAltitude other){
         super(other);
         this.distance = other.getDistance();
         this.altitude = other.getAltitude();
@@ -83,16 +87,15 @@ public class MountainBike extends DistanceAltitude implements Serializable{
 
     @Override
     public Activity clone() {
-        return new MountainBike(this);
+        return new DistanceAltitude(this);
     }
 
     @Override
     public String toString() {
-        return "MountainBike{" +
+        return "Distance & Altitude" +
                 super.toString()+
-                "distance=" + distance +
-                ", altitude=" + altitude +
-                '}';
+                "\nDistance: " + distance +
+                "\nAltitude: " + altitude;
     }
 
     @Override
@@ -100,9 +103,9 @@ public class MountainBike extends DistanceAltitude implements Serializable{
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
-        MountainBike mountainBike = (MountainBike) o;
-        return Double.compare(mountainBike.getDistance(), getDistance()) == 0
-                && Double.compare(mountainBike.getAltitude(), getAltitude()) == 0;
+        DistanceAltitude distanceAltitude = (DistanceAltitude) o;
+        return Double.compare(distanceAltitude.getDistance(), getDistance()) == 0
+                && Double.compare(distanceAltitude.getAltitude(), getAltitude()) == 0;
     }
 
 
