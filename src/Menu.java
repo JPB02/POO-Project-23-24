@@ -162,14 +162,28 @@ public class Menu implements Serializable {
 
         int avgHR = 0;
         boolean isValidAvgHR = false;
-        while(!isValidAvgHR) {
-            System.out.println("Input your average heart rate: ");
-            avgHR = sc.nextInt();
 
-            if(validAvgHR(avgHR)) {
-                isValidAvgHR = true;
+        while (!isValidAvgHR) {
+            try {
+                System.out.println("Input your average heart rate: ");
+                avgHR = sc.nextInt();
+
+                if (validAvgHR(avgHR)) {
+                    isValidAvgHR = true;
+                } else {
+                    throw new IllegalArgumentException("Invalid average heart rate. Must be between 40 and 220.");
+                }
+            } catch (IllegalArgumentException e) {
+                System.out.println("Error: " + e.getMessage());
+                // Clear the scanner buffer
+                sc.nextLine();
+            } catch (java.util.InputMismatchException e) {
+                System.out.println("Error: Please enter a valid number.");
+                // Clear the scanner buffer
+                sc.nextLine();
             }
         }
+
 
         // já temos todos os dados para criar o utilizador novo
         assert newUser != null;
@@ -309,6 +323,8 @@ public class Menu implements Serializable {
 
                                 Activity run = new Running(id, "Distance", LocalDate.now(), duration, distance, pace, steps, isHard);
                                 assert loggedInUser != null;
+                                double calories = run.calories(loggedInUser);
+                                loggedInUser.setCalories(calories);
                                 loggedInUser.addActivityToUser(run);
                                 loggedInUser.saveUser();
                                 fit.addActivity(run);
@@ -317,6 +333,7 @@ public class Menu implements Serializable {
 
                             default:
                                 System.out.println("Invalid activity option!");
+                                break;
                         }
 
                     case 2:
@@ -350,21 +367,23 @@ public class Menu implements Serializable {
 
                             default:
                                 System.out.println("Invalid activity option!");
+                                break;
                         }
+                    default:
+                        System.out.println("Invalid activity type!");
 
                 }
+           case 2:// delete activity
 
-                case 2:
+           case 3:
+                assert loggedInUser != null;
+                ArrayList<Activity> activities = loggedInUser.getActivitiesList();
+                System.out.println("Activities List: ");
+                System.out.println(activities.toString());
+                break;
 
-                case 3:
-                    assert loggedInUser != null;
-                    ArrayList<Activity> activities = loggedInUser.getActivitiesList();
-                    System.out.println("Activities List: ");
-                    System.out.println(activities.toString());
-                    break;
-
-                default:
-                    System.out.println("Invalid option!");
+           default:
+               System.out.println("Invalid option!");
 
         }
     }
@@ -374,9 +393,12 @@ public class Menu implements Serializable {
     public void printAllUsers() {
         Fitness fit = new Fitness();
         fit = fit.load();
+
         Map<String, User> userMap = fit.getUserMap();
         for(User user: userMap.values()) {
-            System.out.println(user.toString());
+            User loggedInUser = User.loadUser(user.getUsername());
+            assert loggedInUser != null;
+            System.out.println(loggedInUser.toString());
         }
     }
 

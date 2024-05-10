@@ -70,7 +70,7 @@ public class Fitness implements Serializable {
     // ----------------------------Getter and setter methods----------------------------------------------------------
 
     public Map<String, User> getUserMap() {
-        return userMap.entrySet().stream().collect(Collectors.toMap(k->k.getKey(), v-> v.getValue().clone()));
+        return this.userMap.entrySet().stream().collect(Collectors.toMap(k->k.getKey(), v-> v.getValue().clone()));
     }
 
     public void setUserMap(Map<String, User> userMap) {
@@ -78,7 +78,7 @@ public class Fitness implements Serializable {
     }
 
     public Map<String, Activity> getActivityMap() {
-        return activityMap.entrySet().stream().collect(Collectors.toMap(k->k.getKey(), v-> v.getValue().clone()));
+        return this.activityMap.entrySet().stream().collect(Collectors.toMap(k->k.getKey(), v-> v.getValue().clone()));
     }
 
     public void setActivityMap(Map<String,Activity> activityMap) {
@@ -86,7 +86,7 @@ public class Fitness implements Serializable {
     }
 
     public LocalDate getCurrDate() {
-        return currDate;
+        return this.currDate;
     }
 
     public ArrayList<Activity> getActivityByType(String activityType){

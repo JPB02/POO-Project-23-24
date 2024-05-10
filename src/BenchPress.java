@@ -60,7 +60,7 @@ public class BenchPress extends Activity implements Serializable {
     }
     // ----------------------------Getter and setter methods----------------------------------------------------------
     public int getReps() {
-        return reps;
+        return this.reps;
     }
 
     public void setReps(int reps) {
@@ -68,7 +68,7 @@ public class BenchPress extends Activity implements Serializable {
     }
 
     public int getSets() {
-        return sets;
+        return this.sets;
     }
 
     public void setSets(int sets) {
@@ -76,7 +76,7 @@ public class BenchPress extends Activity implements Serializable {
     }
 
     public double getWeight() {
-        return weight;
+        return this.weight;
     }
 
     public void setWeight(double weight) {
@@ -99,12 +99,11 @@ public class BenchPress extends Activity implements Serializable {
 
     @Override
     public String toString() {
-        return "Bench Press{" +
+        return "Bench Press" +
                 super.toString()+
-                ", sets=" + sets +
-                ", reps=" + reps +
-                ", weight=" + weight +
-                '}';
+                "\nSets: " + this.sets +
+                "\nReps: " + this.reps +
+                "\nWeight: " + this.weight;
     }
 
     @Override

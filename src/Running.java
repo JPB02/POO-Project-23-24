@@ -45,7 +45,7 @@ public class Running extends Distance implements Serializable{
     // ----------------------------Getter and setter methods----------------------------------------------------------
 
     public double getPace(){
-        return pace;
+        return this.pace;
     }
 
     public void setPace(double pace){
@@ -53,7 +53,7 @@ public class Running extends Distance implements Serializable{
     }
 
     public int getSteps() {
-        return steps;
+        return this.steps;
     }
 
     public void setSteps(int steps){
@@ -87,7 +87,7 @@ public class Running extends Distance implements Serializable{
     public double calories(User user) {
         long age =  ChronoUnit.YEARS.between(user.getDateOfBirth(),LocalDate.now());
         double calories = calculateMETRunning() * getDuration() * user.getWeight()*user.caloriesFactor()*1;
-        return calories;
+        return calories/70;
     }
 
     @Override
@@ -99,8 +99,8 @@ public class Running extends Distance implements Serializable{
     public String toString() {
         return "Running: \n" +
                 super.toString()+
-                "\nPace: " + pace+
-                "\nSteps: " + steps;
+                "\nPace: " + this.pace+
+                "\nSteps: " + this.steps;
     }
 
     @Override
@@ -109,8 +109,8 @@ public class Running extends Distance implements Serializable{
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
         Running running = (Running) o;
-        return Double.compare(running.getPace(), getPace()) == 0
-                && running.getSteps() == getSteps();
+        return Double.compare(running.getPace(), this.getPace()) == 0
+                && running.getSteps() == this.getSteps();
     }
 }
 

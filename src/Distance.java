@@ -40,7 +40,7 @@ public class Distance extends Activity implements Serializable {
     // ----------------------------Getter and setter methods----------------------------------------------------------
 
     public double getDistance(){
-        return distance;
+        return this.distance;
     }
 
     public void setDistance(double distance){
@@ -64,7 +64,7 @@ public class Distance extends Activity implements Serializable {
     public String toString() {
         return "Distance: \n" +
                 super.toString()+
-                "\nDistance: " + distance;
+                "\nDistance: " + this.distance;
     }
 
     @Override

@@ -49,7 +49,7 @@ public class MountainBike extends DistanceAltitude implements Serializable{
     // ----------------------------Getter and setter methods----------------------------------------------------------
 
     public double getPace() {
-        return pace;
+        return this.pace;
     }
 
     public void setPace(double pace) {
@@ -75,7 +75,7 @@ public class MountainBike extends DistanceAltitude implements Serializable{
     public double calories(User user) {
         long age =  ChronoUnit.YEARS.between(user.getDateOfBirth(),LocalDate.now());
         double calories = calculateMETMountainBike() * getDuration() * user.getWeight()*user.caloriesFactor()*1;
-        return calories;
+        return calories/70;
     }
 
     @Override
@@ -87,7 +87,7 @@ public class MountainBike extends DistanceAltitude implements Serializable{
     public String toString() {
         return "MountainBike" +
                 super.toString()+
-                "\nPace: " + pace;
+                "\nPace: " + this.pace;
     }
 
     @Override

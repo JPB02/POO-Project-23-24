@@ -6,15 +6,18 @@ import java.util.Objects;
 /**
  * Represents a squat exercise activity with specific attributes like reps and sets.
  */
-public class Squat extends Bodyweight implements Serializable {
+public class Bodyweight extends Activity implements Serializable {
 
-    private int RPE; // rate of perceived exertion
+    private int reps;
+    private int sets;
+
     /**
      * Default constructor that initializes the squat activity with default values.
      */
-    public Squat() {
+    public Bodyweight() {
         super();
-        this.RPE = 0; // 1 to 10
+        this.reps = 0;
+        this.sets = 0;
     }
 
     /**
@@ -27,12 +30,13 @@ public class Squat extends Bodyweight implements Serializable {
      * @param reps Number of repetitions per set.
      * @param sets Number of sets.
      */
-    public Squat(String activityID, String type, LocalDate date, int duration,int reps, int sets, boolean isHard, int RPE) {
-        super(activityID, type, date, duration, reps, sets, isHard);
+    public Bodyweight(String activityID, String type, LocalDate date, int duration,int reps, int sets, boolean isHard) {
+        super(activityID, type, date, duration, isHard);
         if (reps < 0 || sets < 0) {
             throw new IllegalArgumentException("Reps and sets must be non-negative.");
         }
-        this.RPE = RPE;
+        this.reps = reps;
+        this.sets = sets;
     }
 
     /**
@@ -40,19 +44,34 @@ public class Squat extends Bodyweight implements Serializable {
      *
      * @param other The other Squat instance to copy.
      */
-    public Squat(Squat other) {
+    public Bodyweight(Bodyweight other) {
         super(other);
-        this.RPE = other.getRPE();
+        this.reps = other.getReps();
+        this.sets = other.getSets();
     }
 
     // ----------------------------Getter and setter methods----------------------------------------------------------
 
-    public int getRPE() {
-        return this.RPE;
+    public int getReps() {
+        return reps;
     }
 
-    public void setRPE(int RPE) {
-        this.RPE = RPE;
+    public void setReps(int reps) {
+        if (reps < 0) {
+            throw new IllegalArgumentException("Reps cannot be negative.");
+        }
+        this.reps = reps;
+    }
+
+    public int getSets() {
+        return sets;
+    }
+
+    public void setSets(int sets) {
+        if (sets < 0) {
+            throw new IllegalArgumentException("Sets cannot be negative.");
+        }
+        this.sets = sets;
     }
 
     // ----------------------------END OF ------Getter and setter methods----------------------------------------------------------
@@ -66,14 +85,15 @@ public class Squat extends Bodyweight implements Serializable {
 
     @Override
     public Activity clone() {
-        return new Squat(this);
+        return new Bodyweight(this);
     }
 
     @Override
     public String toString() {
         return "Squat: \n" +
                 super.toString()+
-                "\nRPE: " + this.RPE;
+                "\nSets: " + this.sets +
+                "\nReps: " + this.reps;
     }
 
     @Override
@@ -81,8 +101,9 @@ public class Squat extends Bodyweight implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
-        Squat squat = (Squat) o;
-        return this.RPE == squat.getRPE();
+        Bodyweight bodyweight = (Bodyweight) o;
+        return this.sets == bodyweight.getSets()
+                && this.reps == bodyweight.getReps();
     }
 }
 

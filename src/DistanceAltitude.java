@@ -54,10 +54,10 @@ public class DistanceAltitude extends Activity implements Serializable{
     // ----------------------------Getter and setter methods----------------------------------------------------------
 
     public double getDistance(){
-        if (distance < 0) {
+        if (this.distance < 0) {
             throw new IllegalArgumentException("Distance cannot be negative.");
         }
-        return distance;
+        return this.distance;
     }
 
     public void setDistance(double distance){
@@ -65,10 +65,10 @@ public class DistanceAltitude extends Activity implements Serializable{
     }
 
     public double getAltitude(){
-        if (altitude < 0) {
+        if (this.altitude < 0) {
             throw new IllegalArgumentException("Altitude cannot be negative.");
         }
-        return altitude;
+        return this.altitude;
     }
 
     public void setAltitude(double altitude){
@@ -93,8 +93,8 @@ public class DistanceAltitude extends Activity implements Serializable{
     public String toString() {
         return "Distance & Altitude" +
                 super.toString()+
-                "\nDistance: " + distance +
-                "\nAltitude: " + altitude;
+                "\nDistance: " + this.distance +
+                "\nAltitude: " + this.altitude;
     }
 
     @Override

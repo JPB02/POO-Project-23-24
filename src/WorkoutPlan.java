@@ -30,7 +30,7 @@ public class WorkoutPlan implements Serializable {
     }
 
     public LocalDate getDate() {
-        return date;
+        return this.date;
     }
 
     public void setDate(LocalDate date) {
@@ -46,7 +46,7 @@ public class WorkoutPlan implements Serializable {
     }
 
     public int getIterations() {
-        return iterations;
+        return this.iterations;
     }
 
     public void setIterations(int iterations) {
@@ -54,7 +54,7 @@ public class WorkoutPlan implements Serializable {
     }
 
     public double getTotalCalories() {
-        return totalCalories;
+        return this.totalCalories;
     }
 
     public void setTotalCalories(double totalCalories) {

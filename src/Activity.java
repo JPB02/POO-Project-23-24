@@ -83,7 +83,7 @@ public abstract class Activity implements Serializable {
     // ----------------------------Getter and setter methods----------------------------------------------------------
 
     public boolean getIsHard() {
-        return isHard;
+        return this.isHard;
     }
 
     public void setIsHard(boolean isHard) {
@@ -91,7 +91,7 @@ public abstract class Activity implements Serializable {
     }
 
     public String getActivityID() {
-        return activityID;
+        return this.activityID;
     }
 
     public void setActivityID(String activityID) {
@@ -103,7 +103,7 @@ public abstract class Activity implements Serializable {
 
 
     public String getActivityType() {
-        return activityType;
+        return this.activityType;
     }
 
     public void setActivityType(String activityType) {
@@ -114,7 +114,7 @@ public abstract class Activity implements Serializable {
     }
 
     public LocalDate getDate() {
-        return date;
+        return this.date;
     }
 
     public void setDate(LocalDate date) {
@@ -125,7 +125,7 @@ public abstract class Activity implements Serializable {
     }
 
     public int getDuration() {
-        return duration;
+        return this.duration;
     }
 
     public void setDuration(int duration) {
@@ -140,11 +140,11 @@ public abstract class Activity implements Serializable {
     @Override
     public String toString() {
         return "Activity" +
-                "\nActivity ID='" + activityID +
-                "\nActivity Type: " + activityType +
-                "\nDate: " + date +
-                "\nDuration: " + duration +
-                "\nIs Hard: " + isHard;
+                "\nActivity ID='" + this.activityID +
+                "\nActivity Type: " + this.activityType +
+                "\nDate: " + this.date +
+                "\nDuration: " + this.duration +
+                "\nIs Hard: " + this.isHard;
     }
 
     @Override

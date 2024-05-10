@@ -115,7 +115,7 @@ public abstract class User implements Serializable {
     }
 
     public String getName(){
-        return name;
+        return this.name;
     }
 
     public void setUserType(String userType){
@@ -123,11 +123,11 @@ public abstract class User implements Serializable {
     }
 
     public String getUserType(){
-        return userType;
+        return this.userType;
     }
 
     public LocalDate getDateOfBirth() {
-        return dateOfBirth;
+        return this.dateOfBirth;
     }
 
     public void setDateOfBirth(LocalDate dateOfBirth) {
@@ -139,7 +139,7 @@ public abstract class User implements Serializable {
     }
 
     public int getHeight() {
-        return height;
+        return this.height;
     }
 
     private boolean validWeight(double weight) {
@@ -157,7 +157,7 @@ public abstract class User implements Serializable {
     }
 
     public double getWeight() {
-        return weight;
+        return this.weight;
     }
 
     public void setAddress(String address) {
@@ -165,7 +165,7 @@ public abstract class User implements Serializable {
     }
 
     public String getAddress() {
-        return address;
+        return this.address;
     }
 
     public void setEmail(String email) {
@@ -173,7 +173,7 @@ public abstract class User implements Serializable {
     }
 
     public String getEmail() {
-        return email;
+        return this.email;
     }
 
     public void setPassword(String password) {
@@ -181,7 +181,7 @@ public abstract class User implements Serializable {
     }
 
     public String getPassword() {
-        return password;
+        return this.password;
     }
 
     public void setAvgHR(int avgHR) {
@@ -189,7 +189,7 @@ public abstract class User implements Serializable {
     }
 
     public int getAvgHR() {
-        return avgHR;
+        return this.avgHR;
     }
 
     public double getCalories() {
@@ -249,23 +249,23 @@ public abstract class User implements Serializable {
                 &&  this.email.equals(that.getEmail())
                 &&  this.password.equals(that.getPassword())
                 &&  this.avgHR == that.getAvgHR()
-                && this.activitiesList.equals(that.getActivitiesList());
+                &&  this.activitiesList.equals(that.getActivitiesList());
     }
 
     @Override
     public String toString() {
         return  "\nAccount Information:" +
                 "\n--------------------" +
-                "\nName: " + name +
-                "\nEmail: " + email +
-                "\nType: " + userType +
-                "\nDate of Birth: " + dateOfBirth +
-                "\nHeight: " + height +
-                "\nWeight: " + weight +
-                "\nAddress: " + address +
-                "\nAverage Heart Rate: " + avgHR +
-                "\nActivities List: " + activitiesList +
-                "\nTotal Calories Burned: " + calories;
+                "\nName: " + this.name +
+                "\nEmail: " + this.email +
+                "\nType: " + this.userType +
+                "\nDate of Birth: " + this.dateOfBirth +
+                "\nHeight: " + this.height +
+                "\nWeight: " + this.weight +
+                "\nAddress: " + this.address +
+                "\nAverage Heart Rate: " + this.avgHR +
+                "\nActivities List: " + this.activitiesList +
+                "\nTotal Calories Burned: " + this.calories;
     }
 
     public abstract User clone();
