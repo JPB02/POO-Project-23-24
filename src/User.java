@@ -1,4 +1,5 @@
 import java.io.*;
+import java.text.DecimalFormat;
 import java.util.*;
 import java.time.LocalDate;
 import java.util.stream.Collectors;
@@ -267,8 +268,13 @@ public abstract class User implements Serializable {
                 &&  this.activitiesList.equals(that.getActivitiesList());
     }
 
+    // Creating DecimalFormat object with two decimal place pattern
+    DecimalFormat df = new DecimalFormat("#.##");
+
     @Override
     public String toString() {
+        String formattedCalories = df.format(this.calories);
+        String formattedWeight = df.format(this.weight);
         return  "\nAccount Information:" +
                 "\n--------------------" +
                 "\nName: " + this.name +
@@ -276,11 +282,11 @@ public abstract class User implements Serializable {
                 "\nType: " + this.userType +
                 "\nDate of Birth: " + this.dateOfBirth +
                 "\nHeight: " + this.height +
-                "\nWeight: " + this.weight +
+                "\nWeight: " + formattedWeight +
                 "\nAddress: " + this.address +
                 "\nAverage Heart Rate: " + this.avgHR +
                 "\nActivities List: " + this.activitiesList +
-                "\nTotal Calories Burned: " + this.calories;
+                "\nTotal Calories Burned: " + formattedCalories;
     }
 
     public abstract User clone();

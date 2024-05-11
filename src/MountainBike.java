@@ -1,5 +1,6 @@
 import java.io.Serializable;
 
+import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.Objects;
@@ -83,11 +84,15 @@ public class MountainBike extends DistanceAltitude implements Serializable{
         return new MountainBike(this);
     }
 
+    // Creating DecimalFormat object with two decimal place pattern
+    DecimalFormat df = new DecimalFormat("#.##");
+
     @Override
     public String toString() {
+        String formattedPace = df.format(this.pace);
         return "MountainBike" +
                 super.toString()+
-                "\nPace: " + this.pace;
+                "\nPace: " + formattedPace;
     }
 
     @Override

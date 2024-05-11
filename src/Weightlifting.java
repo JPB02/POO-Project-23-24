@@ -1,4 +1,5 @@
 import java.io.Serializable;
+import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.Objects;
@@ -94,13 +95,17 @@ public class Weightlifting extends Activity implements Serializable {
         return new Weightlifting(this);
     }
 
+    // Creating DecimalFormat object with two decimal place pattern
+    DecimalFormat df = new DecimalFormat("#.##");
+
     @Override
     public String toString() {
+        String formattedWeight = df.format(this.weight);
         return "Weightlifting" +
                 super.toString()+
                 "\nSets: " + this.sets +
                 "\nReps: " + this.reps +
-                "\nWeight: " + this.weight;
+                "\nWeight: " + formattedWeight;
     }
 
     @Override

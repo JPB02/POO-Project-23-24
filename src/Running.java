@@ -1,5 +1,6 @@
 import java.io.Serializable;
 
+import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 
@@ -95,11 +96,15 @@ public class Running extends Distance implements Serializable{
         return new Running(this);
     }
 
+    // Creating DecimalFormat object with two decimal place pattern
+    DecimalFormat df = new DecimalFormat("#.##");
+
     @Override
     public String toString() {
+        String formattedPace = df.format(this.pace);
         return "Running: \n" +
                 super.toString()+
-                "\nPace: " + this.pace+
+                "\nPace: " + formattedPace+
                 "\nSteps: " + this.steps;
     }
 

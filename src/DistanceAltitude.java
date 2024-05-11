@@ -1,5 +1,6 @@
 import java.io.Serializable;
 
+import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.Objects;
@@ -101,12 +102,17 @@ public class DistanceAltitude extends Activity implements Serializable{
         return new DistanceAltitude(this);
     }
 
+    // Creating DecimalFormat object with two decimal place pattern
+    DecimalFormat df = new DecimalFormat("#.##");
+
     @Override
     public String toString() {
+        String formattedDistance = df.format(this.distance);
+        String formattedAltitude = df.format(this.altitude);
         return "Distance & Altitude" +
                 super.toString()+
-                "\nDistance: " + this.distance +
-                "\nAltitude: " + this.altitude;
+                "\nDistance: " + formattedDistance +
+                "\nAltitude: " + formattedAltitude;
     }
 
     @Override
