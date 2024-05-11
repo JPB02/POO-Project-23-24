@@ -292,10 +292,10 @@ public class Menu implements Serializable {
 
     public void loggedInMenu(String username) {
         System.out.println("##############-Bem-vindo " + username + "-##############");
-        User loggedInUser = User.loadUser(username);  // Load the user along with its activities
 
         int option = 0;
         while(option!=4) {
+            User loggedInUser = User.loadUser(username);  // Load the user along with its activities
             System.out.println("\n1.Details");
             System.out.println("\n2.Activities");
             System.out.println("\n3.Workout Plans");
@@ -305,7 +305,7 @@ public class Menu implements Serializable {
             switch (option) {
                 case 1:
                     assert loggedInUser != null;
-                    System.out.println(loggedInUser.toString());
+                    System.out.println(loggedInUser);
                     break;
                 case 2:
                     activitiesMenu(username);
