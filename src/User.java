@@ -43,7 +43,6 @@ public abstract class User implements Serializable {
         this.avgHR = 0;
         this.activitiesList = new ArrayList<>();
         this.workoutPlansList = new ArrayList<>();
-
     }
 
     public User(String name, String username, String userType, LocalDate dateOfBirth ,int height, double weight, double calories, String address, String email, String password, int avgHR, ArrayList<Activity> activitiesList, ArrayList<WorkoutPlan> workoutPlansList) {
@@ -216,6 +215,9 @@ public abstract class User implements Serializable {
         this.calories -= calories;
     }
 
+    public void removeWorkoutPlan(WorkoutPlan workoutPlan) {
+        this.workoutPlansList.remove(workoutPlan);
+    }
 
     public void saveUser() {
         try {
@@ -265,7 +267,8 @@ public abstract class User implements Serializable {
                 &&  this.email.equals(that.getEmail())
                 &&  this.password.equals(that.getPassword())
                 &&  this.avgHR == that.getAvgHR()
-                &&  this.activitiesList.equals(that.getActivitiesList());
+                &&  this.activitiesList.equals(that.getActivitiesList())
+                &&  this.workoutPlansList.equals(that.getWorkoutPlansList());
     }
 
     // Creating DecimalFormat object with two decimal place pattern
@@ -286,6 +289,7 @@ public abstract class User implements Serializable {
                 "\nAddress: " + this.address +
                 "\nAverage Heart Rate: " + this.avgHR +
                 "\nActivities List: " + this.activitiesList +
+                "\nWorkout Plan List: " + this.workoutPlansList +
                 "\nTotal Calories Burned: " + formattedCalories;
     }
 

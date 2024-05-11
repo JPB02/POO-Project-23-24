@@ -3,10 +3,7 @@ import java.io.Serializable;
 import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
-import java.util.ArrayList;
-import java.util.InputMismatchException;
-import java.util.Map;
-import java.util.Scanner;
+import java.util.*;
 
 public class Menu implements Serializable {
 
@@ -98,7 +95,7 @@ public class Menu implements Serializable {
             System.out.println("Error: Please enter a valid option number.");
             sc.nextLine(); // Clear the invalid input
         }
-        fit.daySkip(daysToSkip);
+        fit.daySkip(daysToSkip, fit);
         fit.save();
     }
 
@@ -249,7 +246,7 @@ public class Menu implements Serializable {
             } catch (IllegalArgumentException e) {
                 System.out.println("Error: " + e.getMessage());
                 sc.nextLine();
-            } catch (java.util.InputMismatchException e) {
+            } catch (InputMismatchException e) {
                 System.out.println("Error: Please enter a valid number.");
                 sc.nextLine();
             }
@@ -339,89 +336,412 @@ public class Menu implements Serializable {
         }
     }
 
+    public boolean validWorkoutDate(LocalDate date) {
+        return LocalDate.now().isBefore(date);
+    }
+
     public void workoutPlansMenu(User user) {
         Fitness fit = new Fitness();
         fit = fit.load();
         user = User.loadUser(user.getUsername());  // Load the user along with its activities
 
+        System.out.println("\n1.Add Workout Plan");
+        System.out.println("\n2.Check Workout Plans");
+        int menuOption = 0;
+        try {
+            menuOption = getIntInput();
+        } catch (InputMismatchException e) {
+            System.out.println("Error: Please enter a valid option number.");
+            sc.nextLine(); // Clear the invalid input
+        }
 
-        int option = 0;
-        while(option!=3) {
-            System.out.println("\n1.Current Workout Plan");
-            System.out.println("\n2.Generate Random Workout Plan");
-            System.out.println("\n3.Go back");
-            option = getIntInput();
+        switch(menuOption) {
+            case 1:
+                WorkoutPlan workoutPlan = new WorkoutPlan();
+                System.out.println("Input plan date:");
 
-            switch (option) {
-                case 1:
-                    assert user != null;
-                    System.out.println(user.getWorkoutPlansList().toString());
-                    break;
-                case 2:
-                    WorkoutPlan newWorkoutPlan = new WorkoutPlan();
-                    System.out.println("Input how many days per week:");
-
-                    int numActivities = 0;
+                LocalDate dateInput = null;
+                boolean isValidWorkoutDate = false;
+                while(!isValidWorkoutDate) {
+                    String date = sc.nextLine();
                     try {
-                        numActivities = getIntInput();
+                        dateInput = LocalDate.parse(date);
+                        if (validWorkoutDate(dateInput)) {
+                            isValidWorkoutDate = true;
+                        }
+                    } catch (DateTimeParseException e) {
+                        System.out.println("Invalid date format. Please enter the date in the format YYYY-MM-DD.");
+                    }
+                }
+                workoutPlan.setDate(dateInput);
+
+                System.out.println("Input iterations:");
+
+                int iterations = 0;
+                try {
+                    iterations = getIntInput();
+                } catch (InputMismatchException e) {
+                    System.out.println("Error: Please enter a valid option number.");
+                    sc.nextLine(); // Clear the invalid input
+                }
+
+                workoutPlan.setIterations(iterations);
+
+                int typeOption = 0;
+                while(typeOption!=5) {
+                    System.out.println("Input activity type:");
+                    System.out.println("\n1.Distance");
+                    System.out.println("\n2.Distance&Altitude");
+                    System.out.println("\n3.Weight-lifting");
+                    System.out.println("\n4.Body-weight");
+                    System.out.println("\n5.Finish adding plan");
+
+                    try {
+                        typeOption = getIntInput();
                     } catch (InputMismatchException e) {
                         System.out.println("Error: Please enter a valid option number.");
                         sc.nextLine(); // Clear the invalid input
                     }
-
-                    if(numActivities <= 7 && numActivities >0) {
-                        int curActivityNum;
-                        for (curActivityNum = 1; curActivityNum <= numActivities; curActivityNum++) {
-
-                            System.out.println("Choose activity type for day " + curActivityNum + ": ");
-                            System.out.println("\n1.Distance");
-                            System.out.println("\n2.DistanceAltitude");
-                            System.out.println("\n3.Body-weight");
-                            System.out.println("\n4.Weight-lifting");
-                            int chooseOption = 0;
+                    switch (typeOption) {
+                        // DISTANCE ACTIVITY
+                        case 1:
+                            ArrayList<Activity> distanceActivities = fit.getActivityByType("Distance");
+                            int activityOptionDistance;
+                            int interfaceIndex = 1;
+                            System.out.println("Select Distance Activity:");
+                            for (Activity activity : distanceActivities) {
+                                System.out.println("\n" + interfaceIndex + "." + activity.getActivityID());
+                                interfaceIndex++;
+                            }
                             try {
-                                chooseOption = getIntInput();
+                                activityOptionDistance = getIntInput();
                             } catch (InputMismatchException e) {
                                 System.out.println("Error: Please enter a valid option number.");
                                 sc.nextLine(); // Clear the invalid input
-                            }
-
-                            if (chooseOption == 1) {
-                                String activityType = "Distance";
-                                newWorkoutPlan.allocateRandomActivity(fit, user, activityType, 1,newWorkoutPlan.getDate());
-                            }
-
-                            else if(chooseOption == 2) {
-                                String activityType = "DistanceAltitude";
-                                newWorkoutPlan.allocateRandomActivity(fit, user, activityType, 1,newWorkoutPlan.getDate());
-                            }
-
-                            else if (chooseOption == 3) {
-                                String activityType = "Body-weight";
-                                newWorkoutPlan.allocateRandomActivity(fit, user, activityType, 1,newWorkoutPlan.getDate());
-                            }
-
-                            else if (chooseOption == 4) {
-                                String activityType = "Weight-lifting";
-                                newWorkoutPlan.allocateRandomActivity(fit, user, activityType, 1,newWorkoutPlan.getDate());
-                            }
-
-                            else {
-                                System.out.println("Invalid option!");
                                 break;
                             }
-                        }
+
+                            sc.nextLine();
+                            String id;
+                            System.out.println("Input activity description ID: ");
+                            try {
+                                id = sc.nextLine();
+                            } catch (InputMismatchException e) {
+                                System.out.println("Error: Please enter a valid id.");
+                                sc.nextLine(); // Clear the invalid input
+                                break;
+                            }
+
+                            int duration;
+                            System.out.println("Input activity duration: ");
+                            try {
+                                duration = getIntInput();
+                            } catch (InputMismatchException e) {
+                                System.out.println("Error: Please enter a valid distance integer.");
+                                sc.nextLine(); // Clear the invalid input
+                                break;
+                            }
+
+                            double distance;
+                            System.out.println("Input distance(in km): ");
+                            try {
+                                distance = getDoubleInput();
+                            } catch (InputMismatchException e) {
+                                System.out.println("Error: Please enter a valid distance integer.");
+                                sc.nextLine(); // Clear the invalid input
+                                break;
+                            }
+
+                            String choiceDistance = fit.newDistanceActivityFromList(activityOptionDistance);
+
+                            if (choiceDistance.equals("Running")) {
+                                int steps = 1000 * (int) (distance);
+                                double pace = duration / distance;
+                                boolean isHard = fit.isHardRunning(pace);
+
+                                Activity newRunning = new Running(id, "Distance", null, duration, distance, pace, steps, isHard);
+                                workoutPlan.addActivity(newRunning);
+                                break;
+                            } else {
+                                boolean isHard = fit.isHardDistance(duration, distance);
+
+                                Activity newDistance = new Distance(id, choiceDistance, null, duration, distance, isHard);
+                                workoutPlan.addActivity(newDistance);
+                                break;
+                            }
+
+                        case 2:
+                            ArrayList<Activity> availableDistanceAltitude = fit.getActivityByType("Distance&Altitude");
+                            int interfaceIndex2 = 1;
+                            System.out.println("Select Distance&Altitude Activity:");
+                            for (Activity activity : availableDistanceAltitude) {
+                                System.out.println("\n" + interfaceIndex2 + "." + activity.getActivityID());
+                                interfaceIndex2++;
+                            }
+
+                            int activityOptionDistanceAltitude;
+                            try {
+                                activityOptionDistanceAltitude = getIntInput();
+                            } catch (InputMismatchException e) {
+                                System.out.println("Error: Please enter a valid option number.");
+                                sc.nextLine(); // Clear the invalid input
+                                break;
+                            }
+
+                            sc.nextLine();
+                            System.out.println("Input activity description ID: ");
+                            String id2 = sc.nextLine();
+
+                            System.out.println("Input activity duration: ");
+                            int duration2;
+                            try {
+                                duration2 = getIntInput();
+                            } catch (InputMismatchException e) {
+                                System.out.println("Error: Please enter a valid option number.");
+                                sc.nextLine(); // Clear the invalid input
+                                break;
+                            }
+
+                            System.out.println("Input distance(in km): ");
+                            double distance2;
+                            try {
+                                distance2 = getIntInput();
+                            } catch (InputMismatchException e) {
+                                System.out.println("Error: Please enter a valid option number.");
+                                sc.nextLine(); // Clear the invalid input
+                                break;
+                            }
+
+                            System.out.println("Input altitude(in metres): ");
+                            double altitude;
+                            try {
+                                altitude = getDoubleInput();
+                            } catch (InputMismatchException e) {
+                                System.out.println("Error: Please enter a valid option number.");
+                                sc.nextLine(); // Clear the invalid input
+                                break;
+                            }
+
+                            double pace2 = duration2 / distance2;
+
+                            String choiceDistanceAltitude = fit.newDistanceAltitudeActivityFromList(activityOptionDistanceAltitude);
+
+                            if (choiceDistanceAltitude.equals("MountainBike")) {
+                                boolean isHard = fit.isHardMountainBike(pace2);
+
+                                Activity newMountainBike = new MountainBike(id2, "Distance&Altitude", null, duration2, distance2, altitude, pace2, isHard);
+                                workoutPlan.addActivity(newMountainBike);
+                                break;
+                            } else {
+                                boolean isHard = fit.isHardDistanceAltitude(duration2, distance2, altitude);
+                                Activity newDistanceAltitude = new DistanceAltitude(choiceDistanceAltitude, "Distance&Altitude", LocalDate.now(), duration2, distance2, altitude, isHard);
+                                workoutPlan.addActivity(newDistanceAltitude);
+                                break;
+                            }
+                            // EXECUTE WEIGHTLIFTING ACTIVITY
+                        case 3:
+                            ArrayList<Activity> availableWeightliftingActivities = fit.getActivityByType("Weight-lifting");
+                            int interfaceIndex3 = 1;
+                            System.out.println("Select Weight-lifting Activity:");
+                            for (Activity activity : availableWeightliftingActivities) {
+                                System.out.println("\n" + interfaceIndex3 + "." + activity.getActivityID());
+                                interfaceIndex3++;
+                            }
+
+                            int activityOptionWeightlifting;
+                            try {
+                                activityOptionWeightlifting = getIntInput();
+                            } catch (InputMismatchException e) {
+                                System.out.println("Error: Please enter a valid option number.");
+                                sc.nextLine(); // Clear the invalid input
+                                break;
+                            }
+
+                            sc.nextLine();
+                            System.out.println("Input activity description ID: ");
+                            String id3 = sc.nextLine();
+
+                            System.out.println("Input activity duration: ");
+                            int duration3;
+                            try {
+                                duration3 = getIntInput();
+                            } catch (InputMismatchException e) {
+                                System.out.println("Error: Please enter a valid option number.");
+                                sc.nextLine(); // Clear the invalid input
+                                break;
+                            }
+
+                            System.out.println("Input reps: ");
+                            int reps1;
+                            try {
+                                reps1 = getIntInput();
+                            } catch (InputMismatchException e) {
+                                System.out.println("Error: Please enter a valid option number.");
+                                sc.nextLine(); // Clear the invalid input
+                                break;
+                            }
+
+                            System.out.println("Input sets: ");
+                            int sets1;
+                            try {
+                                sets1 = getIntInput();
+                            } catch (InputMismatchException e) {
+                                System.out.println("Error: Please enter a valid option number.");
+                                sc.nextLine(); // Clear the invalid input
+                                break;
+                            }
+
+                            System.out.println("Input weight: ");
+                            double weight1;
+                            try {
+                                weight1 = getDoubleInput();
+                            } catch (InputMismatchException e) {
+                                System.out.println("Error: Please enter a valid option number.");
+                                sc.nextLine(); // Clear the invalid input
+                                break;
+                            }
+
+                            String choiceWeightlifting = fit.newWeightliftingActivityFromList(activityOptionWeightlifting);
+
+                            if (choiceWeightlifting.equals("BenchPress")) {
+
+                                boolean incline;
+                                System.out.println("Choose inclination: ");
+                                System.out.println("\n1.Inclined");
+                                System.out.println("\n2.Not inclined");
+                                int inclination;
+                                try {
+                                    inclination = getIntInput();
+                                } catch (InputMismatchException e) {
+                                    System.out.println("Error: Please enter a valid option number.");
+                                    sc.nextLine(); // Clear the invalid input
+                                    break;
+                                }
+
+                                if (inclination == 1) {
+                                    incline = true;
+                                } else if (inclination == 2) {
+                                    incline = false;
+
+                                } else {
+                                    System.out.println("Incorrect inclination...");
+                                    break;
+                                }
+
+                                boolean isHard = fit.isHardBenchPress(reps1, sets1, weight1, incline, user);
+
+                                Activity newBenchPress = new BenchPress(id3, "Weight-lifting", null, duration3, isHard, reps1, sets1, weight1, incline);
+                                workoutPlan.addActivity(newBenchPress);
+                                break;
+                            } else {
+                                boolean isHard = fit.isHardWeightlifting(reps1, sets1, weight1, user);
+                                Activity newWeightlifting = new Weightlifting(choiceWeightlifting, "Weight-lifting", null, duration3, isHard, reps1, sets1, weight1);
+                                workoutPlan.addActivity(newWeightlifting);
+                                break;
+                            }
+                            // EXECUTE BODYWEIGHT
+                        case 4:
+                            ArrayList<Activity> availableBodyWeightActivities = fit.getActivityByType("Body-weight");
+                            int interfaceIndex4 = 1;
+                            System.out.println("Select Body-weight Activity:");
+                            for (Activity activity : availableBodyWeightActivities) {
+                                System.out.println("\n" + interfaceIndex4 + "." + activity.getActivityID());
+                                interfaceIndex4++;
+                            }
+
+                            int activityOptionBodyweight;
+                            try {
+                                activityOptionBodyweight = getIntInput();
+                            } catch (InputMismatchException e) {
+                                System.out.println("Error: Please enter a valid option number.");
+                                sc.nextLine(); // Clear the invalid input
+                                break;
+                            }
+
+                            String choiceBodyweight = fit.newBodyweightFromList(activityOptionBodyweight);
+
+                            sc.nextLine();
+                            System.out.println("Input activity description ID: ");
+                            String id4 = sc.nextLine();
+
+                            System.out.println("Input activity duration: ");
+                            int duration4;
+                            try {
+                                duration4 = getIntInput();
+                            } catch (InputMismatchException e) {
+                                System.out.println("Error: Please enter a valid option number.");
+                                sc.nextLine(); // Clear the invalid input
+                                break;
+                            }
+
+                            System.out.println("Input reps: ");
+                            int reps2;
+                            try {
+                                reps2 = getIntInput();
+                            } catch (InputMismatchException e) {
+                                System.out.println("Error: Please enter a valid option number.");
+                                sc.nextLine(); // Clear the invalid input
+                                break;
+                            }
+
+                            System.out.println("Input sets: ");
+                            int sets2;
+                            try {
+                                sets2 = getIntInput();
+                            } catch (InputMismatchException e) {
+                                System.out.println("Error: Please enter a valid option number.");
+                                sc.nextLine(); // Clear the invalid input
+                                break;
+                            }
+
+                            if (choiceBodyweight.equals("Squat")) {
+
+                                System.out.println("Input RPE(1-10): ");
+                                int rpe;
+                                try {
+                                    rpe = getIntInput();
+                                } catch (InputMismatchException e) {
+                                    System.out.println("Error: Please enter a valid option number.");
+                                    sc.nextLine(); // Clear the invalid input
+                                    break;
+                                }
+
+                                if (rpe > 10 || rpe < 1) {
+                                    System.out.println("Invalid RPE...");
+                                    break;
+                                }
+
+                                boolean isHard = fit.isHardSquats(reps2, sets2, rpe);
+
+                                Activity newSquat = new Squat(id4, "Body-weight", null, duration4, reps2, sets2, isHard, rpe);
+                                workoutPlan.addActivity(newSquat);
+                                break;
+                            } else {
+                                boolean isHard = fit.isHardBodyWeight(reps2, sets2);
+
+                                Activity newBodyweight = new Bodyweight(choiceBodyweight, "Body-weight", null, duration4, reps2, sets2, isHard);
+                                workoutPlan.addActivity(newBodyweight);
+                                break;
+                            }
+
+
+                        default:
+                            System.out.println("Invalid option!");
+                            break;
+
 
                     }
-                    assert user != null;
-                    user.addWorkoutPlanToUser(newWorkoutPlan);
-                    user.saveUser();
-                    break;
-                case 3:
-                    break;
-                default:
-                    System.out.println("Invalid option!");
-            }
+
+
+                }
+                assert user != null;
+                user.addWorkoutPlanToUser(workoutPlan);
+                user.saveUser();
+                //Show Workout plans list
+            case 2:
+                assert user != null;
+                System.out.println(user.getWorkoutPlansList());
+                break;
         }
     }
 
@@ -460,6 +780,7 @@ public class Menu implements Serializable {
                     }
 
                     switch (typeOption) {
+
                         // EXECUTE DISTANCE ACTIVITY
                         case 1:
                             int activityOptionDistance;
@@ -536,6 +857,7 @@ public class Menu implements Serializable {
                                 loggedInUser.saveUser();
                                 break;
                             }
+
                         // EXECUTE DISTANCE&ALTITUDE ACTIVITY
                         case 2:
                             int interfaceIndex2 = 1;

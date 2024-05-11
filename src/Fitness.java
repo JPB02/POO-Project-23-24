@@ -2,6 +2,7 @@ import java.io.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -157,16 +158,40 @@ public class Fitness implements Serializable {
         return false;
     }
 
-    public void daySkip(int daysToSkip) {
+    public void daySkip(int daysToSkip, Fitness fit) {
+        fit = fit.load();
         this.currDate = this.currDate.plusDays(daysToSkip);
+        Map<String, User> userMap = fit.getUserMap();
+
+        for (User user : userMap.values()) {
+            user = User.loadUser(user.getUsername());
+            ArrayList<WorkoutPlan> workoutPlanList = user.getWorkoutPlansList();
+
+            for (WorkoutPlan workoutPlan : workoutPlanList) {
+                System.out.println("Workout Plan Date: " + workoutPlan.getDate());
+                List<Activity> activities = workoutPlan.getActivities();
+
+                if(workoutPlan.getDate().equals(this.currDate)|| workoutPlan.getDate().isBefore(this.currDate)) {
+                    for (Activity activity : activities) {
+
+                        activity.setDate(this.currDate);
+                        double calories = activity.calories(user);
+                        user.setCalories(calories);
+                        user.addActivityToUser(activity);
+
+                    }
+                    user.removeWorkoutPlan(workoutPlan);
+                }
+            }
+            user.saveUser();
+        }
+
     }
 
 
+
     public boolean existsUsername(String username) {
-        if(userMap.containsKey(username)) {
-            return true;
-        }
-        return false;
+        return userMap.containsKey(username);
     }
 
     public boolean addUser(User user) {

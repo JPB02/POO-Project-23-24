@@ -90,7 +90,6 @@ public class WorkoutPlan implements Serializable {
 
         ArrayList<Activity> activities= fit.getActivityByType(type);
         int randomIndex = rnd.nextInt(activities.size());
-
         WorkoutPlan workoutPlan = new WorkoutPlan();
 
         for(int i = 0; i < numberActivities; i++){
@@ -98,24 +97,20 @@ public class WorkoutPlan implements Serializable {
                 case "Distance":
                     String distanceActivityID = activities.get(randomIndex).getActivityID();
                     allocateRandomDistance(fit,rnd, date, distanceActivityID);
-                    this.iterations++;
                     break;
 
                 case "DistanceAltitude":
                     String distanceAltitudeActivityID = activities.get(randomIndex).getActivityID();
                     allocateRandomDistanceAltitude(fit,rnd, date, distanceAltitudeActivityID);
-                    this.iterations++;
                     break;
 
                 case "Weight-lifting":
                     String weightliftingActivityID = activities.get(randomIndex).getActivityID();
                     allocateRandomWeightlifting(fit,rnd, date, weightliftingActivityID, user);
-                    this.iterations++;
                     break;
                 case "Body-weight":
                     String activityID = activities.get(randomIndex).getActivityID();
                     allocateRandomBodyweight(fit,rnd, date, activityID);
-                    this.iterations++;
                     break;
 
                 default:
@@ -129,7 +124,7 @@ public class WorkoutPlan implements Serializable {
     }
 
     public void allocateRandomDistance(Fitness fit, Random rnd, LocalDate date, String ID) {
-        String activityID = ID + (this.iterations+1);
+        String activityID = ID + rnd.nextInt(100);
         String type = "Distance";
 
         int duration = 1+ rnd.nextInt(179);
@@ -152,7 +147,7 @@ public class WorkoutPlan implements Serializable {
 
 
     public void allocateRandomDistanceAltitude(Fitness fit, Random rnd, LocalDate date, String ID) {
-        String activityID = ID + (this.iterations+1);
+        String activityID = ID + rnd.nextInt(100);
         String type = "DistanceAltitude";
 
         int duration = 1+ rnd.nextInt(179);
@@ -175,7 +170,7 @@ public class WorkoutPlan implements Serializable {
     }
 
     public void allocateRandomBodyweight(Fitness fit, Random rnd, LocalDate date, String ID) {
-        String activityID = ID + (this.iterations+1);
+        String activityID = ID + rnd.nextInt(100);
         String type = "Body-weight";
 
         int duration = 1+ rnd.nextInt(179);
@@ -197,7 +192,7 @@ public class WorkoutPlan implements Serializable {
     }
 
     public void allocateRandomWeightlifting(Fitness fit, Random rnd, LocalDate date, String ID, User user) {
-        String activityID = ID + (this.iterations+1);
+        String activityID = ID + rnd.nextInt(100);
         String type = "Weight-lifting";
 
         int duration = 1+ rnd.nextInt(179);
@@ -223,7 +218,7 @@ public class WorkoutPlan implements Serializable {
         return new String(
                 "Activities in plan: "+ this.activities.toString() + "\n"
                         + "\n-Date: "+ this.date
-                        + "\n-Days: " + this.iterations);
+                        + "\n-Iterations: " + this.iterations);
     }
 
 
