@@ -71,12 +71,12 @@ public class Running extends Distance implements Serializable{
 
     public int calculateMETRunning() {
         int MET = 8;
-        if(pace >= 6) {
+        if(this.pace >= 6) {
             return MET;
-        } else if (pace < 6 && pace >= 5) {
+        } else if (this.pace < 6 && this.pace >= 5) {
             MET = 10;
         }
-        else if(pace < 5) {
+        else if(this.pace < 5) {
             MET = 12;
         }
         return MET;

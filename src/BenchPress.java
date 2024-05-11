@@ -8,14 +8,14 @@ import java.util.Objects;
  */
 public class BenchPress extends Weightlifting implements Serializable {
 
-    private String inclination;
+    private boolean incline;
 
     /**
      * Construtor por omissao
      */
     public BenchPress() {
         super();
-        this.inclination = "";
+        this.incline = false;
     }
 
     /**
@@ -30,9 +30,9 @@ public class BenchPress extends Weightlifting implements Serializable {
      * @param weight Peso em kg.
      * @throws IllegalArgumentException se os valores forem negativos
      */
-    public BenchPress(String activityID, String type, LocalDate date, int duration, boolean isHard,  int reps, int sets, double weight, String inclination) {
+    public BenchPress(String activityID, String type, LocalDate date, int duration, boolean isHard,  int reps, int sets, double weight, boolean incline) {
         super(activityID, type, date, duration, isHard , reps, sets, weight);
-        this.inclination = inclination;
+        this.incline = incline;
     }
 
     /**
@@ -43,24 +43,32 @@ public class BenchPress extends Weightlifting implements Serializable {
      */
     public BenchPress(BenchPress other) {
         super(other);
-        this.inclination = other.getInclination();
+        this.incline = other.getIncline();
     }
     // ----------------------------Getter and setter methods----------------------------------------------------------
-    public String getInclination() {
-        return this.inclination;
+    public boolean getIncline() {
+        return this.incline;
     }
 
-    public void setInclination(String inclination) {
-        this.inclination = inclination;
+    public void setInclination(boolean inclination) {
+        this.incline = inclination;
     }
     // ----------------------------END OF ------Getter and setter methods----------------------------------------------------------
+
+    public int calculateMETBenchPress() {
+        int MET = 2;
+        if(this.incline) {
+            MET = 4;
+        }
+        return MET;
+    }
 
     // Calcula as calorias gastas na atividade
     @Override
     public double calories(User user) {
         long age =  ChronoUnit.YEARS.between(user.getDateOfBirth(),LocalDate.now());
-        double calories = user.caloriesFactor()*1; // FAZER FÒRMULA
-        return calories;
+        double calories = calculateMETBenchPress() * getDuration() * user.getWeight()*user.caloriesFactor()*1;
+        return calories/70;
     }
 
     @Override
@@ -72,7 +80,7 @@ public class BenchPress extends Weightlifting implements Serializable {
     public String toString() {
         return "Bench Press: " +
                 super.toString()+
-                "\nInclination: " + this.inclination;
+                "\nIncline: " + this.incline;
     }
 
     @Override
@@ -81,7 +89,7 @@ public class BenchPress extends Weightlifting implements Serializable {
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
         BenchPress bench = (BenchPress) o;
-        return this.inclination.equals(bench.getInclination());
+        return this.incline == bench.getIncline();
     }
 }
 

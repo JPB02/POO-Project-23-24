@@ -82,12 +82,26 @@ public class Weightlifting extends Activity implements Serializable {
     }
     // ----------------------------END OF ------Getter and setter methods----------------------------------------------------------
 
+    public int calculateMETWeightlifting() {
+        int MET = 2;
+        if(this.reps > 0 && this.sets > 0 && this.weight > 0 && this.reps < 6 && this.sets < 2) {
+            return MET;
+        } else if (this.reps >= 6 && this.sets >= 2 && this.reps < 12 && this.sets < 4) {
+            MET = 4;
+        }
+        else if(this.reps >=12 && this.sets >=4){
+            MET = 6;
+        }
+        return MET;
+    }
+
+
     // Calcula as calorias gastas na atividade
     @Override
     public double calories(User user) {
         long age =  ChronoUnit.YEARS.between(user.getDateOfBirth(),LocalDate.now());
-        double calories = user.caloriesFactor()*1; // FAZER FÒRMULA
-        return calories;
+        double calories = calculateMETWeightlifting() * getDuration() * user.getWeight()*user.caloriesFactor()*1;
+        return calories/70;
     }
 
     @Override

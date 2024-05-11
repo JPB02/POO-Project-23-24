@@ -223,6 +223,62 @@ public class Fitness implements Serializable {
         return false;
     }
 
+    public boolean isHardWeightlifting(double reps, double sets, double weight, User user) {
+        if(sets>=4) {
+            return true;
+        }
+
+        else if(reps>=20) {
+            return true;
+        }
+
+        else if (weight>=user.getWeight()) {
+            return true;
+        }
+        return false;
+    }
+
+    public boolean isHardBenchPress(double reps, double sets, double weight, boolean incline,User user) {
+        if(sets>=4) {
+            return true;
+        }
+
+        else if(reps>=20) {
+            return true;
+        }
+
+        else if (weight>=user.getWeight()) {
+            return true;
+        } else if (incline) {
+            return true;
+        }
+        return false;
+    }
+
+    public boolean isHardBodyWeight(double reps, double sets) {
+        if(sets>=3) {
+            return true;
+        }
+        else if(reps>=50) {
+            return true;
+        }
+        return false;
+    }
+
+    public boolean isHardSquats(double reps, double sets, int rpe) {
+        if(sets>=6) {
+            return true;
+        }
+        else if(reps>=100) {
+            return true;
+        }
+
+        else if(rpe>7) {
+            return true;
+        }
+        return false;
+    }
+
     public void addBasicActivities(){
         LocalDate date = LocalDate.now();
 
@@ -235,7 +291,7 @@ public class Fitness implements Serializable {
         Activity baseMountainBike = new MountainBike("MountainBike", "Distance&Altitude", date, 0, 0.0, 0.0, 0.0, false);
         addActivity(baseMountainBike);
 
-        Activity baseBenchPress = new BenchPress("BenchPress", "Weight-lifting", date, 0,false, 0,0, 0.0, "");
+        Activity baseBenchPress = new BenchPress("BenchPress", "Weight-lifting", date, 0,false, 0,0, 0.0, false);
         addActivity(baseBenchPress);
 
     }

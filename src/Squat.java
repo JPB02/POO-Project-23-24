@@ -55,13 +55,28 @@ public class Squat extends Bodyweight implements Serializable {
         this.RPE = RPE;
     }
 
+
     // ----------------------------END OF ------Getter and setter methods----------------------------------------------------------
+
+    public int calculateMETSquat() {
+        int MET = 2;
+        if(this.RPE >=1 && this.RPE < 5) {
+            MET = 4;
+        }
+        if(this.RPE >=5 && this.RPE < 7) {
+            MET = 6;
+        }
+        if(this.RPE >=7) {
+            MET = 8;
+        }
+        return MET;
+    }
 
     @Override
     public double calories(User user) {
         long age =  ChronoUnit.YEARS.between(user.getDateOfBirth(),LocalDate.now());
-        double calories = user.caloriesFactor()*1; // FAZER FÒRMULA
-        return calories;
+        double calories = calculateMETSquat() * getDuration() * user.getWeight()*user.caloriesFactor()*1;
+        return calories/70;
     }
 
     @Override

@@ -76,11 +76,22 @@ public class Bodyweight extends Activity implements Serializable {
 
     // ----------------------------END OF ------Getter and setter methods----------------------------------------------------------
 
+    public int calculateMETBodyweight() {
+        int MET = 2;
+        if(this.sets >= 1 && this.sets < 3) {
+            MET = 4;
+        }
+        if(this.sets >=3) {
+            MET = 6;
+        }
+        return MET;
+    }
+
     @Override
     public double calories(User user) {
         long age =  ChronoUnit.YEARS.between(user.getDateOfBirth(),LocalDate.now());
-        double calories = user.caloriesFactor()*1; // FAZER FÒRMULA
-        return calories;
+        double calories = calculateMETBodyweight() * getDuration() * user.getWeight()*user.caloriesFactor()*1;
+        return calories/70;
     }
 
     @Override

@@ -283,10 +283,10 @@ public class Menu implements Serializable {
             fit = fit.load();
             User loggedInUser = User.loadUser(username);
 
-            System.out.println("\n1.Add activity");
+            System.out.println("\n1.Execute an activity");
             System.out.println("\n2.Delete activity");
             System.out.println("\n3.Show activities");
-            System.out.println("\n4.Add Custom Activities");
+            System.out.println("\n4.Register Custom Activities");
             int option = sc.nextInt();
 
             switch (option) {
@@ -301,6 +301,7 @@ public class Menu implements Serializable {
                     typeOption = sc.nextInt();
 
                     switch (typeOption) {
+                        // EXECUTE DISTANCE ACTIVITY
                         case 1:
                             int interfaceIndex = 1;
                             System.out.println("Select Distance Activity:");
@@ -349,7 +350,7 @@ public class Menu implements Serializable {
                                 loggedInUser.saveUser();
                                 break;
                             }
-
+                        // EXECUTE DISTANCE&ALTITUDE ACTIVITY
                         case 2:
                             int interfaceIndex2 = 1;
                             System.out.println("Select Distance&Altitude Activity:");
@@ -395,11 +396,145 @@ public class Menu implements Serializable {
                             else {
                                 boolean isHard = fit.isHardDistanceAltitude(duration2, distance2, altitude);
 
-                                Activity newDistanceAltitude = new DistanceAltitude(choiceDistanceAltitude, "Distance&Altitude", LocalDate.now(), duration2, distance2, pace2, isHard);
+                                Activity newDistanceAltitude = new DistanceAltitude(choiceDistanceAltitude, "Distance&Altitude", LocalDate.now(), duration2, distance2, altitude, isHard);
                                 assert loggedInUser != null;
                                 double caloriesDistAlt = newDistanceAltitude.calories(loggedInUser);
                                 loggedInUser.setCalories(caloriesDistAlt);
                                 loggedInUser.addActivityToUser(newDistanceAltitude);
+                                loggedInUser.saveUser();
+                                break;
+                            }
+                        // EXECUTE WEIGHTLIFTING ACTIVITY
+                        case 3:
+                            int interfaceIndex3 = 1;
+                            System.out.println("Select Weight-lifting Activity:");
+                            availableActivities = fit.getActivityMap();
+                            for (Activity activity: availableActivities.values()) {
+                                if(activity.getActivityType().equals("Weight-lifting")) {
+                                    System.out.println("\n"+interfaceIndex3+"."+activity.getActivityID());
+                                    interfaceIndex3++;
+                                }
+                            }
+
+                            int activityOptionWeightlifting = sc.nextInt();
+
+                            sc.nextLine();
+                            System.out.println("Input activity description ID: ");
+                            String id3 = sc.nextLine();
+
+                            System.out.println("Input activity duration: ");
+                            int duration3 = sc.nextInt();
+
+                            System.out.println("Input reps: ");
+                            int reps1 = sc.nextInt();
+
+                            System.out.println("Input sets: ");
+                            int sets1 = sc.nextInt();
+
+                            System.out.println("Input weight: ");
+                            double weight1 = sc.nextDouble();
+
+
+                            String choiceWeightlifting = fit.newWeightliftingActivityFromList(activityOptionWeightlifting);
+
+                            if (choiceWeightlifting.equals("BenchPress")) {
+
+                                boolean incline = false;
+                                System.out.println("Choose inclination: ");
+                                System.out.println("\n1.Inclined");
+                                System.out.println("\n2.Not inclined");
+                                int inclination = sc.nextInt();
+                                if(inclination==1) {
+                                    incline=true;
+                                }
+                                if(inclination==2) {
+                                    incline=false;
+                                }
+                                else {
+                                    System.out.println("Incorrect inclination...");
+                                    break;
+                                }
+
+                                boolean isHard = fit.isHardBenchPress(reps1,sets1,weight1,incline,loggedInUser);
+
+                                Activity newBenchPress = new BenchPress(id3, "Weight-lifting", LocalDate.now(), duration3, isHard, reps1, sets1, weight1,incline);
+                                assert loggedInUser != null;
+                                double caloriesBenchPress = newBenchPress.calories(loggedInUser);
+                                loggedInUser.setCalories(caloriesBenchPress);
+                                loggedInUser.addActivityToUser(newBenchPress);
+                                loggedInUser.saveUser();
+                                break;
+                            }
+
+                            else {
+                                boolean isHard = fit.isHardWeightlifting(reps1, sets1, weight1, loggedInUser);
+
+                                Activity newWeightlifting = new Weightlifting(choiceWeightlifting, "Weight-lifting", LocalDate.now(), duration3,isHard, reps1, sets1, weight1);
+                                assert loggedInUser != null;
+                                double caloriesWeightlifting = newWeightlifting.calories(loggedInUser);
+                                loggedInUser.setCalories(caloriesWeightlifting);
+                                loggedInUser.addActivityToUser(newWeightlifting);
+                                loggedInUser.saveUser();
+                                break;
+                            }
+                        // EXECUTE BODYWEIGHT
+                        case 4:
+                            int interfaceIndex4 = 1;
+                            System.out.println("Select Body-weight Activity:");
+                            availableActivities = fit.getActivityMap();
+                            for (Activity activity: availableActivities.values()) {
+                                if(activity.getActivityType().equals("Weight-lifting")) {
+                                    System.out.println("\n"+interfaceIndex4+"."+activity.getActivityID());
+                                    interfaceIndex4++;
+                                }
+                            }
+
+                            int activityOptionBodyweight= sc.nextInt();
+
+                            sc.nextLine();
+                            System.out.println("Input activity description ID: ");
+                            String id4 = sc.nextLine();
+
+                            System.out.println("Input activity duration: ");
+                            int duration4 = sc.nextInt();
+
+                            System.out.println("Input reps: ");
+                            int reps2 = sc.nextInt();
+
+                            System.out.println("Input sets: ");
+                            int sets2 = sc.nextInt();
+
+                            String choiceBodyweight = fit.newWeightliftingActivityFromList(activityOptionBodyweight);
+
+                            if (choiceBodyweight.equals("Squat")) {
+
+                                System.out.println("Input RPE(1-10): ");
+                                int rpe = sc.nextInt();
+
+                                if(rpe>10 || rpe<1) {
+                                    System.out.println("Invalid RPE...");
+                                    break;
+                                }
+
+                                boolean isHard = fit.isHardSquats(reps2,sets2,rpe);
+
+                                Activity newSquat = new Squat(id4, "Body-weight", LocalDate.now(), duration4, reps2, sets2, isHard,rpe);
+                                assert loggedInUser != null;
+                                double caloriesSquat = newSquat.calories(loggedInUser);
+                                loggedInUser.setCalories(caloriesSquat);
+                                loggedInUser.addActivityToUser(newSquat);
+                                loggedInUser.saveUser();
+                                break;
+                            }
+
+                            else {
+                                boolean isHard = fit.isHardBodyWeight(reps2, sets2);
+
+                                Activity newBodyweight = new Bodyweight(choiceBodyweight, "Body-weight", LocalDate.now(), duration4,reps2, sets2, isHard);
+                                assert loggedInUser != null;
+                                double caloriesBodyweight = newBodyweight.calories(loggedInUser);
+                                loggedInUser.setCalories(caloriesBodyweight);
+                                loggedInUser.addActivityToUser(newBodyweight);
                                 loggedInUser.saveUser();
                                 break;
                             }
