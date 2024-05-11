@@ -380,4 +380,18 @@ public class Fitness implements Serializable {
         return null;
     }
 
+    public User mostCaloriesBurnedUser(Map<String,User> userMap) {
+        double mostCalories = 0;
+        User topUser = null;
+        for(User user : userMap.values()) {
+            user = User.loadUser(user.getUsername());
+            assert user != null;
+            if(user.getCalories() > mostCalories) {
+                topUser = user;
+                mostCalories = user.getCalories();
+            }
+        }
+        return topUser;
+    }
+
 }

@@ -1,6 +1,7 @@
 import java.io.File;
 import java.io.Serializable;
 import java.sql.Array;
+import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
@@ -60,6 +61,7 @@ public class Menu implements Serializable {
         System.out.println("\n3. Exit");
         System.out.println("\n4. Show All Users(debugging)");
         System.out.println("\n5. Show All Activities(debugging)");
+        System.out.println("\n6. App statistics");
     }
 
     // usamos regex para ver se o email é válido
@@ -293,7 +295,7 @@ public class Menu implements Serializable {
         User loggedInUser = User.loadUser(username);  // Load the user along with its activities
 
         int option = 0;
-        while(option!=3) {
+        while(option!=4) {
             System.out.println("\n1.Details");
             System.out.println("\n2.Activities");
             System.out.println("\n3.Workout Plans");
@@ -938,6 +940,15 @@ public class Menu implements Serializable {
         }
     }
 
+    public void printStatisticsMenu() {
+        Fitness fit = new Fitness();
+        fit = fit.load();
+        Map<String, User> userMap = fit.getUserMap();
 
+        DecimalFormat df = new DecimalFormat("#.##");
+        User topUser = fit.mostCaloriesBurnedUser(userMap);
+        double calories = topUser.getCalories();
+        System.out.println("Most Burned Calories User:" + topUser.getUsername()+ ", burned "+ df.format(calories)+"kcal");
+    }
 
 }

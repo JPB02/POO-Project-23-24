@@ -43,6 +43,9 @@ public class Main {
                 case 5:
                     menu.printAllActivities();
                     break;
+                case 6:
+                    menu.printStatisticsMenu();
+                    break;
                 default:
                     System.out.println("Invalid option!");
             }
