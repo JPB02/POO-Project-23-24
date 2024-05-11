@@ -46,6 +46,9 @@ public class Main {
                 case 6:
                     menu.printStatisticsMenu();
                     break;
+                case 7:
+                    menu.skipDateMenu();
+                    break;
                 default:
                     System.out.println("Invalid option!");
             }

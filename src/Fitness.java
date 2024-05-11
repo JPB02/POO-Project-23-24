@@ -157,6 +157,11 @@ public class Fitness implements Serializable {
         return false;
     }
 
+    public void daySkip(int daysToSkip) {
+        this.currDate = this.currDate.plusDays(daysToSkip);
+    }
+
+
     public boolean existsUsername(String username) {
         if(userMap.containsKey(username)) {
             return true;

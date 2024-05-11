@@ -1,6 +1,5 @@
 import java.io.File;
 import java.io.Serializable;
-import java.sql.Array;
 import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
@@ -55,13 +54,29 @@ public class Menu implements Serializable {
 
     // usado para dar print ao menu incial
     public void startMenu() {
+
+        File file = new File("data.ser");
+        Fitness fit = new Fitness();
+
+        if (file.exists()) {
+            Fitness fileinfo = new Fitness();
+            fileinfo = fileinfo.load();
+            fit = new Fitness(fileinfo);
+        } else {
+            fit = new Fitness();
+            fit.addBasicActivities(); // Add basic activities if file doesnt exist
+            fit.save();
+        }
+
         System.out.println("##############-UMINHO FIT-##############");
+        System.out.println("\nDate: " + fit.getCurrDate());
         System.out.println("\n1. Register");
         System.out.println("\n2. Login");
         System.out.println("\n3. Exit");
         System.out.println("\n4. Show All Users(debugging)");
         System.out.println("\n5. Show All Activities(debugging)");
         System.out.println("\n6. App statistics");
+        System.out.println("\n7. Skip days");
     }
 
     // usamos regex para ver se o email é válido
@@ -69,6 +84,22 @@ public class Menu implements Serializable {
         String regex = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
         return email.matches(regex);
 
+    }
+
+    public void skipDateMenu() {
+        Fitness fit = new Fitness();
+        fit = fit.load();
+
+        System.out.println("How many days to skip?");
+        int daysToSkip = 0;
+        try {
+            daysToSkip = getIntInput();
+        } catch (InputMismatchException e) {
+            System.out.println("Error: Please enter a valid option number.");
+            sc.nextLine(); // Clear the invalid input
+        }
+        fit.daySkip(daysToSkip);
+        fit.save();
     }
 
     // se a data de nascimento for igual ou depois da data atual, então é inválida
@@ -97,18 +128,8 @@ public class Menu implements Serializable {
     }
 
     public void registerMenu() {
-        File file = new File("data.ser");
         Fitness fit = new Fitness();
-
-
-        if (file.exists()) {
-            Fitness fileinfo = new Fitness();
-            fileinfo = fileinfo.load();
-            fit = new Fitness(fileinfo);
-        } else {
-            fit = new Fitness();
-            fit.addBasicActivities(); // inicializa o mapa de atividades
-        }
+        fit = fit.load();
 
         String type = new String();
         boolean isValidUserType = false;
@@ -227,11 +248,9 @@ public class Menu implements Serializable {
                 }
             } catch (IllegalArgumentException e) {
                 System.out.println("Error: " + e.getMessage());
-                // Clear the scanner buffer
                 sc.nextLine();
             } catch (java.util.InputMismatchException e) {
                 System.out.println("Error: Please enter a valid number.");
-                // Clear the scanner buffer
                 sc.nextLine();
             }
         }
