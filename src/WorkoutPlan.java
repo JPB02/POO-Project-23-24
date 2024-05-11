@@ -79,105 +79,146 @@ public class WorkoutPlan implements Serializable {
 
         return calories;
     }
-/*
+
     public WorkoutPlan allocateRandomActivity(Fitness fit,User user, String type, int numberActivities, LocalDate date) {
         Random rnd = new Random();
+
         if(user == null) {
             System.out.println("User not found...");
             return null;
         }
 
         ArrayList<Activity> activities= fit.getActivityByType(type);
+        int randomIndex = rnd.nextInt(activities.size());
 
         WorkoutPlan workoutPlan = new WorkoutPlan();
 
         for(int i = 0; i < numberActivities; i++){
             switch(type) {
                 case "Distance":
-                    workoutPlan.addActivity(allocateRandomRunning(activities,rnd, date));
+                    String distanceActivityID = activities.get(randomIndex).getActivityID();
+                    allocateRandomDistance(fit,rnd, date, distanceActivityID);
+                    this.iterations++;
                     break;
-                case "Distance&Altitude":
-                    workoutPlan.addActivity(allocateRandomMountainBike(activities,rnd, date));
+
+                case "DistanceAltitude":
+                    String distanceAltitudeActivityID = activities.get(randomIndex).getActivityID();
+                    allocateRandomDistanceAltitude(fit,rnd, date, distanceAltitudeActivityID);
+                    this.iterations++;
                     break;
-                case "Weightlifting":
-                    workoutPlan.addActivity(allocateRandomBenchPress(activities,rnd, date));
+
+                case "Weight-lifting":
+                    String weightliftingActivityID = activities.get(randomIndex).getActivityID();
+                    allocateRandomWeightlifting(fit,rnd, date, weightliftingActivityID, user);
+                    this.iterations++;
                     break;
                 case "Body-weight":
-                    workoutPlan.addActivity(allocateRandomSquat(activities,rnd, date));
+                    String activityID = activities.get(randomIndex).getActivityID();
+                    allocateRandomBodyweight(fit,rnd, date, activityID);
+                    this.iterations++;
                     break;
+
                 default:
                     System.out.println("Activity type not found...");
-                    return null;
+                    break;
             }
         }
 
         System.out.println("Workout plan allocated successfully...");
-
         return workoutPlan;
     }
 
-    public Running allocateRandomRunning(ArrayList<Activity> activities, Random rnd, LocalDate date) {
-        ArrayList<String> names = new ArrayList<>();
-        for (Activity activity : activities) {
-            names.add(activity.getActivityID());
-        }
-
-        String activityID = names.get(rnd.nextInt(names.size()));
+    public void allocateRandomDistance(Fitness fit, Random rnd, LocalDate date, String ID) {
+        String activityID = ID + (this.iterations+1);
         String type = "Distance";
-        int duration = rnd.nextInt(120); // in minutes
-        double distance = 1 + (rnd.nextDouble() * 41); // max == marathon(42km), min == 1km
-        double pace = 1 + (rnd.nextDouble() * 4);
-        int steps = 1000 * (int)(distance);
 
-        return new Running(activityID, type, date, duration, distance,pace,steps);
-    }
+        int duration = 1+ rnd.nextInt(179);
+        double distance = 1+ rnd.nextDouble(29);
 
-    public BenchPress allocateRandomBenchPress(ArrayList<Activity> activities, Random rnd, LocalDate date) {
-        ArrayList<String> names = new ArrayList<>();
-        for(Activity activity : activities){
-            names.add(activity.getActivityID());
+        if(ID.equals("Running")) {
+            double pace = 1 + (rnd.nextDouble() * 4);
+            boolean isHardRunning = fit.isHardRunning(pace);
+            int steps = 1000 * (int)(distance);
+            Activity newRunning = new Running(activityID, type, date, duration, distance,pace,steps, isHardRunning);
+            this.activities.add(newRunning);
+        }
+        else {
+            boolean isHardDistance = fit.isHardDistance(duration,distance);
+            Activity newDistance = new Distance(activityID, type, date, duration, distance, isHardDistance);
+            this.activities.add(newDistance);
         }
 
-        String activityID = names.get(rnd.nextInt(names.size()));
-        String type = "Weightlifting";
-        int duration = rnd.nextInt(120) + 1;
-        int weight = rnd.nextInt(100) + 1;
-        int reps = rnd.nextInt(8) + 1;
-        int sets = rnd.nextInt(3) + 1;
-
-        return new BenchPress(activityID, type, date, duration, reps, sets, weight, isHard);
     }
 
-    public Squat allocateRandomSquat(ArrayList<Activity> activities, Random rnd, LocalDate date) {
-        ArrayList<String> names = new ArrayList<>();
-        for(Activity activity : activities){
-            names.add(activity.getActivityID());
+
+    public void allocateRandomDistanceAltitude(Fitness fit, Random rnd, LocalDate date, String ID) {
+        String activityID = ID + (this.iterations+1);
+        String type = "DistanceAltitude";
+
+        int duration = 1+ rnd.nextInt(179);
+        double distance = 1+ rnd.nextDouble(29);
+        double altitude = 1+ rnd.nextDouble(1000);
+
+        if(ID.equals("MountainBike")) {
+            double pace = 1 + (rnd.nextDouble() * 4);
+            boolean isHardMountainBike = fit.isHardMountainBike(pace);
+            int steps = 1000 * (int)(distance);
+            Activity newMountainBike = new MountainBike(activityID, type, date, duration, distance,altitude,pace, isHardMountainBike);
+            this.activities.add(newMountainBike);
+        }
+        else {
+            boolean isHardDistanceAltitude = fit.isHardDistanceAltitude(duration,distance,altitude);
+            Activity newDistanceAltitude = new DistanceAltitude(activityID, type, date, duration, distance,altitude, isHardDistanceAltitude);
+            this.activities.add(newDistanceAltitude);
         }
 
-        String activityID = names.get(rnd.nextInt(names.size()));
+    }
+
+    public void allocateRandomBodyweight(Fitness fit, Random rnd, LocalDate date, String ID) {
+        String activityID = ID + (this.iterations+1);
         String type = "Body-weight";
-        int duration = rnd.nextInt(20) + 5; // max 21min , min 5min
-        int reps = rnd.nextInt(20) + 10;    // max 30 reps, min 10 reps
-        int sets = rnd.nextInt(3) + 1;      // max 4 sets, min 1 set
 
-        return new Squat(activityID, type, date, duration, reps, sets);
-    }
+        int duration = 1+ rnd.nextInt(179);
+        int reps = 1+rnd.nextInt(20);
+        int sets = 1+rnd.nextInt(4);
 
-    public MountainBike allocateRandomMountainBike(ArrayList<Activity> activities, Random rnd, LocalDate date) {
-        ArrayList<String> names = new ArrayList<>();
-        for(Activity activity : activities){
-            names.add(activity.getActivityID());
+        if(ID.equals("Squat")) {
+            int rpe = 1+rnd.nextInt(10);
+            boolean isHardSquat = fit.isHardSquats(reps,sets,rpe);
+            Activity newSquat = new Squat(activityID, type, date, duration, reps,sets, isHardSquat, rpe);
+            this.activities.add(newSquat);
+        }
+        else {
+            boolean isHardBodyweight = fit.isHardBodyWeight(reps,sets);
+            Activity newBodyweight = new Bodyweight(activityID, type, date, duration, reps, sets, isHardBodyweight);
+            this.activities.add(newBodyweight);
         }
 
-        String activityID = names.get(rnd.nextInt(names.size()));
-        String type = "Distance&Altitude";
-        int duration = rnd.nextInt(100) + 20;   // max 120min , min 20min
-        double distance = 5 + (rnd.nextDouble() * 37); // max == marathon(42km), min == 5km
-        double altitude = 50 + (rnd.nextDouble() * 500); // max == 550metres, min == 50metres
-        double pace = 1000*distance;
-        return new MountainBike(activityID, type, date, duration, distance, altitude, pace);
     }
-*/
+
+    public void allocateRandomWeightlifting(Fitness fit, Random rnd, LocalDate date, String ID, User user) {
+        String activityID = ID + (this.iterations+1);
+        String type = "Weight-lifting";
+
+        int duration = 1+ rnd.nextInt(179);
+        double weight = 1+rnd.nextDouble(user.getWeight()-1);
+        int reps = 1+rnd.nextInt(20);
+        int sets = 1+rnd.nextInt(4);
+
+        if(ID.equals("BenchPress")) {
+            boolean incline = rnd.nextBoolean();
+            boolean isHardBenchPress = fit.isHardBenchPress(reps,sets,weight, incline, user);
+            Activity newBenchPress = new BenchPress(activityID, type, date, duration, isHardBenchPress, reps,sets, weight, incline);
+            this.activities.add(newBenchPress);
+        }
+        else {
+            boolean isHardWeightlifting = fit.isHardWeightlifting(reps,sets,weight,user);
+            Activity newWeightlifting = new Weightlifting(activityID, type, date, duration, isHardWeightlifting,reps, sets,weight);
+            this.activities.add(newWeightlifting);
+        }
+
+    }
+
     public String toString() {
         return new String(
                 "Activities in plan: "+ this.activities.toString() + "\n"

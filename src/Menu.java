@@ -1,5 +1,6 @@
 import java.io.File;
 import java.io.Serializable;
+import java.sql.Array;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
@@ -295,7 +296,8 @@ public class Menu implements Serializable {
         while(option!=3) {
             System.out.println("\n1.Details");
             System.out.println("\n2.Activities");
-            System.out.println("\n3.Logout");
+            System.out.println("\n3.Workout Plans");
+            System.out.println("\n4.Logout");
             option = getIntInput();
 
             switch (option) {
@@ -305,6 +307,94 @@ public class Menu implements Serializable {
                     break;
                 case 2:
                     activitiesMenu(username);
+                    break;
+                case 3:
+                    workoutPlansMenu(loggedInUser);
+                case 4:
+                    break;
+                default:
+                    System.out.println("Invalid option!");
+            }
+        }
+    }
+
+    public void workoutPlansMenu(User user) {
+        Fitness fit = new Fitness();
+        fit = fit.load();
+        user = User.loadUser(user.getUsername());  // Load the user along with its activities
+
+
+        int option = 0;
+        while(option!=3) {
+            System.out.println("\n1.Current Workout Plan");
+            System.out.println("\n2.Generate Random Workout Plan");
+            System.out.println("\n3.Go back");
+            option = getIntInput();
+
+            switch (option) {
+                case 1:
+                    assert user != null;
+                    System.out.println(user.getWorkoutPlansList().toString());
+                    break;
+                case 2:
+                    WorkoutPlan newWorkoutPlan = new WorkoutPlan();
+                    System.out.println("Input how many days per week:");
+
+                    int numActivities = 0;
+                    try {
+                        numActivities = getIntInput();
+                    } catch (InputMismatchException e) {
+                        System.out.println("Error: Please enter a valid option number.");
+                        sc.nextLine(); // Clear the invalid input
+                    }
+
+                    if(numActivities <= 7 && numActivities >0) {
+                        int curActivityNum;
+                        for (curActivityNum = 1; curActivityNum <= numActivities; curActivityNum++) {
+
+                            System.out.println("Choose activity type for day " + curActivityNum + ": ");
+                            System.out.println("\n1.Distance");
+                            System.out.println("\n2.DistanceAltitude");
+                            System.out.println("\n3.Body-weight");
+                            System.out.println("\n4.Weight-lifting");
+                            int chooseOption = 0;
+                            try {
+                                chooseOption = getIntInput();
+                            } catch (InputMismatchException e) {
+                                System.out.println("Error: Please enter a valid option number.");
+                                sc.nextLine(); // Clear the invalid input
+                            }
+
+                            if (chooseOption == 1) {
+                                String activityType = "Distance";
+                                newWorkoutPlan.allocateRandomActivity(fit, user, activityType, 1,newWorkoutPlan.getDate());
+                            }
+
+                            else if(chooseOption == 2) {
+                                String activityType = "DistanceAltitude";
+                                newWorkoutPlan.allocateRandomActivity(fit, user, activityType, 1,newWorkoutPlan.getDate());
+                            }
+
+                            else if (chooseOption == 3) {
+                                String activityType = "Body-weight";
+                                newWorkoutPlan.allocateRandomActivity(fit, user, activityType, 1,newWorkoutPlan.getDate());
+                            }
+
+                            else if (chooseOption == 4) {
+                                String activityType = "Weight-lifting";
+                                newWorkoutPlan.allocateRandomActivity(fit, user, activityType, 1,newWorkoutPlan.getDate());
+                            }
+
+                            else {
+                                System.out.println("Invalid option!");
+                                break;
+                            }
+                        }
+
+                    }
+                    assert user != null;
+                    user.addWorkoutPlanToUser(newWorkoutPlan);
+                    user.saveUser();
                     break;
                 case 3:
                     break;
