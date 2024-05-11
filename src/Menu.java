@@ -3,6 +3,7 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.util.Map;
 import java.util.Scanner;
 
@@ -12,6 +13,42 @@ public class Menu implements Serializable {
     public Menu() {
         this.sc = new Scanner(System.in);
 
+    }
+
+    // Utility method to get integer input from user with error handling
+    private int getIntInput() {
+        int input = 0;
+        boolean isValidInput = false;
+
+        while (!isValidInput) {
+            try {
+                input = sc.nextInt();
+                isValidInput = true;
+            } catch (InputMismatchException e) {
+                System.out.println("Invalid input. Please enter a valid integer.");
+                sc.nextLine(); // Clear the invalid input
+            }
+        }
+
+        return input;
+    }
+
+    // Utility method to get double input from user with error handling
+    private double getDoubleInput() {
+        double input = 0.0;
+        boolean isValidInput = false;
+
+        while (!isValidInput) {
+            try {
+                input = sc.nextDouble();
+                isValidInput = true;
+            } catch (InputMismatchException e) {
+                System.out.println("Invalid input. Please enter a valid number.");
+                sc.nextLine(); // Clear the invalid input
+            }
+        }
+
+        return input;
     }
 
     // usado para dar print ao menu incial
@@ -259,7 +296,7 @@ public class Menu implements Serializable {
             System.out.println("\n1.Details");
             System.out.println("\n2.Activities");
             System.out.println("\n3.Logout");
-            option = sc.nextInt();
+            option = getIntInput();
 
             switch (option) {
                 case 1:
@@ -275,7 +312,6 @@ public class Menu implements Serializable {
                     System.out.println("Invalid option!");
             }
         }
-
     }
 
         public void activitiesMenu(String username) {
@@ -287,22 +323,35 @@ public class Menu implements Serializable {
             System.out.println("\n2.Delete activity");
             System.out.println("\n3.Show activities");
             System.out.println("\n4.Register Custom Activities");
-            int option = sc.nextInt();
+            int option=0;
+            try {
+                option = getIntInput();
+            } catch (InputMismatchException e) {
+                System.out.println("Error: Please enter a valid option number.");
+                sc.nextLine(); // Clear the invalid input
+            }
 
             switch (option) {
                 case 1:
-                    int typeOption;
                     Map<String, Activity> availableActivities = fit.getActivityMap();
                     System.out.println("Input activity type:");
                     System.out.println("\n1.Distance");
                     System.out.println("\n2.Distance&Altitude");
                     System.out.println("\n3.Weight-lifting");
                     System.out.println("\n4.Body-weight");
-                    typeOption = sc.nextInt();
+                    int typeOption;
+                    try {
+                        typeOption = getIntInput();
+                    } catch (InputMismatchException e) {
+                        System.out.println("Error: Please enter a valid option number.");
+                        sc.nextLine(); // Clear the invalid input
+                        break;
+                    }
 
                     switch (typeOption) {
                         // EXECUTE DISTANCE ACTIVITY
                         case 1:
+                            int activityOptionDistance;
                             int interfaceIndex = 1;
                             System.out.println("Select Distance Activity:");
                             for (Activity activity: availableActivities.values()) {
@@ -311,18 +360,44 @@ public class Menu implements Serializable {
                                     interfaceIndex++;
                                 }
                             }
-
-                            int activityOptionDistance = sc.nextInt();
+                            try {
+                                activityOptionDistance = getIntInput();
+                            } catch (InputMismatchException e) {
+                                System.out.println("Error: Please enter a valid option number.");
+                                sc.nextLine(); // Clear the invalid input
+                                break;
+                            }
 
                             sc.nextLine();
+                            String id;
                             System.out.println("Input activity description ID: ");
-                            String id = sc.nextLine();
+                            try {
+                                id = sc.nextLine();
+                            } catch (InputMismatchException e) {
+                                System.out.println("Error: Please enter a valid id.");
+                                sc.nextLine(); // Clear the invalid input
+                                break;
+                            }
 
+                            int duration;
                             System.out.println("Input activity duration: ");
-                            int duration = sc.nextInt();
+                            try {
+                                duration = getIntInput();
+                            } catch (InputMismatchException e) {
+                                System.out.println("Error: Please enter a valid distance integer.");
+                                sc.nextLine(); // Clear the invalid input
+                                break;
+                            }
 
+                            double distance;
                             System.out.println("Input distance(in km): ");
-                            double distance = sc.nextDouble();
+                            try {
+                                distance = getDoubleInput();
+                            } catch (InputMismatchException e) {
+                                System.out.println("Error: Please enter a valid distance integer.");
+                                sc.nextLine(); // Clear the invalid input
+                                break;
+                            }
 
                             String choiceDistance = fit.newDistanceActivityFromList(activityOptionDistance);
 
@@ -362,20 +437,48 @@ public class Menu implements Serializable {
                                 }
                             }
 
-                            int activityOptionDistanceAltitude = sc.nextInt();
+                            int activityOptionDistanceAltitude;
+                            try {
+                                activityOptionDistanceAltitude = getIntInput();
+                            } catch (InputMismatchException e) {
+                                System.out.println("Error: Please enter a valid option number.");
+                                sc.nextLine(); // Clear the invalid input
+                                break;
+                            }
 
                             sc.nextLine();
                             System.out.println("Input activity description ID: ");
                             String id2 = sc.nextLine();
 
                             System.out.println("Input activity duration: ");
-                            int duration2 = sc.nextInt();
+                            int duration2;
+                            try {
+                                duration2 = getIntInput();
+                            } catch (InputMismatchException e) {
+                                System.out.println("Error: Please enter a valid option number.");
+                                sc.nextLine(); // Clear the invalid input
+                                break;
+                            }
 
                             System.out.println("Input distance(in km): ");
-                            double distance2 = sc.nextDouble();
+                            double distance2;
+                            try {
+                                distance2 = getIntInput();
+                            } catch (InputMismatchException e) {
+                                System.out.println("Error: Please enter a valid option number.");
+                                sc.nextLine(); // Clear the invalid input
+                                break;
+                            }
 
                             System.out.println("Input altitude(in metres): ");
-                            double altitude = sc.nextDouble();
+                            double altitude;
+                            try {
+                                altitude = getDoubleInput();
+                            } catch (InputMismatchException e) {
+                                System.out.println("Error: Please enter a valid option number.");
+                                sc.nextLine(); // Clear the invalid input
+                                break;
+                            }
 
                             double pace2 = duration2 / distance2;
 
@@ -416,39 +519,83 @@ public class Menu implements Serializable {
                                 }
                             }
 
-                            int activityOptionWeightlifting = sc.nextInt();
+                            int activityOptionWeightlifting;
+                            try {
+                                activityOptionWeightlifting = getIntInput();
+                            } catch (InputMismatchException e) {
+                                System.out.println("Error: Please enter a valid option number.");
+                                sc.nextLine(); // Clear the invalid input
+                                break;
+                            }
 
                             sc.nextLine();
                             System.out.println("Input activity description ID: ");
                             String id3 = sc.nextLine();
 
                             System.out.println("Input activity duration: ");
-                            int duration3 = sc.nextInt();
+                            int duration3;
+                            try {
+                                duration3 = getIntInput();
+                            } catch (InputMismatchException e) {
+                                System.out.println("Error: Please enter a valid option number.");
+                                sc.nextLine(); // Clear the invalid input
+                                break;
+                            }
 
                             System.out.println("Input reps: ");
-                            int reps1 = sc.nextInt();
+                            int reps1;
+                            try {
+                                reps1 = getIntInput();
+                            } catch (InputMismatchException e) {
+                                System.out.println("Error: Please enter a valid option number.");
+                                sc.nextLine(); // Clear the invalid input
+                                break;
+                            }
 
                             System.out.println("Input sets: ");
-                            int sets1 = sc.nextInt();
+                            int sets1;
+                            try {
+                                sets1 = getIntInput();
+                            } catch (InputMismatchException e) {
+                                System.out.println("Error: Please enter a valid option number.");
+                                sc.nextLine(); // Clear the invalid input
+                                break;
+                            }
 
                             System.out.println("Input weight: ");
-                            double weight1 = sc.nextDouble();
+                            double weight1;
+                            try {
+                                weight1 = getDoubleInput();
+                            } catch (InputMismatchException e) {
+                                System.out.println("Error: Please enter a valid option number.");
+                                sc.nextLine(); // Clear the invalid input
+                                break;
+                            }
 
 
                             String choiceWeightlifting = fit.newWeightliftingActivityFromList(activityOptionWeightlifting);
 
                             if (choiceWeightlifting.equals("BenchPress")) {
 
-                                boolean incline = false;
+                                boolean incline;
                                 System.out.println("Choose inclination: ");
                                 System.out.println("\n1.Inclined");
                                 System.out.println("\n2.Not inclined");
-                                int inclination = sc.nextInt();
+                                int inclination;
+                                try {
+                                    inclination = getIntInput();
+                                } catch (InputMismatchException e) {
+                                    System.out.println("Error: Please enter a valid option number.");
+                                    sc.nextLine(); // Clear the invalid input
+                                    break;
+                                }
+
                                 if(inclination==1) {
                                     incline=true;
                                 }
-                                if(inclination==2) {
+                                else if(inclination==2) {
                                     incline=false;
+
                                 }
                                 else {
                                     System.out.println("Incorrect inclination...");
@@ -489,27 +636,62 @@ public class Menu implements Serializable {
                                 }
                             }
 
-                            int activityOptionBodyweight= sc.nextInt();
+                            int activityOptionBodyweight;
+                            try {
+                                activityOptionBodyweight = getIntInput();
+                            } catch (InputMismatchException e) {
+                                System.out.println("Error: Please enter a valid option number.");
+                                sc.nextLine(); // Clear the invalid input
+                                break;
+                            }
 
                             sc.nextLine();
                             System.out.println("Input activity description ID: ");
                             String id4 = sc.nextLine();
 
                             System.out.println("Input activity duration: ");
-                            int duration4 = sc.nextInt();
+                            int duration4;
+                            try {
+                                duration4 = getIntInput();
+                            } catch (InputMismatchException e) {
+                                System.out.println("Error: Please enter a valid option number.");
+                                sc.nextLine(); // Clear the invalid input
+                                break;
+                            }
 
                             System.out.println("Input reps: ");
-                            int reps2 = sc.nextInt();
+                            int reps2;
+                            try {
+                                reps2 = getIntInput();
+                            } catch (InputMismatchException e) {
+                                System.out.println("Error: Please enter a valid option number.");
+                                sc.nextLine(); // Clear the invalid input
+                                break;
+                            }
 
                             System.out.println("Input sets: ");
-                            int sets2 = sc.nextInt();
+                            int sets2;
+                            try {
+                                sets2 = getIntInput();
+                            } catch (InputMismatchException e) {
+                                System.out.println("Error: Please enter a valid option number.");
+                                sc.nextLine(); // Clear the invalid input
+                                break;
+                            }
 
                             String choiceBodyweight = fit.newWeightliftingActivityFromList(activityOptionBodyweight);
 
                             if (choiceBodyweight.equals("Squat")) {
 
                                 System.out.println("Input RPE(1-10): ");
-                                int rpe = sc.nextInt();
+                                int rpe;
+                                try {
+                                    rpe = getIntInput();
+                                } catch (InputMismatchException e) {
+                                    System.out.println("Error: Please enter a valid option number.");
+                                    sc.nextLine(); // Clear the invalid input
+                                    break;
+                                }
 
                                 if(rpe>10 || rpe<1) {
                                     System.out.println("Invalid RPE...");
@@ -579,7 +761,14 @@ public class Menu implements Serializable {
                     System.out.println("\n2.Distance&Altitude");
                     System.out.println("\n3.Weight-lifting");
                     System.out.println("\n4.Body-weight");
-                    int customActivityTypeChoice = sc.nextInt();
+                    int customActivityTypeChoice;
+                    try {
+                        customActivityTypeChoice = getIntInput();
+                    } catch (InputMismatchException e) {
+                        System.out.println("Error: Please enter a valid option number.");
+                        sc.nextLine(); // Clear the invalid input
+                        break;
+                    }
 
                     sc.nextLine(); // remove \n
 

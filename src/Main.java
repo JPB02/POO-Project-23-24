@@ -1,7 +1,9 @@
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
+
         Menu menu = new Menu();
         Scanner scanner = new Scanner(System.in);
         boolean active = true;
@@ -10,7 +12,17 @@ public class Main {
             menu.startMenu();
 
             System.out.println("Choose an option: ");
-            int option = scanner.nextInt();
+            int option = 0;
+            boolean isValidInput = false;
+            while (!isValidInput) {
+                try {
+                    option = scanner.nextInt();
+                    isValidInput = true;
+                } catch (InputMismatchException e) {
+                    System.out.println("Invalid input. Please enter a valid integer.");
+                    scanner.nextLine(); // Clear the invalid input
+                }
+            }
 
             switch (option) {
                 case 1:
@@ -36,5 +48,4 @@ public class Main {
             }
         }
     }
-
 }
