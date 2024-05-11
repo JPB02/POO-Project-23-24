@@ -177,8 +177,10 @@ public class Fitness implements Serializable {
                         activity.setDate(this.currDate);
                         double calories = activity.calories(user);
                         user.setCalories(calories);
-                        user.addActivityToUser(activity);
 
+                        for(int i=1; i<=workoutPlan.getIterations(); i++) {
+                            user.addActivityToUser(activity);
+                        }
                     }
                     user.removeWorkoutPlan(workoutPlan);
                 }
