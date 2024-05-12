@@ -1,19 +1,21 @@
 # UMFit
 
 ### To-Do
-- [ ] ALGUMAS QUERIES (VER NO PDF)
-- [ ] TIME SKIP
+- [ ] Final queries
+- [ ] Generate random workout plans(Improve)
 
 ### Completed  ✓
-- [x] LOGIN (NO MENU)
-- [x] ATIVIDADES HARD
-- [x] ADD SUPERCLASSES (DISTANCE, DISTANCE/ALTITUDE, BODY-WEIGHT, WEIGHT-LIFTING)
-- [x] EXECUTE ACTIVITIES (NO CUSTOM FROM FIT MAP)
-- [x] CREATE USER
-- [x] REMOVE ACTIVITY FROM USER
-- [x] ADD ATIVIDADES CUSTOM (NO MENU)
-- [x] SE NÃO EXISTIR ACTIVITY ID NA FIT MAP DE ATIVIDADES (CUSTOM+BASIC), NÃO PODE EXECUTAR
-- [x] GERAR WORKOUTS ALEATÓRIOS (SEMI-FEITO)
-- [x] ADD WORKOUT PLANS (NO MENU)
+- [x] Login
+- [x] Hard activities
+- [x] Add superclasses (Distance, Distance&Altitude, Body-weight, Weight-lifting)
+- [x] Execute Activities (includes custom)
+- [x] Create User
+- [x] Remove activities from user
+- [x] Add custom activities
+- [x] Can only execute activities in Activities Map(Fitness)
+- [x] Generate random workout plans
+- [x] Add workout plans
+- [x] Time skip
+- [x] Workout plans execute when skipping time
 
 ![Alt Text](https://media.tenor.com/nyYC6dg86mQAAAAM/maxime-mr-bean-profile-pic.gif)
