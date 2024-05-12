@@ -354,7 +354,12 @@ public class Menu implements Serializable {
     }
 
     public boolean validWorkoutDate(LocalDate date) {
-        return LocalDate.now().isBefore(date);
+        if (date == null) {
+            return false;
+        }
+        else {
+            return LocalDate.now().isBefore(date);
+        }
     }
 
     public void workoutPlansMenu(User user) {
@@ -364,6 +369,8 @@ public class Menu implements Serializable {
 
         System.out.println("\n1.Add Workout Plan");
         System.out.println("\n2.Check Workout Plans");
+        System.out.println("\n3.Generate Random Workout Plan");
+        System.out.println("\n4.Quit");
         int menuOption = 0;
         try {
             menuOption = getIntInput();
@@ -379,19 +386,20 @@ public class Menu implements Serializable {
                 System.out.println("Input plan date:");
 
                 LocalDate dateInput = null;
-                boolean isValidWorkoutDate = false;
-                while(true) {
+                while (true) {
                     String date = sc.nextLine();
                     try {
                         dateInput = LocalDate.parse(date);
                         if (validWorkoutDate(dateInput)) {
                             break;
+                        } else {
+                            System.out.println("Invalid date. Please enter a valid workout date.");
                         }
                     } catch (DateTimeParseException e) {
                         System.out.println("Invalid date format. Please enter the date in the format YYYY-MM-DD.");
-                        break;
                     }
                 }
+
                 workoutPlan.setDate(dateInput);
 
                 System.out.println("Input iterations:");
@@ -762,7 +770,57 @@ public class Menu implements Serializable {
                 assert user != null;
                 System.out.println(user.getWorkoutPlansList());
                 break;
+
+            case 3:
+                int addedDays = 0;
+                int days = 0;
+                while (!validDays(days)) {
+                    System.out.println("Input how many days per week:");
+                    try {
+                        days = getIntInput();
+                    } catch (InputMismatchException e) {
+                        System.out.println("Error: Please enter a valid option number.");
+                        sc.nextLine(); // Clear the invalid input
+                    }
+                }
+
+                System.out.println("Input how many activities per day");
+
+                int numActivities = 0;
+                try {
+                    numActivities = getIntInput();
+                } catch (InputMismatchException e) {
+                    System.out.println("Error: Please enter a valid option number.");
+                    sc.nextLine(); // Clear the invalid input
+                }
+
+                LocalDate currentDate = fit.getCurrDate();
+
+                while (addedDays < days) {
+                    WorkoutPlan newWorkoutPlan = new WorkoutPlan();
+
+                    while (addedDays < days) { // Use while loop instead of for loop
+                        String randomType = fit.getRandomActivityType();
+                        newWorkoutPlan.allocateRandomActivity(fit, user, randomType, numActivities, currentDate);
+                        currentDate = currentDate.plusDays(1);
+                        addedDays++; // Increment the current activity number
+                    }
+
+                    assert user != null;
+                    user.addWorkoutPlanToUser(newWorkoutPlan);
+                    addedDays++;
+                    user.saveUser();
+                }
+
+                break;
+
+            case 4:
+                break;
         }
+    }
+
+    public boolean validDays(int days) {
+        return days > 0 && days <= 7;
     }
 
         public void activitiesMenu(String username) {

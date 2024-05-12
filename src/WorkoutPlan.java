@@ -99,7 +99,7 @@ public class WorkoutPlan implements Serializable {
                     allocateRandomDistance(fit,rnd, date, distanceActivityID);
                     break;
 
-                case "DistanceAltitude":
+                case "Distance&Altitude":
                     String distanceAltitudeActivityID = activities.get(randomIndex).getActivityID();
                     allocateRandomDistanceAltitude(fit,rnd, date, distanceAltitudeActivityID);
                     break;

@@ -221,7 +221,7 @@ public abstract class User implements Serializable {
 
     public void saveUser() {
         try {
-            FileOutputStream fileOut = new FileOutputStream(username + ".ser");
+            FileOutputStream fileOut = new FileOutputStream("src/"+username + ".ser");
             ObjectOutputStream out = new ObjectOutputStream(fileOut);
             out.writeObject(this);  // Serialize user
             out.writeObject(activitiesList);  // Serialize activities list
@@ -236,7 +236,7 @@ public abstract class User implements Serializable {
     // Deserialization method to load user along with its activities
     public static User loadUser(String username) {
         try {
-            FileInputStream fileIn = new FileInputStream(username + ".ser");
+            FileInputStream fileIn = new FileInputStream("src/"+username + ".ser");
             ObjectInputStream in = new ObjectInputStream(fileIn);
             User user = (User) in.readObject();  // Deserialize user
             ArrayList<Activity> activities = (ArrayList<Activity>) in.readObject();  // Deserialize activities list

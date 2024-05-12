@@ -1,9 +1,6 @@
 import java.io.*;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 
@@ -106,7 +103,7 @@ public class Fitness implements Serializable {
      */
     public void save() {
         try {
-            FileOutputStream fileOut = new FileOutputStream("data.ser");
+            FileOutputStream fileOut = new FileOutputStream("src/data.ser");
             ObjectOutputStream out = new ObjectOutputStream(fileOut);
             out.writeObject(this);
             out.close();
@@ -125,7 +122,7 @@ public class Fitness implements Serializable {
     public Fitness load() {
         Fitness fit = new Fitness();
         try {
-            FileInputStream fileIn = new FileInputStream("data.ser");
+            FileInputStream fileIn = new FileInputStream("src/data.ser");
             ObjectInputStream in = new ObjectInputStream(fileIn);
             fit = (Fitness) in.readObject();
             in.close();
@@ -516,6 +513,31 @@ public class Fitness implements Serializable {
         }
         return topWorkoutPlan;
     }
+
+    public String getRandomActivityType() {
+        List<String> types = new ArrayList<>();
+
+        // Gather all available activity types
+        for (Activity a : this.activityMap.values()) {
+            String activityType = a.getActivityType();
+            if (activityType != null) {
+                types.add(activityType);
+            }
+        }
+
+        // Check if there are any non-null activity types
+        if (types.isEmpty()) {
+            return null; // No activity types available
+        }
+
+        // Generate a random index to select a random activity type
+        Random rand = new Random();
+        int randomIndex = rand.nextInt(types.size());
+
+        // Return the randomly selected activity type
+        return types.get(randomIndex);
+    }
+
 
 
 }
