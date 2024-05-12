@@ -794,20 +794,31 @@ public class Menu implements Serializable {
                     sc.nextLine(); // Clear the invalid input
                 }
 
+                System.out.println("Input iterations:");
+                int planIterations = 0;
+                try {
+                    planIterations = getIntInput();
+                } catch (InputMismatchException e) {
+                    System.out.println("Error: Please enter a valid option number.");
+                    sc.nextLine(); // Clear the invalid input
+                }
+
                 LocalDate currentDate = fit.getCurrDate();
 
                 while (addedDays < days) {
-                    WorkoutPlan newWorkoutPlan = new WorkoutPlan();
-
-                    while (addedDays < days) { // Use while loop instead of for loop
-                        String randomType = fit.getRandomActivityType();
-                        newWorkoutPlan.allocateRandomActivity(fit, user, randomType, numActivities, currentDate);
-                        currentDate = currentDate.plusDays(1);
-                        addedDays++; // Increment the current activity number
-                    }
-
                     assert user != null;
-                    user.addWorkoutPlanToUser(newWorkoutPlan);
+
+                    int addedActivities = 0;
+                    while (addedActivities < numActivities) { // Use while loop instead of for loop
+                        WorkoutPlan newWorkoutPlan = new WorkoutPlan();
+                        newWorkoutPlan.setIterations(planIterations);
+                        newWorkoutPlan.setDate(currentDate);
+                        String randomType = fit.getRandomActivityType();
+                        newWorkoutPlan.allocateRandomActivity(fit, user, randomType, 1, null);
+                        user.addWorkoutPlanToUser(newWorkoutPlan);
+                        addedActivities++;
+                    }
+                    currentDate = currentDate.plusDays(1);
                     addedDays++;
                     user.saveUser();
                 }
