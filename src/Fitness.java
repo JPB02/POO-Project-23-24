@@ -1,5 +1,6 @@
 import java.io.*;
 import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -103,7 +104,7 @@ public class Fitness implements Serializable {
      */
     public void save() {
         try {
-            FileOutputStream fileOut = new FileOutputStream("src/data.ser");
+            FileOutputStream fileOut = new FileOutputStream("data.ser");
             ObjectOutputStream out = new ObjectOutputStream(fileOut);
             out.writeObject(this);
             out.close();
@@ -122,7 +123,7 @@ public class Fitness implements Serializable {
     public Fitness load() {
         Fitness fit = new Fitness();
         try {
-            FileInputStream fileIn = new FileInputStream("src/data.ser");
+            FileInputStream fileIn = new FileInputStream("data.ser");
             ObjectInputStream in = new ObjectInputStream(fileIn);
             fit = (Fitness) in.readObject();
             in.close();
@@ -162,6 +163,7 @@ public class Fitness implements Serializable {
 
         for (User user : userMap.values()) {
             user = User.loadUser(user.getUsername());
+            assert user != null;
             ArrayList<WorkoutPlan> workoutPlanList = user.getWorkoutPlansList();
 
             for (WorkoutPlan workoutPlan : workoutPlanList) {
@@ -171,7 +173,7 @@ public class Fitness implements Serializable {
                 if(workoutPlan.getDate().equals(this.currDate)|| workoutPlan.getDate().isBefore(this.currDate)) {
                     for (Activity activity : activities) {
 
-                        activity.setDate(this.currDate);
+                        activity.setDate(workoutPlan.getDate());
                         double calories = activity.calories(user);
                         user.setCalories(calories);
 
@@ -537,7 +539,5 @@ public class Fitness implements Serializable {
         // Return the randomly selected activity type
         return types.get(randomIndex);
     }
-
-
 
 }
