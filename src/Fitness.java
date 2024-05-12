@@ -426,4 +426,96 @@ public class Fitness implements Serializable {
         return topUser;
     }
 
+    public User mostActivitiesUser(Map<String,User> userMap) {
+        User topUser = null;
+        int activity_number = 0;
+
+        for(User user : userMap.values()) {
+            user = User.loadUser(user.getUsername());
+            assert user != null;
+
+            if (activity_number<user.getActivitiesList().size()) {
+                topUser = user;
+                activity_number = user.getActivitiesList().size();
+            }
+        }
+        return topUser;
+    }
+
+    public String mostExecutedActivity(Map<String, User> userMap) {
+        // Map to store activity type counts
+        Map<String, Integer> activityCounts = new HashMap<>();
+
+        // Iterate through each user
+        for (User user : userMap.values()) {
+            user = User.loadUser(user.getUsername());
+            assert user != null;
+
+            // Iterate through each activity of the user
+            for (Activity activity : user.getActivitiesList()) {
+                String activityType = activity.getActivityType();
+
+                // Update the count for the activity type
+                activityCounts.put(activityType, activityCounts.getOrDefault(activityType, 0) + 1);
+            }
+        }
+
+        // Find the activity type with the maximum count
+        int maxCount = 0;
+        String topActivityType = null;
+        for (Map.Entry<String, Integer> entry : activityCounts.entrySet()) {
+            if (entry.getValue() > maxCount) {
+                maxCount = entry.getValue();
+                topActivityType = entry.getKey();
+            }
+        }
+
+        return topActivityType;
+    }
+
+    public double kilometresUser(User user) {
+        double totalKilometres = 0;
+        ArrayList<Activity> activitiesList = user.getActivitiesList();
+
+        for (Activity a : activitiesList) {
+            if (a.getActivityType().equals("Distance")) {
+                totalKilometres += ((Distance) a).getDistance();
+            }
+        }
+        return totalKilometres;
+    }
+
+    public double travelledAltitudeUser(User user) {
+        double totalAltitude = 0;
+        ArrayList<Activity> activitiesList = user.getActivitiesList();
+
+        for (Activity a : activitiesList) {
+            if (a.getActivityType().equals("Distance&Altitude")) {
+                totalAltitude += ((DistanceAltitude) a).getAltitude();
+            }
+        }
+        return totalAltitude;
+    }
+
+    public WorkoutPlan hardestWorkoutPlan(ArrayList<WorkoutPlan> workoutPlanList, User user) {
+        double total_calories = 0;
+        double most_calories = 0;
+        WorkoutPlan topWorkoutPlan = null;
+
+        for (WorkoutPlan workoutPlan : workoutPlanList) {
+            List<Activity> activities = workoutPlan.getActivities();
+
+            for (Activity activity : activities) {
+                double calories = activity.calories(user);
+                    total_calories += calories;
+                }
+            if (total_calories>most_calories) {
+                most_calories = total_calories;
+                topWorkoutPlan = workoutPlan;
+            }
+        }
+        return topWorkoutPlan;
+    }
+
+
 }

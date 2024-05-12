@@ -316,6 +316,7 @@ public class Menu implements Serializable {
             System.out.println("\n2.Activities");
             System.out.println("\n3.Workout Plans");
             System.out.println("\n4.Logout");
+            System.out.println("\n5.User Statistics");
             option = getIntInput();
 
             switch (option) {
@@ -328,10 +329,15 @@ public class Menu implements Serializable {
                     break;
                 case 3:
                     workoutPlansMenu(loggedInUser);
+                    break;
                 case 4:
+                    break;
+                case 5:
+                    userStatisticsMenu(loggedInUser);
                     break;
                 default:
                     System.out.println("Invalid option!");
+                    break;
             }
         }
     }
@@ -357,20 +363,22 @@ public class Menu implements Serializable {
 
         switch(menuOption) {
             case 1:
+                sc.nextLine();
                 WorkoutPlan workoutPlan = new WorkoutPlan();
                 System.out.println("Input plan date:");
 
                 LocalDate dateInput = null;
                 boolean isValidWorkoutDate = false;
-                while(!isValidWorkoutDate) {
+                while(true) {
                     String date = sc.nextLine();
                     try {
                         dateInput = LocalDate.parse(date);
                         if (validWorkoutDate(dateInput)) {
-                            isValidWorkoutDate = true;
+                            break;
                         }
                     } catch (DateTimeParseException e) {
                         System.out.println("Invalid date format. Please enter the date in the format YYYY-MM-DD.");
+                        break;
                     }
                 }
                 workoutPlan.setDate(dateInput);
@@ -401,6 +409,7 @@ public class Menu implements Serializable {
                     } catch (InputMismatchException e) {
                         System.out.println("Error: Please enter a valid option number.");
                         sc.nextLine(); // Clear the invalid input
+                        break;
                     }
                     switch (typeOption) {
                         // DISTANCE ACTIVITY
@@ -1288,8 +1297,32 @@ public class Menu implements Serializable {
 
         DecimalFormat df = new DecimalFormat("#.##");
         User topUser = fit.mostCaloriesBurnedUser(userMap);
+
+        System.out.println("Global statistics");
+
         double calories = topUser.getCalories();
-        System.out.println("Most Burned Calories User:" + topUser.getUsername()+ ", burned "+ df.format(calories)+"kcal");
+        System.out.println("User with most calories:" + topUser.getUsername()+ ", burned "+ df.format(calories)+"kcal");
+
+        topUser = fit.mostActivitiesUser(userMap);
+        System.out.println("User with most activities:" + topUser.getUsername());
+
+        String mostExecutedActivityType = fit.mostExecutedActivity(userMap);
+        System.out.println("Most executed activity type:" + mostExecutedActivityType);
+
+    }
+
+    public void userStatisticsMenu(User user) {
+        Fitness fit = new Fitness();
+        fit = fit.load();
+        user = User.loadUser(user.getUsername());
+
+        System.out.println("User statistics");
+        assert user != null;
+        System.out.println("Kilometres ran:" + fit.kilometresUser(user) + "km");
+
+        System.out.println("Travelled altitude:" + fit.travelledAltitudeUser(user) + "m");
+
+        System.out.println("Most demanding Workout plan:" + fit.hardestWorkoutPlan(user.getWorkoutPlansList(), user));
     }
 
 }
