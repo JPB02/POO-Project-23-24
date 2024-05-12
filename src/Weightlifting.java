@@ -12,6 +12,7 @@ public class Weightlifting extends Activity implements Serializable {
     private int reps;
     private int sets;
     private double weight;
+
     /**
      * Construtor por omissao
      */

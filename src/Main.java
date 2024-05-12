@@ -26,9 +26,11 @@ public class Main {
 
             switch (option) {
                 case 1:
+                    menu.clearConsole();
                     menu.registerMenu();
                     break;
                 case 2:
+                    menu.clearConsole();
                     String username = menu.Login();
                     if(username != null) {
                         menu.loggedInMenu(username);
@@ -41,9 +43,11 @@ public class Main {
                     menu.printAllUsers();
                     break;
                 case 5:
+                    System.out.println("\n\n Printing all activities... \n\n");
                     menu.printAllActivities();
                     break;
                 case 6:
+                    System.out.println("\n\n Retrieving all the stats... \n\n");
                     menu.printStatisticsMenu();
                     break;
                 case 7:

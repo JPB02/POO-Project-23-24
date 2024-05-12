@@ -65,7 +65,7 @@ public class Menu implements Serializable {
             fit.save();
         }
 
-        System.out.println("##############-UMINHO FIT-##############");
+        printMainMenuLogo();
         System.out.println("\nDate: " + fit.getCurrDate());
         System.out.println("\n1. Register");
         System.out.println("\n2. Login");
@@ -127,6 +127,7 @@ public class Menu implements Serializable {
     public void registerMenu() {
         Fitness fit = new Fitness();
         fit = fit.load();
+        printRegisterMenuLogo();
 
         String type = new String();
         boolean isValidUserType = false;
@@ -282,6 +283,7 @@ public class Menu implements Serializable {
     public String Login() {
         Fitness fit = new Fitness();
         fit = fit.load();
+        printLoginMenuLogo();
 
         boolean loggedIn = false;
         String username = null;
@@ -307,6 +309,7 @@ public class Menu implements Serializable {
     }
 
     public void loggedInMenu(String username) {
+        printUserMenuLogo();
         System.out.println("##############-Bem-vindo " + username + "-##############");
 
         int option = 0;
@@ -321,19 +324,27 @@ public class Menu implements Serializable {
 
             switch (option) {
                 case 1:
+                    printDetailsMenuLogo();
                     assert loggedInUser != null;
                     System.out.println(loggedInUser);
+                    printUserMenuLogo();
                     break;
                 case 2:
+                    printActivitiesMenuLogo();
                     activitiesMenu(username);
+                    clearConsole();
+                    printUserMenuLogo();
                     break;
                 case 3:
+                    printWPMenuLogo();
                     workoutPlansMenu(loggedInUser);
                     break;
                 case 4:
                     break;
                 case 5:
+                    printStatisticsMenu();
                     userStatisticsMenu(loggedInUser);
+                    printUserMenuLogo();
                     break;
                 default:
                     System.out.println("Invalid option!");
@@ -1311,6 +1322,7 @@ public class Menu implements Serializable {
 
     }
 
+
     public void userStatisticsMenu(User user) {
         Fitness fit = new Fitness();
         fit = fit.load();
@@ -1324,5 +1336,94 @@ public class Menu implements Serializable {
 
         System.out.println("Most demanding Workout plan:" + fit.hardestWorkoutPlan(user.getWorkoutPlansList(), user));
     }
+
+
+    /**
+     * Este método é usado para limpar o terminal
+     */
+    public void clearConsole() {
+        try {
+            String os = System.getProperty("os.name").toLowerCase();
+
+            if (os.contains("win")) {
+                // Clears the console on Windows
+                new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
+            } else {
+                // Clears the console on Unix/Linux/Mac
+                System.out.print("\033[H\033[2J");
+                System.out.flush();
+            }
+        } catch (Exception e) {
+            System.out.println("Error clearing console: " + e.getMessage());
+        }
+    }
+
+
+    //************ASCII ART IMPORT METHODS*************
+    public void printMainMenuLogo(){
+        System.out.println(" _   _ __  __ ___ _____ _ _   \n" +
+                "| | | |  \\/  |_ _|  ___(_) |_ \n" +
+                "| | | | |\\/| || || |_  | | __|\n" +
+                "| |_| | |  | || ||  _| | | |_ \n" +
+                " \\___/|_|  |_|___|_|   |_|\\__|");
+
+    }
+
+    public void printRegisterMenuLogo(){
+        System.out.println(" ____            _     _            \n" +
+                "|  _ \\ ___  __ _(_)___| |_ ___ _ __ \n" +
+                "| |_) / _ \\/ _` | / __| __/ _ \\ '__|\n" +
+                "|  _ <  __/ (_| | \\__ \\ ||  __/ |   \n" +
+                "|_| \\_\\___|\\__, |_|___/\\__\\___|_|   \n" +
+                "           |___/                    \n");
+    }
+
+    public void printLoginMenuLogo(){
+        System.out.println(" _                _       \n" +
+                "| |    ___   __ _(_)_ __  \n" +
+                "| |   / _ \\ / _` | | '_ \\ \n" +
+                "| |__| (_) | (_| | | | | |\n" +
+                "|_____\\___/ \\__, |_|_| |_|\n" +
+                "            |___/         \n");
+    }
+
+    public void printUserMenuLogo(){
+        System.out.println("__        __   _                          \n" +
+                "\\ \\      / /__| | ___ ___  _ __ ___   ___ \n" +
+                " \\ \\ /\\ / / _ \\ |/ __/ _ \\| '_ ` _ \\ / _ \\\n" +
+                "  \\ V  V /  __/ | (_| (_) | | | | | |  __/\n" +
+                "   \\_/\\_/ \\___|_|\\___\\___/|_| |_| |_|\\___|\n");
+
+    }
+
+    public void printDetailsMenuLogo(){
+        System.out.println(" ____       _        _ _                                    \n" +
+                "|  _ \\  ___| |_ __ _(_) |___                                \n" +
+                "| | | |/ _ \\ __/ _` | | / __|                               \n" +
+                "| |_| |  __/ || (_| | | \\__ \\                               \n" +
+                "|____/ \\___|\\__\\__,_|_|_|___/             _   _             \n" +
+                "|_ _|_ __  / _| ___  _ __ _ __ ___   __ _| |_(_) ___  _ __  \n" +
+                " | || '_ \\| |_ / _ \\| '__| '_ ` _ \\ / _` | __| |/ _ \\| '_ \\ \n" +
+                " | || | | |  _| (_) | |  | | | | | | (_| | |_| | (_) | | | |\n" +
+                "|___|_| |_|_|  \\___/|_|  |_| |_| |_|\\__,_|\\__|_|\\___/|_| |_|");
+    }
+
+    public void printWPMenuLogo(){
+        System.out.println("__        __         _               _   ____  _                 \n" +
+                "\\ \\      / /__  _ __| | _____  _   _| |_|  _ \\| | __ _ _ __  ___ \n" +
+                " \\ \\ /\\ / / _ \\| '__| |/ / _ \\| | | | __| |_) | |/ _` | '_ \\/ __|\n" +
+                "  \\ V  V / (_) | |  |   < (_) | |_| | |_|  __/| | (_| | | | \\__ \\\n" +
+                "   \\_/\\_/ \\___/|_|  |_|\\_\\___/ \\__,_|\\__|_|   |_|\\__,_|_| |_|___/");
+    }
+
+    public void printActivitiesMenuLogo(){
+        System.out.println("    _        _   _       _ _   _           \n" +
+                "   / \\   ___| |_(_)_   _(_) |_(_) ___  ___ \n" +
+                "  / _ \\ / __| __| \\ \\ / / | __| |/ _ \\/ __|\n" +
+                " / ___ \\ (__| |_| |\\ V /| | |_| |  __/\\__ \\\n" +
+                "/_/   \\_\\___|\\__|_| \\_/ |_|\\__|_|\\___||___/\n");
+
+    }
+
 
 }
