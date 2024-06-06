@@ -1152,7 +1152,7 @@ public class Menu implements Serializable {
                             System.out.println("Select Body-weight Activity:");
                             availableActivities = fit.getActivityMap();
                             for (Activity activity: availableActivities.values()) {
-                                if(activity.getActivityType().equals("Weight-lifting")) {
+                                if(activity.getActivityType().equals("Body-weight")) {
                                     System.out.println("\n"+interfaceIndex4+"."+activity.getActivityID());
                                     interfaceIndex4++;
                                 }
@@ -1201,7 +1201,7 @@ public class Menu implements Serializable {
                                 break;
                             }
 
-                            String choiceBodyweight = fit.newWeightliftingActivityFromList(activityOptionBodyweight);
+                            String choiceBodyweight = fit.newBodyweightFromList(activityOptionBodyweight);
 
                             if (choiceBodyweight.equals("Squat")) {
 
